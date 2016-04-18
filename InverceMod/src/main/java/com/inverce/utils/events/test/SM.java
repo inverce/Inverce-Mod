@@ -19,7 +19,7 @@ public class SM extends StateMachineBase<DD, States, SMObject> implements DD {
         Log.w("preShow");
     }
 
-    @State("Show")
+    @State(value = "Show", threadPolicy = ThreadPolicy.UiThread)
     public void onShow(SMObject context) {
         Log.w("onShow");
     }
