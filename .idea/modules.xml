@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Inverce-Mod.iml" filepath="$PROJECT_DIR$/Inverce-Mod.iml" />
+      <module fileurl="file://$PROJECT_DIR$/InverceMod/InverceMod.iml" filepath="$PROJECT_DIR$/InverceMod/InverceMod.iml" />
+      <module fileurl="file://$PROJECT_DIR$/InverceMod.Samples/InverceMod.Samples.iml" filepath="$PROJECT_DIR$/InverceMod.Samples/InverceMod.Samples.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="doclava-1.0.6">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/InverceMod/libs/doclava-1.0.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

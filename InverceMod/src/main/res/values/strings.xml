@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">InverceUtils</string>
+    <string name="im.mod_name">InverceMod</string>
+    <string name="im.mod_tag">{IM}</string>
+    <string name="im.welcome">Welcome</string>
+
+
+    <string name="im.w.notwrapped">Initializing InverceMod without wrapping context, capability mode applies some aspects of mod might not work correctly.</string>
+
+</resources>
