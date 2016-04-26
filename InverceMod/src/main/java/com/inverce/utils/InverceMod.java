@@ -21,7 +21,6 @@ public final class InverceMod {
         UtilityModule.init(context);
         LoggerModule.init(context);
         Log.i(R.string.im_mod_tag, R.string.im_w_notwrapped);
-
         Log.i(R.string.im_mod_tag, R.string.im_welcome);
     }
 }
