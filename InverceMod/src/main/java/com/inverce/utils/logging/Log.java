@@ -7,31 +7,19 @@ import com.inverce.utils.tools.Ui;
 
 @SuppressWarnings("unused")
 public class Log {
-
     private static boolean DEBUG_MODE = true;
     private static final String BASE_TAG = "||";
     private static final String libraryPackage = "com.empik.lib";
     private static       String ApplicationPackage = "com.example.exampleapp";
-    // Priority constants
-    public static final int VERBOSE = 2;
-    public static final int DEBUG = 3;
-    public static final int INFO = 4;
-    public static final int WARN = 5;
-    public static final int ERROR = 6;
-    /* This level is quite special as it shows simple stack trace (this SLOWS down app) */
-    public static final int EXCEPTION = 7;
-    public static final int ASSERT = 8;
 
-    public static final int NONE = 1000; // in this file this is actually equal to +inf
-
-    private static final int FULL   = 1;
-    private static final int SIMPLER  = 2;
-    private static final int SIMPLEST = 3;
-
+    public static final int VERBOSE = 2, DEBUG = 3, INFO = 4, WARN = 5, ERROR = 6;
+    public static final int EXCEPTION = 7, ASSERT = 8, NONE = Integer.MAX_VALUE;
+    private static final int FULL = 1, SIMPLER = 2, SIMPLEST = 3;
 
     private static int LOGGING_LEVEL = VERBOSE;
 
     private static LogListener listener;
+
     public static void setListener(LogListener listener) {
         Log.listener = listener;
     }

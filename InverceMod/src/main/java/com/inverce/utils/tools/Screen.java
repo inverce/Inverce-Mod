@@ -9,30 +9,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.inverce.utils.IM;
 import com.inverce.utils.logging.Log;
+
+import static com.inverce.utils.IM.context;
+import static com.inverce.utils.IM.resources;
 
 @SuppressWarnings("unused")
 public class Screen {
     public static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
     public static final int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
-    private static Context context;
-
-    public static void init(Context context) {
-        Screen.context = context;
-    }
 
     public static boolean isXLargeTablet() {
-        return (context.getResources().getConfiguration().screenLayout
+        return (resources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 
     public static Point getScreenSize() {
         Point size = new Point();
         Display display;
-        if (context instanceof Activity) {
-            display = ((Activity) context).getWindowManager().getDefaultDisplay();
+        if (context() instanceof Activity) {
+            display = ((Activity) context()).getWindowManager().getDefaultDisplay();
         } else {
-            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            WindowManager wm = (WindowManager) context().getSystemService(Context.WINDOW_SERVICE);
             display = wm.getDefaultDisplay();
         }
         display.getSize(size);
@@ -58,11 +57,11 @@ public class Screen {
     }
 
     public static int pxToDp(int px) {
-        return (int) (px / context.getApplicationContext().getResources().getDisplayMetrics().density);
+        return (int) (px / resources().getDisplayMetrics().density);
     }
 
     public static int dpToPx(int dp) {
-        return (int) (dp * context.getApplicationContext().getResources().getDisplayMetrics().density);
+        return (int) (dp * resources().getDisplayMetrics().density);
     }
 
     public static Point getLocationOnScreen(View measurementView) {
@@ -81,9 +80,9 @@ public class Screen {
 
     public static int getStatusBarHeight() {
         int result = 0;
-        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        int resourceId = resources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
-            result = context.getResources().getDimensionPixelSize(resourceId);
+            result = resources().getDimensionPixelSize(resourceId);
         }
         return result;
     }

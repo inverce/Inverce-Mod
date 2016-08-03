@@ -1,26 +1,31 @@
 package com.inverce.samples.InverceMod;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.inverce.utils.InverceMod;
-import com.inverce.utils.events.StateMachine;
-import com.inverce.utils.events.test.SM;
+import com.inverce.utils.IM;
+import com.inverce.utils.events.Event;
+import com.inverce.utils.stateless.StateMachine;
+import com.inverce.utils.stateless.test.SM;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainActivityInteractions {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        InverceMod.install(this.getApplication());
+        IM.install(this.getApplication());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         StateMachine.get(SM.class).post().testMe();
+
+        Event.Bus.register(MainActivityInteractions.class, this);
+
+
     }
 
     @Override
@@ -43,5 +48,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void changeFragmentPage(Fragment page) {
+
     }
 }
