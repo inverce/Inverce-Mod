@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="InverceMod.Apt.InverceMod.Apt">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/InverceMod.Apt/build/libs/InverceMod.Apt.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

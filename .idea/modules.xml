@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Inverce-Mod.iml" filepath="$PROJECT_DIR$/Inverce-Mod.iml" />
       <module fileurl="file://$PROJECT_DIR$/InverceMod/InverceMod.iml" filepath="$PROJECT_DIR$/InverceMod/InverceMod.iml" />
+      <module fileurl="file://$PROJECT_DIR$/InverceMod.Apt/InverceMod.Apt.iml" filepath="$PROJECT_DIR$/InverceMod.Apt/InverceMod.Apt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/InverceMod.Logging/InverceMod.Logging.iml" filepath="$PROJECT_DIR$/InverceMod.Logging/InverceMod.Logging.iml" />
       <module fileurl="file://$PROJECT_DIR$/InverceMod.Samples/InverceMod.Samples.iml" filepath="$PROJECT_DIR$/InverceMod.Samples/InverceMod.Samples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/inverce-mod.iml" filepath="$PROJECT_DIR$/inverce-mod.iml" />
     </modules>
   </component>
 </project>

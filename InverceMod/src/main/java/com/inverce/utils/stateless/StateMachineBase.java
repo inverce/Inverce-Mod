@@ -8,7 +8,7 @@ import com.inverce.utils.stateless.annotations.State;
 import com.inverce.utils.events.annotation.ThreadPolicy;
 import com.inverce.utils.events.annotation.Listener;
 import com.inverce.utils.stateless.annotations.StateMachineInterface;
-import com.inverce.utils.logging.Log;
+import com.inverce.logging.Log;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;

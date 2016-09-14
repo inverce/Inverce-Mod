@@ -4,10 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
 
-import com.inverce.utils.events.Bus;
+import com.inverce.logging.Log;
+import com.inverce.utils.events.Event;
 import com.inverce.utils.events.annotation.Listener;
 import com.inverce.utils.stateless.EventsModule;
-import com.inverce.utils.logging.Log;
 import com.inverce.utils.tools.Lifecycle;
 import com.inverce.utils.tools.UtilityModule;
 
@@ -20,6 +20,7 @@ public final class IM {
     static Context context;
     static Application app;
 
+    @SuppressWarnings("")
     public static Context context() {
         return context;
     }
@@ -47,12 +48,10 @@ public final class IM {
         UtilityModule.init(context);
         Log.i(R.string.im_mod_tag, R.string.im_welcome);
 
-
-        Bus
+        Event.Bus
             .channel(33)
-            .post(Listener.class)
-                .notify();
+            .post(Listener.class).getClass();
 
-        Bus.post(Listener.class).notify();
+        Event.Bus.post(Listener.class);
     }
 }

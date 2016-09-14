@@ -1,9 +1,7 @@
-package com.inverce.utils.logging;
+package com.inverce.logging;
 
 import android.content.Context;
 import android.support.annotation.StringRes;
-
-import com.inverce.utils.tools.Ui;
 
 @SuppressWarnings("unused")
 public class Log {
@@ -19,6 +17,7 @@ public class Log {
     private static int LOGGING_LEVEL = VERBOSE;
 
     private static LogListener listener;
+    private static Context ApplicationContext;
 
     public static void setListener(LogListener listener) {
         Log.listener = listener;
@@ -32,8 +31,13 @@ public class Log {
         DEBUG_MODE = debugMode;
     }
 
-    static void init(Context context) {
+    public static void init(Context context) {
         ApplicationPackage = context.getPackageName();
+        ApplicationContext = context.getApplicationContext();
+    }
+
+    private static Context context() {
+        return ApplicationContext;
     }
 
     public static void handleMsg(int lvl, int tag, int msg, Object ... o) {
@@ -42,9 +46,9 @@ public class Log {
         }
 
         if (tag == -1) {
-            handleMsg(lvl, null, Ui.context().getString(msg, o));
+            handleMsg(lvl, null, context().getString(msg, o));
         } else {
-            handleMsg(lvl, Ui.context().getString(tag), Ui.context().getString(msg, o));
+            handleMsg(lvl, context().getString(tag), context().getString(msg, o));
         }
     }
 
@@ -77,9 +81,9 @@ public class Log {
         }
 
         if (tag == -1) {
-            handleExc(lvl, null, Ui.context().getString(msg), o);
+            handleExc(lvl, null, context().getString(msg), o);
         } else {
-            handleExc(lvl, Ui.context().getString(tag), Ui.context().getString(msg), o);
+            handleExc(lvl, context().getString(tag), context().getString(msg), o);
         }
     }
 

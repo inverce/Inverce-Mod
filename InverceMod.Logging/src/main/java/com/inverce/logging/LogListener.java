@@ -1,4 +1,4 @@
-package com.inverce.utils.logging;
+package com.inverce.logging;
 
 public interface LogListener {
     /**

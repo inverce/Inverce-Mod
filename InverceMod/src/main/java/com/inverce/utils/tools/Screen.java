@@ -9,8 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import com.inverce.utils.IM;
-import com.inverce.utils.logging.Log;
+import com.inverce.logging.Log;
 
 import static com.inverce.utils.IM.context;
 import static com.inverce.utils.IM.resources;

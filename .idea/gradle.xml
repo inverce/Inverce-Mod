@@ -9,6 +9,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/InverceMod" />
+            <option value="$PROJECT_DIR$/InverceMod.Apt" />
+            <option value="$PROJECT_DIR$/InverceMod.Logging" />
             <option value="$PROJECT_DIR$/InverceMod.Samples" />
           </set>
         </option>
@@ -16,6 +18,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/InverceMod" />
+            <option value="$PROJECT_DIR$/InverceMod.Apt" />
+            <option value="$PROJECT_DIR$/InverceMod.Logging" />
             <option value="$PROJECT_DIR$/InverceMod.Samples" />
           </set>
         </option>
