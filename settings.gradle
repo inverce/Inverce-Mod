@@ -1,3 +1,3 @@
-include ':InverceMod'
+include ':InverceMod', ':IM.Core'
 include ':InverceMod.Samples'
 include ':InverceMod.Logging'

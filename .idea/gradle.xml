@@ -8,6 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/IM.Core" />
             <option value="$PROJECT_DIR$/InverceMod" />
             <option value="$PROJECT_DIR$/InverceMod.Logging" />
             <option value="$PROJECT_DIR$/InverceMod.Samples" />
