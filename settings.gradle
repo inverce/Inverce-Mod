@@ -1,3 +1,1 @@
-include ':InverceMod', ':IM.Core'
-include ':InverceMod.Samples'
-include ':InverceMod.Logging'
+include ':Core', ':Executor', ':Events', ':Stateless', ':Navigation'
