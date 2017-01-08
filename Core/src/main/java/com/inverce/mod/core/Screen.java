@@ -9,10 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import com.inverce.logging.Log;
+import com.inverce.mod.core.logging.Log;
 
-import static com.inverce.utils.IM.context;
-import static com.inverce.utils.IM.resources;
+import static com.inverce.mod.core.IM.getContext;
 
 @SuppressWarnings("unused")
 public class Screen {
@@ -27,10 +26,10 @@ public class Screen {
     public static Point getScreenSize() {
         Point size = new Point();
         Display display;
-        if (IM.context() instanceof Activity) {
-            display = ((Activity) IM.context()).getWindowManager().getDefaultDisplay();
+        if (getContext() instanceof Activity) {
+            display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
         } else {
-            WindowManager wm = (WindowManager) IM.context().getSystemService(Context.WINDOW_SERVICE);
+            WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
             display = wm.getDefaultDisplay();
         }
         display.getSize(size);

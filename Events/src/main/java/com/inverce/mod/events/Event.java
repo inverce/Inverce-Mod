@@ -103,28 +103,28 @@ public class Event <T extends Listener> implements SingleEvent<T>, MultiEvent<T>
             EventInfo onThread = method.getAnnotation(EventInfo.class);
             if (onThread != null) {
                 switch (onThread.thread()) {
-                    case BgThread:
-                        VAExecutor.get().execute(new Runnable() {
-                            public void run() {
-                                try {
-                                    invokeInternal(proxy, method, args);
-                                } catch (Throwable throwable) {
-                                    throwable.printStackTrace();
-                                }
-                            }
-                        });
-                        return null;
-                    case UiThread:
-                        Ui.runOnUI(new Runnable() {
-                            public void run() {
-                                try {
-                                    invokeInternal(proxy, method, args);
-                                } catch (Throwable throwable) {
-                                    throwable.printStackTrace();
-                                }
-                            }
-                        });
-                        return null;
+//                    case BgThread:
+//                        VAExecutor.get().execute(new Runnable() {
+//                            public void run() {
+//                                try {
+//                                    invokeInternal(proxy, method, args);
+//                                } catch (Throwable throwable) {
+//                                    throwable.printStackTrace();
+//                                }
+//                            }
+//                        });
+//                        return null;
+//                    case UiThread:
+//                        Ui.runOnUI(new Runnable() {
+//                            public void run() {
+//                                try {
+//                                    invokeInternal(proxy, method, args);
+//                                } catch (Throwable throwable) {
+//                                    throwable.printStackTrace();
+//                                }
+//                            }
+//                        });
+//                        return null;
                 }
             }
         }

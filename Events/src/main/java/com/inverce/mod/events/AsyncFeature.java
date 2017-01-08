@@ -3,7 +3,10 @@ package com.inverce.mod.events;
 import java.util.List;
 
 
-/* WIP */
+/**
+ * WIP
+ * @param <T>
+ */
 public abstract class AsyncFeature<T> {
     AsyncFeature() { }
 

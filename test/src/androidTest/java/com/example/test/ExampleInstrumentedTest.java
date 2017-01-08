@@ -1,4 +1,4 @@
-package com.inverce.mod.navigation;
+package com.example.test;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.inverce.mod.navigation.test", appContext.getPackageName());
+        assertEquals("com.example.test", appContext.getPackageName());
     }
 }
