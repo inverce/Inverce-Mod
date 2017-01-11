@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.inverce.mod.core.IM;
-import com.inverce.mod.core.logging.Log;
+import com.inverce.mod.core.Log;
 
 public class MainActivity extends AppCompatActivity {
 

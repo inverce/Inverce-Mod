@@ -1,4 +1,4 @@
-package com.inverce.mod.core.internal.initialization;
+package com.inverce.mod.core.internal;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.inverce.mod.core.IMInitializer;
 
 /**
  * Provide easy initialization for IM mod, without user needing to provide anything

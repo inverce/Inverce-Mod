@@ -1,8 +1,8 @@
-package com.inverce.mod.core.logging;
+package com.inverce.mod.core;
 
 import android.support.annotation.StringRes;
 
-import com.inverce.mod.core.IM;
+import com.inverce.mod.core.interfaces.LogListener;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class Log {
@@ -35,7 +35,7 @@ public class Log {
 
     public static boolean shouldPrint(String className) {
         if (applicationPackage == null) {
-            applicationPackage = IM.getContext().getPackageName();
+            applicationPackage = IM.context().getPackageName();
         }
         return className.startsWith(libraryPackage) || className.contains(applicationPackage);
     }

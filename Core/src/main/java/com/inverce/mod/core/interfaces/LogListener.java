@@ -1,4 +1,4 @@
-package com.inverce.mod.core.logging;
+package com.inverce.mod.core.interfaces;
 
 public interface LogListener {
     /**

@@ -5,17 +5,18 @@ import android.app.Application;
 import android.os.Bundle;
 
 import com.inverce.mod.core.interfaces.ActivityState;
-
-import java.lang.ref.WeakReference;
+import com.inverce.mod.core.interfaces.ActivityStateListener;
+import com.inverce.mod.core.internal.IMInternal;
 
 public class Lifecycle {
     private static ActivityState currentActivityState = ActivityState.NotCreated;
+    private static ActivityStateListener listener;
 
-    public static void init(Application context) {
-        context.registerActivityLifecycleCallbacks(new StatesAdapterImpl());
+    protected static void onInitialize() {
+        IM.application().registerActivityLifecycleCallbacks(new StatesAdapterImpl());
     }
 
-    public static ActivityState activityState() {
+    public static ActivityState getActivityState() {
         return currentActivityState;
     }
 
@@ -23,7 +24,11 @@ public class Lifecycle {
         currentActivityState = state;
 
         if (state.ordinal() < 4) {
-            Ui.mActivity = new WeakReference<>(activity);
+            IMInternal.get().setActivity(activity);
+        }
+
+        if (listener != null) {
+            listener.activityStateChanged(state, activity, extra);
         }
     }
 
