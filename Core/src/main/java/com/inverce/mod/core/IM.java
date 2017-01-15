@@ -9,7 +9,7 @@ import android.content.res.Resources;
 import com.inverce.mod.core.internal.IMInternal;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  */
@@ -34,7 +34,7 @@ public class IM {
         return context().getResources();
     }
 
-    public static ExecutorService onBg() {
+    public static ScheduledThreadPoolExecutor onBg() {
         return internal.getBgExecutor();
     }
 

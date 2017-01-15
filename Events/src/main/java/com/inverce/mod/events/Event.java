@@ -13,7 +13,9 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.reflect.Proxy.newProxyInstance;
 
@@ -31,7 +33,9 @@ public class Event <T extends Listener> implements SingleEvent<T>, MultiEvent<T>
 
     static {
         uiExecutor = new DefaultUiExecutor();
-        bgExecutor = Executors.newCachedThreadPool();
+        bgExecutor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                3L, TimeUnit.SECONDS,
+                new SynchronousQueue<Runnable>());
     }
 
     public Event(Class<T> clazz) {

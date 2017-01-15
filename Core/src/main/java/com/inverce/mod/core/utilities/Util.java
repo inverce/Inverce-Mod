@@ -1,4 +1,4 @@
-package com.inverce.mod.core;
+package com.inverce.mod.core.utilities;
 
 public class Util {
     public static <T> T nonNull(Object ... params) {

@@ -1,6 +1,6 @@
 package com.example.test;
 
-import com.inverce.mod.navigation.BasePage;
+import com.inverce.mod.navigation.BaseFragment;
 
-public class jj extends BasePage<Intre> {
+public class jj extends BaseFragment<Intre> {
 }
