@@ -27,6 +27,7 @@ public class Ui {
         return Looper.myLooper() == Looper.getMainLooper();
     }
 
+    @Deprecated
     public static boolean isOnUiThread() {
         return Looper.getMainLooper().getThread() == Thread.currentThread();
     }
