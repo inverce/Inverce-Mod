@@ -2,7 +2,7 @@
 
 #### Instalation
 ```gradle
-compile 'com.inverce.mod:Events:1.0.0'
+compile 'com.inverce.mod:Events:1.0.2'
 ```
 
 
