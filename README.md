@@ -1,5 +1,8 @@
 # Inverce's Mod
 
+[![codebeat badge](https://codebeat.co/badges/1aff48e2-2406-4f2b-9e63-6b63b983d2f0)](https://codebeat.co/projects/github-com-inverce-inverce-mod)
+
+
 Collection of simple utilities for android and java
 
 ## Prerequisites
