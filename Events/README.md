@@ -7,7 +7,7 @@ compile 'com.inverce.mod:Events:1.0.0'
 
 
 
-## Event.Bus
+### Event.Bus
 
 Well its just another implementation of publish/subscribe event bus. 
 
@@ -32,7 +32,7 @@ Cons
  * Even if many listeners are provided only value from first will be returned
  * its not as fast as code gen
  
-### How to
+#### How to
 1. Declare your listener:
 
     ```java
@@ -54,11 +54,11 @@ Cons
          .userStateChaged(true);
     ```
 
-## Event\<T\>
+### Event\<T\>
 
 Allows user to manage single event.
 
-### How to
+#### How to
 
 1. Declare your listener:
 
@@ -100,7 +100,7 @@ Allows user to manage single event.
     ```
     
     
-## To be done in relatively near future
+##### To be done in relatively near future
 
 * Allow multi registration, or simply without providing event class
 * Add local bus for user to manage
