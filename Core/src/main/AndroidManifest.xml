@@ -2,7 +2,10 @@
 
     <application android:allowBackup="true" android:label="@string/app_name"
         android:supportsRtl="true">
-
+        <provider
+            android:authorities="${applicationId}.iminitializationprovider"
+            android:name=".internal.InitializationContentProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>

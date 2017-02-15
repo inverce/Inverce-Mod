@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
-import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
@@ -20,38 +19,21 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 
-import java.lang.ref.WeakReference;
-
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class Ui {
-    private static Handler uiHandler = null;
     private static String PADDING_NPE = "To set padding you must provide VIEW";
-    private static Context context;
-    static WeakReference<Activity> mActivity = new WeakReference<Activity>(null);
-
-    public static Context context() {
-        return mActivity.get() != null ? mActivity.get() : context;
-    }
-
-    static void init(Context context) {
-        Ui.context = context;
-        uiHandler = new Handler(Looper.getMainLooper());
-    }
-
-    public static void runOnUI(Runnable runnable) {
-        uiHandler.post(runnable);
-    }
 
     public static boolean isUiThread() {
         return Looper.myLooper() == Looper.getMainLooper();
     }
 
+    @Deprecated
     public static boolean isOnUiThread() {
         return Looper.getMainLooper().getThread() == Thread.currentThread();
     }
 
     public static StateListDrawable makeSelector(Drawable drawable, @ColorRes int pressedRes, @ColorRes int disabledRes) {
-        Resources res = context.getResources();
+        Resources res = IM.context().getResources();
         StateListDrawable state = new StateListDrawable();
         LayerDrawable pressed = new LayerDrawable(new Drawable[]{
                 drawable,
@@ -89,17 +71,8 @@ public class Ui {
     }
 
     public static LayoutInflater getInflater() {
-        Activity activity = mActivity.get();
-        LayoutInflater layoutInflater;
-        if (activity != null) {
-            layoutInflater = (android.view.LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        } else {
-            layoutInflater = (android.view.LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-        if (layoutInflater == null) {
-            throw new AssertionError("LayoutInflater not found.");
-        }
-        return layoutInflater;
+        Activity activity = IM.activity();
+        return LayoutInflater.from(activity != null? activity : IM.context());
     }
 
     public static void runOnNextLayout(final View rootView, final Runnable run) {
@@ -119,13 +92,9 @@ public class Ui {
 
     public static void hideSoftInput(View view) {
         try {
-            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) IM.context().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         } catch (Exception ignored) { /* safely ignore, as ex in here means we could not hide keyboard */ }
-    }
-
-    public static Activity getCurrentActivity() {
-        return mActivity.get();
     }
 
     @SuppressWarnings("ResourceType")

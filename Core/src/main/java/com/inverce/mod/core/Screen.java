@@ -9,11 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import com.inverce.mod.core.logging.Log;
+import static com.inverce.mod.core.IM.context;
 
-import static com.inverce.mod.core.IM.getContext;
-
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class Screen {
     public static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
     public static final int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -26,10 +24,10 @@ public class Screen {
     public static Point getScreenSize() {
         Point size = new Point();
         Display display;
-        if (getContext() instanceof Activity) {
-            display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
+        if (context() instanceof Activity) {
+            display = ((Activity) context()).getWindowManager().getDefaultDisplay();
         } else {
-            WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+            WindowManager wm = (WindowManager) context().getSystemService(Context.WINDOW_SERVICE);
             display = wm.getDefaultDisplay();
         }
         display.getSize(size);
@@ -39,7 +37,7 @@ public class Screen {
     public static Point getActivitySize() {
         Point size = getScreenSize();
         size.y -= getStatusBarHeight();
-        Activity activity = Ui.getCurrentActivity();
+        Activity activity = IM.activity();
 
         if (activity != null) {
             try {

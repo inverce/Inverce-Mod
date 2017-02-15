@@ -1,6 +1,7 @@
 package com.inverce.mod.events;
 
-import com.inverce.mod.core.logging.Log;
+import android.util.Log;
+
 import com.inverce.mod.events.annotation.EventInfo;
 import com.inverce.mod.events.annotation.Listener;
 import com.inverce.mod.events.interfaces.EventCaller;
@@ -11,6 +12,10 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.reflect.Proxy.newProxyInstance;
 
@@ -24,6 +29,14 @@ public class Event <T extends Listener> implements SingleEvent<T>, MultiEvent<T>
     private final T proxyCaller;
     private boolean needCleanUp;
     private final boolean parseAnnotation;
+    private static Executor uiExecutor, bgExecutor;
+
+    static {
+        uiExecutor = new DefaultUiExecutor();
+        bgExecutor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                3L, TimeUnit.SECONDS,
+                new SynchronousQueue<Runnable>());
+    }
 
     public Event(Class<T> clazz) {
         this(clazz, true);
@@ -103,28 +116,28 @@ public class Event <T extends Listener> implements SingleEvent<T>, MultiEvent<T>
             EventInfo onThread = method.getAnnotation(EventInfo.class);
             if (onThread != null) {
                 switch (onThread.thread()) {
-//                    case BgThread:
-//                        VAExecutor.get().execute(new Runnable() {
-//                            public void run() {
-//                                try {
-//                                    invokeInternal(proxy, method, args);
-//                                } catch (Throwable throwable) {
-//                                    throwable.printStackTrace();
-//                                }
-//                            }
-//                        });
-//                        return null;
-//                    case UiThread:
-//                        Ui.runOnUI(new Runnable() {
-//                            public void run() {
-//                                try {
-//                                    invokeInternal(proxy, method, args);
-//                                } catch (Throwable throwable) {
-//                                    throwable.printStackTrace();
-//                                }
-//                            }
-//                        });
-//                        return null;
+                    case BgThread:
+                        bgExecutor.execute(new Runnable() {
+                            public void run() {
+                                try {
+                                    invokeInternal(proxy, method, args);
+                                } catch (Throwable throwable) {
+                                    throwable.printStackTrace();
+                                }
+                            }
+                        });
+                        return null;
+                    case UiThread:
+                        uiExecutor.execute(new Runnable() {
+                            public void run() {
+                                try {
+                                    invokeInternal(proxy, method, args);
+                                } catch (Throwable throwable) {
+                                    throwable.printStackTrace();
+                                }
+                            }
+                        });
+                        return null;
                 }
             }
         }

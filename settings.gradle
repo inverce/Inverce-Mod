@@ -1,1 +1,4 @@
-include ':Core', ':Executor', ':Events', ':Stateless', ':Navigation', ':test'
+include ':Core'
+include ':Events'
+include ':Navigation'
+include ':test'

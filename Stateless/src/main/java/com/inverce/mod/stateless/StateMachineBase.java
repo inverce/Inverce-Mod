@@ -3,7 +3,7 @@ package com.inverce.mod.stateless;
 import android.support.annotation.NonNull;
 import android.util.SparseArray;
 
-import com.inverce.mod.core.logging.Log;
+import com.inverce.mod.core.Log;
 import com.inverce.mod.events.Event;
 import com.inverce.mod.events.annotation.Listener;
 import com.inverce.mod.events.annotation.ThreadPolicy;

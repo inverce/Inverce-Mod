@@ -7,7 +7,7 @@ import java.util.List;
  * WIP
  * @param <T>
  */
-public abstract class AsyncFeature<T> {
+ abstract class AsyncFeature<T> {
     AsyncFeature() { }
 
     void invoke() { }
