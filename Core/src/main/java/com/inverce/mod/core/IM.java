@@ -5,20 +5,22 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
+import android.view.LayoutInflater;
 
 import com.inverce.mod.core.internal.IMInternal;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
-/**
- */
 @SuppressWarnings("WeakerAccess")
 @SuppressLint("StaticFieldLeak")
 public class IM {
     private static IMInternal internal = IMInternal.get();
 
     public static Context context() {
+        if (internal.getActivity() != null) {
+            return internal.getActivity();
+        }
         return internal.getContext();
     }
 
@@ -34,6 +36,10 @@ public class IM {
         return context().getResources();
     }
 
+    public static LayoutInflater inflater() {
+        return LayoutInflater.from(context());
+    }
+
     public static ScheduledThreadPoolExecutor onBg() {
         return internal.getBgExecutor();
     }
@@ -41,6 +47,5 @@ public class IM {
     public static Executor onUi() {
         return internal.getUiExecutor();
     }
-
 
 }
