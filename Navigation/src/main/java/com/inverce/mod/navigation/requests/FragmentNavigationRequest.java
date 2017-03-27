@@ -13,8 +13,7 @@ public class FragmentNavigationRequest extends NavigationRequest<FragmentNavigat
     @LayoutRes
     protected int containerId = 0;
 
-    @AnimRes
-    int enter, exit, popEnter, popExit;
+    @AnimRes int [] animations = new int[4];
 
     public FragmentNavigationRequest(Fragment fragment) {
         this(fragment.getClass());
@@ -47,10 +46,10 @@ public class FragmentNavigationRequest extends NavigationRequest<FragmentNavigat
      */
     @CheckResult
     public FragmentNavigationRequest setCustomAnimations(@AnimRes int enter, @AnimRes int exit, @AnimRes int popEnter, @AnimRes int popExit) {
-        this.enter = enter;
-        this.exit = exit;
-        this.popEnter = popEnter;
-        this.popExit = popExit;
+        this.animations[0] = enter;
+        this.animations[1] = exit;
+        this.animations[2] = popEnter;
+        this.animations[3] = popExit;
         return this;
     }
 
@@ -82,6 +81,6 @@ public class FragmentNavigationRequest extends NavigationRequest<FragmentNavigat
 
     @AnimRes
     public int[] getAnimationSet() {
-        return new int[] { enter, exit, popEnter, popExit };
+        return animations;
     }
 }
