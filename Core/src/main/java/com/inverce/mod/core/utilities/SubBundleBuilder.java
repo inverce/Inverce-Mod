@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.CheckResult;
 
-import com.inverce.mod.core.interfaces.functions.Use;
+import com.inverce.mod.core.functional.IConsumer;
 
 import java.io.Serializable;
 
@@ -72,8 +72,8 @@ public class SubBundleBuilder<TYPE> extends SubBuilder<TYPE> {
     }
 
     @CheckResult
-    public SubBundleBuilder<TYPE> setup(Use<Bundle> setup) {
-        setup.use(extras);
+    public SubBundleBuilder<TYPE> setup(IConsumer<Bundle> setup) {
+        setup.consume(extras);
         return this;
     }
 }

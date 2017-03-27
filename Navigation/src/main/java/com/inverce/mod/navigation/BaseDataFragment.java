@@ -13,13 +13,13 @@ public class BaseDataFragment<Actions extends Listener, Data> extends BaseFragme
         return BaseFragment.newBuilder(clazz)
                 .with("data", data)
                 .with("data_type", "Serializable")
-                .done();
+                .create();
     }
     public static <T extends BaseDataFragment<?, D>, D extends Parcelable> T newInstance(Class<T> clazz, D data) {
         return BaseFragment.newBuilder(clazz)
                 .with("data", data)
                 .with("data_type", "Parcelable")
-                .done();
+                .create();
     }
 
     @Nullable

@@ -1,8 +1,6 @@
 package com.inverce.mod.core;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -12,8 +10,8 @@ import android.os.Looper;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.util.StateSet;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -27,21 +25,15 @@ public class Ui {
         return Looper.myLooper() == Looper.getMainLooper();
     }
 
-    @Deprecated
-    public static boolean isOnUiThread() {
-        return Looper.getMainLooper().getThread() == Thread.currentThread();
-    }
-
     public static StateListDrawable makeSelector(Drawable drawable, @ColorRes int pressedRes, @ColorRes int disabledRes) {
-        Resources res = IM.context().getResources();
         StateListDrawable state = new StateListDrawable();
         LayerDrawable pressed = new LayerDrawable(new Drawable[]{
                 drawable,
-                new ColorDrawable(res.getColor(pressedRes))
+                new ColorDrawable(ActivityCompat.getColor(IM.context(), pressedRes))
         });
         LayerDrawable disabled = new LayerDrawable(new Drawable[]{
                 drawable,
-                new ColorDrawable(res.getColor(disabledRes))
+                new ColorDrawable(ActivityCompat.getColor(IM.context(), disabledRes))
         });
         state.addState(new int[]{android.R.attr.state_pressed}, pressed);
         state.addState(new int[]{android.R.attr.state_focused}, disabled);
@@ -68,11 +60,6 @@ public class Ui {
             }
         }
         return false;
-    }
-
-    public static LayoutInflater getInflater() {
-        Activity activity = IM.activity();
-        return LayoutInflater.from(activity != null? activity : IM.context());
     }
 
     public static void runOnNextLayout(final View rootView, final Runnable run) {

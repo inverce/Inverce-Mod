@@ -3,9 +3,9 @@ package com.inverce.mod.navigation.requests;
 import android.os.Bundle;
 import android.support.annotation.CheckResult;
 
-import com.inverce.mod.navigation.interfaces.NavigationHandler;
-import com.inverce.mod.core.interfaces.functions.Use;
+import com.inverce.mod.core.functional.IConsumer;
 import com.inverce.mod.core.utilities.SubBundleBuilder;
+import com.inverce.mod.navigation.interfaces.NavigationHandler;
 
 import java.io.Serializable;
 
@@ -36,8 +36,8 @@ public class NavigationRequest<TYPE extends NavigationRequest<TYPE>> implements 
     }
 
     @CheckResult
-    public TYPE setExtras(Use<Bundle> setup) {
-        setup.use(extras);
+    public TYPE setExtras(IConsumer<Bundle> setup) {
+        setup.consume(extras);
         return (TYPE) this;
     }
 

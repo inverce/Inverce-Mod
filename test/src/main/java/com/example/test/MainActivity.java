@@ -20,8 +20,6 @@ public class MainActivity extends AppCompatActivity {
 //        IMInitializer.initialize(this);
         setContentView(R.layout.activity_main);
 
-
-
         final Handler handler = new Handler(Looper.getMainLooper());
 
         handler.postDelayed(new Runnable() {

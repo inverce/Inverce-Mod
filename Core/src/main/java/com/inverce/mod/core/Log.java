@@ -69,6 +69,11 @@ public class Log {
                 return;
             }
         }
+
+        dispatchMessage(lvl, tag, msg);
+    }
+
+    private static void dispatchMessage(int lvl, String tag, String msg) {
         switch (lvl) {
             case VERBOSE : android.util.Log.v(tag, msg); break;
             case DEBUG   : android.util.Log.d(tag, msg); break;

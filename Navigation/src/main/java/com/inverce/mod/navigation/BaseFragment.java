@@ -93,9 +93,9 @@ public class BaseFragment<Actions extends Listener> extends Fragment {
             super(parent, extras);
         }
         @Override
-        public T done() {
+        public T create() {
             parent.setArguments(this.extras);
-            return super.done();
+            return super.create();
         }
     }
 

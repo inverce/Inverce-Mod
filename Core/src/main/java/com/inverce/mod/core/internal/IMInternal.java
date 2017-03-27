@@ -24,7 +24,7 @@ public class IMInternal {
         return internal != null ? internal : (internal = new IMInternal());
     }
 
-    public void setContext(Context context) {
+    public void initialize(Context context) {
         this.context = context;
         this.uiHandler = new Handler(Looper.getMainLooper());
         this.bgExecutorService = new ScheduledThreadPoolExecutor(0);

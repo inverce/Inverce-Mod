@@ -8,12 +8,16 @@ import com.inverce.mod.core.interfaces.ActivityState;
 import com.inverce.mod.core.interfaces.ActivityStateListener;
 import com.inverce.mod.core.internal.IMInternal;
 
-public class Lifecycle {
+class Lifecycle {
     private static ActivityState currentActivityState = ActivityState.NotCreated;
     private static ActivityStateListener listener;
 
-    protected static void onInitialize() {
+    static void initialize() {
         IM.application().registerActivityLifecycleCallbacks(new StatesAdapterImpl());
+    }
+
+    public static void setListener(ActivityStateListener listener) {
+        Lifecycle.listener = listener;
     }
 
     public static ActivityState getActivityState() {

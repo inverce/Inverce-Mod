@@ -10,7 +10,7 @@ public class SubBuilder<Parent> {
     }
 
     @CheckResult
-    public Parent done() {
+    public Parent create() {
         return parent;
     }
 }
