@@ -73,15 +73,19 @@ final class ParameterizedTypeImpl implements ParameterizedType, Serializable {
         }
 
         StringBuilder stringBuilder = new StringBuilder(30 * (length + 1));
+        appendTypeArguments(stringBuilder, length);
+        return stringBuilder.append(">").toString();
+    }
+
+    private void appendTypeArguments(StringBuilder stringBuilder, int length) {
         stringBuilder
                 .append(Types.typeToString(rawType))
                 .append("<")
                 .append(Types.typeToString(typeArguments[0]));
-        
+
         for (int i = 1; i < length; i++) {
             stringBuilder.append(", ").append(Types.typeToString(typeArguments[i]));
         }
-        return stringBuilder.append(">").toString();
     }
 
     private static final long serialVersionUID = 0;
