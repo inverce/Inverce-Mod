@@ -11,7 +11,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  *
- * Modifications copyright (C) 2013 <your company/name>
+ * Modifications copyright (C) 2013 Inverce
  * Removed GwtAnnotation, and IgnoreReturnValue, changed Nullable to Support annotation nullable
  */
 package com.inverce.mod.core.verification;

@@ -54,4 +54,8 @@ public class ValuePreference<T> extends ReadOnlyPreference<T> {
     public String toString() {
         return String.valueOf(get());
     }
+
+    public ReadOnlyPreference<T> asReadOnly() {
+        return new ReadOnlyPreference<>(this);
+    }
 }

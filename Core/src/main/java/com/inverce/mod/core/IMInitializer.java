@@ -6,7 +6,7 @@ import com.inverce.mod.core.internal.IMInternal;
 
 public class IMInitializer {
     public static void initialize(Context context) {
-        IMInternal.get().setContext(context);
-        Lifecycle.onInitialize();
+        IMInternal.get().initialize(context);
+        Lifecycle.initialize();
     }
 }
