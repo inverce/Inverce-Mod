@@ -9,8 +9,6 @@ public class ValuePreference<T> extends ReadOnlyPreference<T> {
     private IPredicate<T> validator;
     private IConsumer<T> setter;
 
-    private T simpleValue;
-
     protected ValuePreference() { }
 
     public ValuePreference(T value) {
@@ -18,8 +16,9 @@ public class ValuePreference<T> extends ReadOnlyPreference<T> {
     }
 
     public ValuePreference(T value, IPredicate<T> validator) {
-        setSetter(p -> simpleValue = p);
-        setGetter(() -> simpleValue);
+        BoxedValue<T> box = new BoxedValue<>(value);
+        setSetter(box::setValue);
+        setGetter(box::getValue);
         setValidator(validator);
         set(value);
     }
@@ -58,4 +57,5 @@ public class ValuePreference<T> extends ReadOnlyPreference<T> {
     public ReadOnlyPreference<T> asReadOnly() {
         return new ReadOnlyPreference<>(this);
     }
+
 }
