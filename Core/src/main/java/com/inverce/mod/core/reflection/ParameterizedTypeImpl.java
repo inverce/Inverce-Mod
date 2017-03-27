@@ -29,6 +29,10 @@ final class ParameterizedTypeImpl implements ParameterizedType, Serializable {
         this.ownerType = ownerType == null ? null : Types.canonicalize(ownerType);
         this.rawType = Types.canonicalize(rawType);
         this.typeArguments = typeArguments.clone();
+        parseTypeArguments();
+    }
+
+    private void parseTypeArguments() {
         for (int t = 0, length = this.typeArguments.length; t < length; t++) {
             checkNotNull(this.typeArguments[t]);
             Types.checkNotPrimitive(this.typeArguments[t]);
@@ -69,7 +73,11 @@ final class ParameterizedTypeImpl implements ParameterizedType, Serializable {
         }
 
         StringBuilder stringBuilder = new StringBuilder(30 * (length + 1));
-        stringBuilder.append(Types.typeToString(rawType)).append("<").append(Types.typeToString(typeArguments[0]));
+        stringBuilder
+                .append(Types.typeToString(rawType))
+                .append("<")
+                .append(Types.typeToString(typeArguments[0]));
+        
         for (int i = 1; i < length; i++) {
             stringBuilder.append(", ").append(Types.typeToString(typeArguments[i]));
         }
