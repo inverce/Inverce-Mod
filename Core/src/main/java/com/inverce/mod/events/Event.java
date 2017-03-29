@@ -2,16 +2,17 @@ package com.inverce.mod.events;
 
 import android.util.Log;
 
+import com.inverce.mod.core.collections.WeakArrayList;
 import com.inverce.mod.events.annotation.EventInfo;
 import com.inverce.mod.events.annotation.Listener;
 import com.inverce.mod.events.interfaces.EventCaller;
 import com.inverce.mod.events.interfaces.MultiEvent;
 import com.inverce.mod.events.interfaces.SingleEvent;
 
-import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -20,15 +21,14 @@ import java.util.concurrent.TimeUnit;
 import static java.lang.reflect.Proxy.newProxyInstance;
 
 @SuppressWarnings("unused")
-public class Event <T extends Listener> implements SingleEvent<T>, MultiEvent<T>, EventCaller<T>, InvocationHandler{
+public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>, EventCaller<T>, InvocationHandler {
     private Class<T> service;
 
     // weak referenced used to clean_up listeners even if user forgets to, or didn't had time
-    private final ArrayList<WeakReference<T>> list, listToClean;
+    private final List<T> list;
 
     private final T proxyCaller;
     private boolean needCleanUp;
-    private final boolean parseAnnotation;
     private static Executor uiExecutor, bgExecutor;
 
     static {
@@ -43,38 +43,45 @@ public class Event <T extends Listener> implements SingleEvent<T>, MultiEvent<T>
     }
 
     @SuppressWarnings("unchecked")
-    public Event(Class<T> clazz, boolean parseAnnotation) {
-        this.parseAnnotation = parseAnnotation;
+    public Event(Class<T> clazz, boolean useWeakReferences) {
         this.service = clazz;
-        list = new ArrayList<>(1);
-        listToClean = new ArrayList<>(1);
-        // NOTE: we use method.invoke on proxy class, this has small overhead on method invoke (not execution),  around .057 ms instead of .042 on 2.33 ghz processor (around 30 %)
+        if (useWeakReferences) {
+            list = new WeakArrayList<>();
+        } else {
+            list = new ArrayList<>(1);
+        }
+
+        // NOTE: we use method.invoke on proxy class, this has small overhead on method invoke (not execution),
+        // around .057 ms instead of .042 on 2.33 ghz processor (around 30 %)
         proxyCaller = (T) newProxyInstance(service.getClassLoader(), new Class<?>[]{service}, this);
     }
 
     private void cleanUp(T listener) {
-        for (WeakReference<T> w: list) {
-            if (w.get() == null || w.get() == listener) {
-                listToClean.add(w);
-            }
+        int cleared = 0;
+        if (listener != null) {
+            cleared += list.remove(listener) ? 1 : 0;
         }
-        list.removeAll(listToClean);
+
+        if (list instanceof WeakArrayList) {
+            cleared += ((WeakArrayList) list).clearEmptyReferences();
+        }
+
         if (needCleanUp) {
-            Log.e(service.getSimpleName(), "Cleaned up references " + listToClean.size());
+            Log.e(service.getSimpleName(), "Cleaned up references " + cleared);
         }
-        listToClean.clear();
         needCleanUp = false;
     }
 
     /**
      * Set single listener.
+     *
      * @param listener listener
      */
     public void setListener(T listener) {
         synchronized (list) {
             list.clear();
             if (listener != null) {
-                list.add(new WeakReference<>(listener));
+                list.add(listener);
             }
         }
     }
@@ -82,7 +89,7 @@ public class Event <T extends Listener> implements SingleEvent<T>, MultiEvent<T>
     public void addListener(T listener) {
         if (listener != null) {
             synchronized (list) {
-                list.add(new WeakReference<>(listener));
+                list.add(listener);
             }
         }
     }
@@ -112,44 +119,45 @@ public class Event <T extends Listener> implements SingleEvent<T>, MultiEvent<T>
     }
 
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
-        if (parseAnnotation) {
-            EventInfo onThread = method.getAnnotation(EventInfo.class);
-            if (onThread != null) {
-                switch (onThread.thread()) {
-                    case BgThread:
-                        bgExecutor.execute(new Runnable() {
-                            public void run() {
-                                try {
-                                    invokeInternal(proxy, method, args);
-                                } catch (Throwable throwable) {
-                                    throwable.printStackTrace();
-                                }
-                            }
-                        });
-                        return null;
-                    case UiThread:
-                        uiExecutor.execute(new Runnable() {
-                            public void run() {
-                                try {
-                                    invokeInternal(proxy, method, args);
-                                } catch (Throwable throwable) {
-                                    throwable.printStackTrace();
-                                }
-                            }
-                        });
-                        return null;
-                }
+        EventInfo onThread = method.getAnnotation(EventInfo.class);
+
+//        AsyncResult<T> result = null;
+//        if (method.getReturnType() == AsyncResult.class) {
+//            result = new AsyncResult<>(new ArrayList<T>());
+//        }
+
+        if (onThread != null) {
+            switch (onThread.thread()) {
+                case BgThread:
+                    bgExecutor.execute(createInvokerRunnable(null, method, args));
+                    return null;
+                case UiThread:
+                    uiExecutor.execute(createInvokerRunnable(null, method, args));
+                    return null;
             }
         }
 
-        return invokeInternal(proxy, method, args);
+        return invokeInternal(null, method, args);
     }
 
-    Object invokeInternal(final Object proxy, final Method method, final Object[] args) throws Throwable {
+    private Runnable createInvokerRunnable(final AsyncResult<T> proxy, final Method method, final Object[] args) {
+        //noinspection Convert2Lambda
+        return new Runnable() {
+            public void run() {
+                try {
+                    invokeInternal(proxy, method, args);
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }
+        };
+    }
+
+    Object invokeInternal(AsyncResult<T> result, final Method method, final Object[] args) throws Throwable {
         synchronized (list) {
             Object[] returns = new Object[list.size()];
             for (int i = 0; i < list.size(); i++) {
-                T listener = list.get(i).get();
+                T listener = list.get(i);
                 if (listener != null) {
                     returns[i] = method.invoke(listener, args);
                 } else {
@@ -160,6 +168,15 @@ public class Event <T extends Listener> implements SingleEvent<T>, MultiEvent<T>
             if (needCleanUp) {
                 cleanUp(null);
             }
+
+//            if (result != null) {
+//                for (Object r: returns) {
+//                    //noinspection unchecked
+//                    result.store.addAll((AsyncResult<T>) r);
+//                }
+//                return result;
+//            }
+
             return list.size() > 0 ? returns[0] : null;
         }
     }

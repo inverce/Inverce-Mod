@@ -61,7 +61,7 @@ public class Channel extends HashMap<Class<? extends Listener>, Event<? extends 
         if (event != null) {
             return event;
         }
-        put(clazz, event = new Event<>(clazz));
+        put(clazz, event = new Event<>(clazz, true));
         return event;
     }
 }
