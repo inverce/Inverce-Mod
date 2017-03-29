@@ -35,7 +35,7 @@ public class Event <T extends Listener> implements SingleEvent<T>, MultiEvent<T>
         uiExecutor = new DefaultUiExecutor();
         bgExecutor = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
                 3L, TimeUnit.SECONDS,
-                new SynchronousQueue<Runnable>());
+                new SynchronousQueue<>());
     }
 
     public Event(Class<T> clazz) {

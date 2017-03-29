@@ -9,9 +9,6 @@ import java.util.Arrays;
 import static com.inverce.mod.core.verification.Preconditions.checkArgument;
 import static com.inverce.mod.core.verification.Preconditions.checkNotNull;
 
-/**
- * Created by Inverce on 2017-03-27.
- */
 final class ParameterizedTypeImpl implements ParameterizedType, Serializable {
     private final Type ownerType;
     private final Type rawType;
