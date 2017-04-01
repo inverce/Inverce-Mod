@@ -21,7 +21,7 @@ public class Reflection {
         if (clazz == Object.class) {
             return new HashSet<>();
         }
-        
+
         Set<Class<?>> toReturn = getImplementedInterfacesInternal(clazz.getSuperclass());
         Class<?>[] interfaces = clazz.getInterfaces();
 
