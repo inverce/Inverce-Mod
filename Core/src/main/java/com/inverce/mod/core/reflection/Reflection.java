@@ -20,18 +20,18 @@ public class Reflection {
     private static Set<Class<?>> getImplementedInterfacesInternal(Class<?> clazz) {
         if (clazz == Object.class) {
             return new HashSet<>();
-        } else {
-            Set<Class<?>> toReturn = getImplementedInterfacesInternal(clazz.getSuperclass());
-            Class<?>[] interfaces = clazz.getInterfaces();
-
-            for (Class<?> i: interfaces) {
-                Class<?>[] inner = i.getInterfaces();
-                if (inner != null) {
-                    Collections.addAll(toReturn, inner);
-                }
-            }
-            Collections.addAll(toReturn, interfaces);
-            return toReturn;
         }
+        
+        Set<Class<?>> toReturn = getImplementedInterfacesInternal(clazz.getSuperclass());
+        Class<?>[] interfaces = clazz.getInterfaces();
+
+        for (Class<?> i: interfaces) {
+            Class<?>[] inner = i.getInterfaces();
+            if (inner != null) {
+                Collections.addAll(toReturn, inner);
+            }
+        }
+        Collections.addAll(toReturn, interfaces);
+        return toReturn;
     }
 }
