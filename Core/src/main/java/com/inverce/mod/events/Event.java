@@ -72,6 +72,20 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
         needCleanUp = false;
     }
 
+    void addListenerInternal(Object listener) {
+        if (service.isInstance(listener)) {
+            //noinspection unchecked // i just checked u know ^^
+            addListener((T) listener);
+        }
+    }
+
+    void removeListenerInternal(Object listener) {
+        if (service.isInstance(listener)) {
+            //noinspection unchecked // i just checked u know ^^
+            removeListener((T) listener);
+        }
+    }
+
     /**
      * Set single listener.
      *
@@ -193,6 +207,24 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
         static ChannelGroup channels;
 
         /**
+         * Allows user to register all listener for specified object
+         *
+         * @param listener - listener instance
+         */
+        public static <T extends Listener> void registerAll(T listener) {
+            channel().registerAll(listener);
+        }
+
+        /**
+         * Allows user to register all listener for specified object
+         *
+         * @param listener - listener instance
+         */
+        public static <T extends Listener> void unregisterAll(T listener) {
+            channel().unregisterAll(listener);
+        }
+
+        /**
          * Allows user to register new listener for specified event
          *
          * @param clazz    - event class that will be used as listener
@@ -200,7 +232,7 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
          * @param <T>      event type (not used as type is implicitly specified while defining clazz
          */
         public static <T extends Listener> void register(Class<T> clazz, T listener) {
-            event(clazz).addListener(listener);
+            channel().event(clazz).addListener(listener);
         }
 
         /**
@@ -211,7 +243,7 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
          * @param <T>      event type (not used as type is implicitly specified while defining clazz
          */
         public static <T extends Listener> void registerSingle(Class<T> clazz, T listener) {
-            event(clazz).setListener(listener);
+            channel().event(clazz).setListener(listener);
         }
 
         /**
@@ -222,7 +254,7 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
          * @param <T>      event type (not used as type is implicitly specified while defining clazz
          */
         public static <T extends Listener> void unregister(Class<T> clazz, T listener) {
-            event(clazz).removeListener(listener);
+            channel().event(clazz).removeListener(listener);
         }
 
         /**
@@ -232,7 +264,7 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
          * @param <T>   event type (not used as type is implicitly specified while defining clazz
          */
         public static <T extends Listener> T post(Class<T> clazz) {
-            return event(clazz).post();
+            return channel().event(clazz).post();
         }
 
         /**
@@ -242,18 +274,22 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
          * @param <T>   event type (not used as type is implicitly specified while defining clazz
          */
         public synchronized static <T extends Listener> Event<T> event(Class<T> clazz) {
-            if (defaultChannel == null) {
-                defaultChannel = new Channel();
-            }
-            return defaultChannel.event(clazz);
+            return channel().event(clazz);
         }
 
         public static Channel channel(int channelId) {
             if (channels == null) {
-                channels = new ChannelGroup();
+                channels = new ChannelGroup(true);
             }
 
             return channels.on(channelId);
+        }
+
+        private static Channel channel() {
+            if (defaultChannel == null) {
+                defaultChannel = new Channel(true);
+            }
+            return defaultChannel;
         }
     }
 }

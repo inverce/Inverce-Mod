@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.inverce.mod.core.IM;
 import com.inverce.mod.core.Log;
+import com.inverce.mod.events.Event;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.w("d");
                 for (int i=0;i<1; i++) {
                     IM.onBg().schedule(() -> {
-
+                        Event.Bus.post(Intre.class).pp();
 
                     }, 1500, TimeUnit.MILLISECONDS);
                 }

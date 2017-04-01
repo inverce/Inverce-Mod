@@ -1,9 +1,8 @@
 package com.example.test;
 
 
-import com.inverce.mod.core.configuration.BoolPreference;
-import com.inverce.mod.core.configuration.Preset;
+import com.inverce.mod.events.annotation.Listener;
 
-public interface Cfg {
+public interface Cfg extends Listener {
 
 }

@@ -1,11 +1,64 @@
 package com.inverce.mod.events;
 
+import com.inverce.mod.core.collections.CacheFunctionMap;
+import com.inverce.mod.core.reflection.Reflection;
 import com.inverce.mod.events.annotation.Listener;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 @SuppressWarnings({"unchecked", "unused"})
 public class Channel extends HashMap<Class<? extends Listener>, Event<? extends Listener>> {
+    private static CacheFunctionMap<Class<?>, Set<Class<?>>> listenersInClass;
+
+    static {
+        listenersInClass = new CacheFunctionMap<>(Channel::getListenersInClassImpl);
+    }
+
+    public static Set<Class<?>> getListenersInClassImpl(Class<?> clazz) {
+        Set<Class<?>> allInterfaces = Reflection.getImplementedInterfaces(clazz);
+        Set<Class<?>> listeners = new HashSet<>();
+        for (Class<?> check : allInterfaces) {
+            if (Listener.class.isAssignableFrom(check) && check != Listener.class) {
+                listeners.add(check);
+            }
+        }
+        return listeners;
+    }
+
+    private final boolean useWeekEvents;
+
+    public Channel() {
+        this(true);
+    }
+
+    public Channel(boolean useWeekEvents) {
+        this.useWeekEvents = useWeekEvents;
+    }
+
+    /**
+     * Allows user to register all listener for specified object
+     *
+     * @param listener - listener instance
+     */
+    public <T extends Listener> void registerAll(T listener) {
+        for (Class<?> clazz : listenersInClass.get(listener.getClass())) {
+            eventInternal(clazz).addListenerInternal(listener);
+        }
+    }
+
+    /**
+     * Allows user to register all listener for specified object
+     *
+     * @param listener - listener instance
+     */
+    public <T extends Listener> void unregisterAll(T listener) {
+        for (Class<?> clazz : listenersInClass.get(listener.getClass())) {
+            eventInternal(clazz).removeListenerInternal(listener);
+        }
+    }
+
     /**
      * Allows user to register new listener for specified event
      *
@@ -61,7 +114,13 @@ public class Channel extends HashMap<Class<? extends Listener>, Event<? extends 
         if (event != null) {
             return event;
         }
-        put(clazz, event = new Event<>(clazz, true));
+        put(clazz, event = new Event<>(clazz, useWeekEvents));
+        return event;
+    }
+
+    private Event<?> eventInternal(Class<?> clazz) {
+        Event<Listener> event = new Event<>((Class<Listener>) clazz, useWeekEvents);
+        put((Class<? extends Listener>) clazz, event);
         return event;
     }
 }

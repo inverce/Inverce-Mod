@@ -1,6 +1,6 @@
 package com.inverce.mod.core.functional;
 
 @FunctionalInterface
-public interface IConsumer<T> {
-    void consume(T element);
+public interface IFunction<T, R> {
+    R apply(T t);
 }
