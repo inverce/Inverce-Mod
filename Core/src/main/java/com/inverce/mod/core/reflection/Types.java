@@ -33,7 +33,6 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 
 import static com.inverce.mod.core.verification.Preconditions.checkArgument;
-import static com.inverce.mod.core.verification.Preconditions.checkNotNull;
 
 /**
  * Static methods for working with types.

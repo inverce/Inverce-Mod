@@ -1,6 +1,10 @@
 package com.example.test;
 
-import com.inverce.mod.navigation.BaseFragment;
+import com.inverce.mod.core.Log;
 
-public class jj extends BaseFragment<Intre> {
+public class jj implements Intre, Cfg {
+    @Override
+    public void pp() {
+        Log.w("DS");
+    }
 }

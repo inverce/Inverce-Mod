@@ -18,10 +18,11 @@ public class Preset {
         records = new ArrayList<>();
     }
 
-    public void apply() {
+    public Preset apply() {
         for (Record record: records) {
             record.apply();
         }
+        return this;
     }
 
     private class Record<T> {

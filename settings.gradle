@@ -1,4 +1,3 @@
 include ':Core'
-include ':Events'
 include ':Navigation'
 include ':test'

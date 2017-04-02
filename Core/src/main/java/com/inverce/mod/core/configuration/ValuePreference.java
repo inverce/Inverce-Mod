@@ -3,19 +3,24 @@ package com.inverce.mod.core.configuration;
 import com.inverce.mod.core.functional.IConsumer;
 import com.inverce.mod.core.functional.IPredicate;
 import com.inverce.mod.core.functional.ISupplier;
+import com.inverce.mod.events.interfaces.MultiEvent;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class ValuePreference<T> extends ReadOnlyPreference<T> {
     private IPredicate<T> validator;
     private IConsumer<T> setter;
+    private ChangeValueHandler<T> changeValueHandler;
 
-    protected ValuePreference() { }
+    protected ValuePreference() {
+        changeValueHandler = new ChangeValueHandler<>();
+    }
 
     public ValuePreference(T value) {
         this(value, P -> true);
     }
 
     public ValuePreference(T value, IPredicate<T> validator) {
+        this();
         BoxedValue<T> box = new BoxedValue<>(value);
         setSetter(box::setValue);
         setGetter(box::getValue);
@@ -33,9 +38,14 @@ public class ValuePreference<T> extends ReadOnlyPreference<T> {
         this.setter = setter;
     }
 
+    public MultiEvent<ValueChanged<T>> changeValueEvent() {
+        return changeValueHandler;
+    }
+
     public boolean set(T e) {
         if (validator.test(e)) {
             setter.consume(e);
+            changeValueHandler.postNewValue(this, e);
             return true;
         }
         return false;

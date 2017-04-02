@@ -124,10 +124,8 @@ public class FlatArrayList<E> extends AbstractList<E> implements List<E>, Random
 
             for (int i = 0; i < size(); i++) {
                 List<T> box = get(i);
-                if (box.size() == 1) {
-                    if (c.equals(box.get(0))) {
-                        return remove(i) != null;
-                    }
+                if (box.size() == 1 && c.equals(box.get(0))) {
+                    return remove(i) != null;
                 }
             }
             return false;
