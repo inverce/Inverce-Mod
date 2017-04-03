@@ -4,6 +4,14 @@ package com.inverce.mod.core.configuration;
 public class SharedPreference<T> extends ValuePreference<T> {
     SharedPreferenceImpl<T> impl;
 
+    public SharedPreference(Class<T> clazz, String key) {
+        this(clazz, key, "im_shared", null);
+    }
+
+    public SharedPreference(Class<T> clazz, String key, T defaultValue) {
+        this(clazz, key, "im_shared", defaultValue);
+    }
+
     public SharedPreference(Class<T> clazz, String key, String storeFile) {
         this(clazz, key, storeFile, null);
     }
