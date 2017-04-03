@@ -89,7 +89,7 @@ public class FlatArrayList<E> extends AbstractList<E> implements List<E>, Random
     }
 
     @SuppressWarnings("unused")
-    public class FlatArrayListStore<T> extends ArrayList<List<T>> {
+    public static class FlatArrayListStore<T> extends ArrayList<List<T>> {
         private List<T> singleton(T element) {
             ArrayList<T> singleton = new ArrayList<>(1);
             singleton.add(element);
