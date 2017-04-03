@@ -7,13 +7,19 @@ import android.os.Bundle;
 import com.inverce.mod.core.interfaces.ActivityState;
 import com.inverce.mod.core.interfaces.ActivityStateListener;
 import com.inverce.mod.core.internal.IMInternal;
+import com.inverce.mod.events.Event;
 
-class Lifecycle {
+public class Lifecycle {
     private static ActivityState currentActivityState = ActivityState.NotCreated;
     private static ActivityStateListener listener;
+    private static boolean postEvents;
 
     static void initialize() {
         IM.application().registerActivityLifecycleCallbacks(new StatesAdapterImpl());
+    }
+
+    public static void setPostEvents(boolean postEvents) {
+        Lifecycle.postEvents = postEvents;
     }
 
     public static void setListener(ActivityStateListener listener) {
@@ -33,6 +39,11 @@ class Lifecycle {
 
         if (listener != null) {
             listener.activityStateChanged(state, activity, extra);
+        }
+
+        if (postEvents) {
+            Event.Bus.post(ActivityStateListener.class)
+                    .activityStateChanged(state, activity, extra);
         }
     }
 

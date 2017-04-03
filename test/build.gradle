@@ -1,6 +1,7 @@
 plugins { id "me.tatarka.retrolambda" version "3.6.0" }
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 25
@@ -37,4 +38,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile project(':Navigation')
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
