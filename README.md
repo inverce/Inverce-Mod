@@ -33,7 +33,7 @@ This library includes basic utility methods.
 
 ###### Instalation
 ```gradle
-compile 'com.inverce.mod:Core:1.0.2'
+compile 'com.inverce.mod:Core:1.0.3'
 ```
 ###### [Documentation](/Core)
 
