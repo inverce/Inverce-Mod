@@ -37,35 +37,6 @@ compile 'com.inverce.mod:Core:1.0.2'
 ```
 ###### [Documentation](/Core)
 
-## Events
-Implementation of event listeners and event bus for java and android.
-
-###### Instalation
-```gradle
-compile 'com.inverce.mod:Events:1.0.2'
-```
-###### [Documentation](/Events)
-
-## Navigation [WIP]
-Allows to easily implement page navigation with fragments
-
-<!--
-###### Instalation
-```gradle
-compile 'com.inverce.mod:Navigation:1.0.0'
-```
--->
-
-## Stateless [WIP]
-Utilities for model state changes.
-For ui states use Formless.
-<!--
-###### Instalation
-```gradle
-compile 'com.inverce.mod:Stateless:1.0'
-```
--->
-
 
 ## Legal 
 
