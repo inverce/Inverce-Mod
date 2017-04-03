@@ -19,7 +19,7 @@ Provides easy access to context and executors.
   * inflater() - shortcut for LayoutInflater.from(IM.context());
 
 ##### Schedulers
-  * onBg() - Shared background thread pool executor. With no maximum thread count and keep alive time set to 1 sek. Easies way to execute something on background thread.
+  * onBg() - Shared background thread pool executor. With no maximum thread count and keep alive time set to 1 sek. Easiest way to execute something on background thread.
     * run code on bg thread
     ```java
     IM.onBg().execute(() -> { /* here are dragons on BG thread */ });
