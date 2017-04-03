@@ -9,7 +9,7 @@ compile 'com.inverce.mod:Core:1.0.3'
 
 ### IM \<Class\>
 
-Provides easy access to context as well as executors.
+Provides easy access to context and executors.
 
 ##### Context
   * context() - current context, this will be either activity or application based on whats available.
