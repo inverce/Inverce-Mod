@@ -38,12 +38,12 @@ Provides easy access to context and executors.
 
 Wrapper around android Log class, with additionnal benefits.
 
-* Implements all Log methods, adds some more for easier code use.
+* Easy to use.
  ```java
     Log.w("Hello World");
  ```
-* Allows user to specify minimum log level to print.
-  This makes it possible to reduce log messages in production environment without removing all messages.
+* Allows user to specify minimum log level to print.  
+  Reduce log messages in production environment without removing all messages.
  ```java
     Log.setLogLevel(Log.INFO);
  ```
@@ -67,7 +67,7 @@ Wrapper around android Log class, with additionnal benefits.
             }
         });
  ```
-* Write what you need, no clutter, not mandatory tags
+* Write what you need, no clutter, no mandatory tags
  ```java
     Log.d("It's me Mario."); // omit tag, will use app name as tag
     Log.d("I have %d castles.", 10); // automatically parse String.format messages
