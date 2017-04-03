@@ -104,7 +104,6 @@ Pros:
  * No code gen or hidden serialization
  * You can create your own methods to invoke
  * its fast
- * super small aar (~25 kb)
  
 Cons
  * By default events are posted on the same thread
