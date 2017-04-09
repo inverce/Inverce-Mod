@@ -6,9 +6,10 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.inverce.mod.core.threadpool.DynamicScheduledExecutor;
+
 import java.lang.ref.WeakReference;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 @SuppressLint("StaticFieldLeak")
@@ -16,7 +17,7 @@ public class IMInternal {
     private static IMInternal internal;
     private Context context;
     private Handler uiHandler;
-    private ScheduledThreadPoolExecutor bgExecutorService;
+    private DynamicScheduledExecutor bgExecutorService;
     private Executor uiExecutor;
     private WeakReference<Activity> activity = new WeakReference<>(null);
 
@@ -27,8 +28,8 @@ public class IMInternal {
     public void initialize(Context context) {
         this.context = context;
         this.uiHandler = new Handler(Looper.getMainLooper());
-        this.bgExecutorService = new ScheduledThreadPoolExecutor(0);
-        this.bgExecutorService.setKeepAliveTime(1, TimeUnit.SECONDS);
+        this.bgExecutorService = new DynamicScheduledExecutor();
+        this.bgExecutorService.setKeepAliveTime(5, TimeUnit.SECONDS);
         this.uiExecutor = new DefaultUiExecutor();
     }
 
@@ -40,7 +41,7 @@ public class IMInternal {
         return uiHandler;
     }
 
-    public ScheduledThreadPoolExecutor getBgExecutor() {
+    public DynamicScheduledExecutor getBgExecutor() {
         return bgExecutorService;
     }
 

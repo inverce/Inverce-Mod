@@ -1,14 +1,13 @@
 package com.example.test;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 
 import com.inverce.mod.core.IM;
 import com.inverce.mod.core.Log;
 import com.inverce.mod.events.Event;
 
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 
@@ -18,20 +17,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        final Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        IM.onBg().scheduleAtFixedRate(() -> {
                 Log.w("d");
-                for (int i=0;i<1; i++) {
-                    IM.onBg().schedule(() -> {
-                        Event.Bus.post(Intre.class).pp();
+                for (int i = 0; i < 1; i++) {
+                    IM.onBg().execute(() -> Event.Bus.post(Intre.class).pp());
+                }}, 2, 2, TimeUnit.SECONDS);
 
-                    }, 1500, TimeUnit.MILLISECONDS);
-                }
-                handler.postDelayed(this, 2000);
+
+        ExecutorService bg = IM.onBg();
+
+        IM.onBg().execute(() -> {
+            for (int i = 0; i < 50; i++) {
+                int finalI = i;
+                bg.execute(() -> {
+                    for (int j = 0; j < 20; j++) {
+                        Log.w("DD " + finalI + " " + j);
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
-        }, 2000);
+        });
+
     }
 
 }

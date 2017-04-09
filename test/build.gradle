@@ -13,9 +13,6 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
     buildTypes {
         release {
@@ -29,16 +26,18 @@ android {
     }
 }
 
+def nytimes_version = "2.0.3";
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     compile 'com.android.support:appcompat-v7:25.1.0'
-    testCompile 'junit:junit:4.12'
 
     compile project(':Navigation')
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    compile "com.nytimes.android:cache:$nytimes_version"
+    compile "com.nytimes.android:store:$nytimes_version"
+    compile "com.nytimes.android:middleware:$nytimes_version"
+    compile "com.nytimes.android:filesystem:$nytimes_version"
 }
 repositories {
     mavenCentral()

@@ -8,9 +8,9 @@ import android.content.res.Resources;
 import android.view.LayoutInflater;
 
 import com.inverce.mod.core.internal.IMInternal;
+import com.inverce.mod.core.threadpool.DynamicScheduledExecutor;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 @SuppressWarnings("WeakerAccess")
 @SuppressLint("StaticFieldLeak")
@@ -40,7 +40,7 @@ public class IM {
         return LayoutInflater.from(context());
     }
 
-    public static ScheduledThreadPoolExecutor onBg() {
+    public static DynamicScheduledExecutor onBg() {
         return internal.getBgExecutor();
     }
 
