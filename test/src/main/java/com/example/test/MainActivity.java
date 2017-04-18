@@ -23,25 +23,6 @@ public class MainActivity extends AppCompatActivity {
                     IM.onBg().execute(() -> Event.Bus.post(Intre.class).pp());
                 }}, 2, 2, TimeUnit.SECONDS);
 
-
-        ExecutorService bg = IM.onBg();
-
-        IM.onBg().execute(() -> {
-            for (int i = 0; i < 50; i++) {
-                int finalI = i;
-                bg.execute(() -> {
-                    for (int j = 0; j < 20; j++) {
-                        Log.w("DD " + finalI + " " + j);
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-        });
-
     }
 
 }
