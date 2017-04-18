@@ -15,6 +15,7 @@ public class Lifecycle {
     private static boolean postEvents;
 
     static void initialize() {
+        if (IMInternal.get().isInEdit()) return;
         IM.application().registerActivityLifecycleCallbacks(new StatesAdapterImpl());
     }
 
