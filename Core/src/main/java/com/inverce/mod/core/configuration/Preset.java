@@ -26,10 +26,10 @@ public class Preset {
     }
 
     private class Record<T> {
-        ValuePreference<T> preference;
+        Value<T> preference;
         ISupplier<T> value;
 
-        public Record(ValuePreference<T> preference, ISupplier<T> value) {
+        public Record(Value<T> preference, ISupplier<T> value) {
             this.preference = preference;
             this.value = value;
         }
@@ -44,11 +44,11 @@ public class Preset {
             super(Preset.this);
         }
 
-        public <T, Y extends ValuePreference<T>> Builder add(Y preference, T value) {
+        public <T, Y extends Value<T>> Builder add(Y preference, T value) {
             return addSupplier(preference, () -> value);
         }
 
-        public <T, Y extends ValuePreference<T>> Builder addSupplier(Y preference, ISupplier<T> value) {
+        public <T, Y extends Value<T>> Builder addSupplier(Y preference, ISupplier<T> value) {
             Preset.this.records.add(new Record<>(preference, value));
             return this;
         }

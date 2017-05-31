@@ -11,6 +11,9 @@ import android.view.WindowManager;
 
 import static com.inverce.mod.core.IM.context;
 
+/**
+ * The Screen utilities
+ */
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class Screen {
     public static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -21,6 +24,11 @@ public class Screen {
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 
+    /**
+     * Gets screen size.
+     *
+     * @return the screen size
+     */
     public static Point getScreenSize() {
         Point size = new Point();
         Display display;
@@ -34,6 +42,11 @@ public class Screen {
         return size;
     }
 
+    /**
+     * Gets activity size.
+     *
+     * @return the activity size
+     */
     public static Point getActivitySize() {
         Point size = getScreenSize();
         size.y -= getStatusBarHeight();
@@ -52,14 +65,32 @@ public class Screen {
         return size;
     }
 
+    /**
+     * Converts size in pixels into estimate in dp
+     *
+     * @param px the px
+     * @return the int
+     */
     public static int pxToDp(int px) {
         return (int) (px / IM.resources().getDisplayMetrics().density);
     }
 
+    /**
+     * Converts size in dp into estimate in pixels
+     *
+     * @param dp the dp
+     * @return the int
+     */
     public static int dpToPx(int dp) {
         return (int) (dp * IM.resources().getDisplayMetrics().density);
     }
 
+    /**
+     * Gets location on screen for specific view
+     *
+     * @param measurementView the measurement view
+     * @return the location on screen
+     */
     public static Point getLocationOnScreen(View measurementView) {
         int[] areaBegin = new int[2];
         if (measurementView == null)
@@ -68,12 +99,23 @@ public class Screen {
         return new Point(areaBegin[0], areaBegin[1]);
     }
 
+    /**
+     * Gets view size.
+     *
+     * @param measurementView the measurement view
+     * @return the view size
+     */
     public static Point getViewSize(View measurementView) {
         if (measurementView == null)
             return new Point(-1, -1);
         return new Point(measurementView.getMeasuredWidth(), measurementView.getMeasuredHeight());
     }
 
+    /**
+     * Gets status bar height.
+     *
+     * @return the status bar height
+     */
     public static int getStatusBarHeight() {
         int result = 0;
         int resourceId = IM.resources().getIdentifier("status_bar_height", "dimen", "android");

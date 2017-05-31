@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.RestrictTo;
 
 import com.inverce.mod.core.threadpool.DynamicScheduledExecutor;
 import com.inverce.mod.core.threadpool.UIScheduler;
@@ -13,6 +14,7 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
 @SuppressLint("StaticFieldLeak")
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 public class IMInternal {
     private static IMInternal internal;
     private Context context;
