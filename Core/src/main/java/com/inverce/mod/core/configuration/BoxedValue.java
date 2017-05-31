@@ -1,6 +1,6 @@
 package com.inverce.mod.core.configuration;
 
-public class BoxedValue<T> {
+class BoxedValue<T> {
     private T value;
 
     public BoxedValue(T value) {

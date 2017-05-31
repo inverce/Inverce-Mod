@@ -1,7 +1,7 @@
 plugins { id "me.tatarka.retrolambda" version "3.6.0" }
 
 apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
+//apply plugin: 'maven-publish'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -34,16 +34,16 @@ dependencies {
     }
 }
 
-publishing {
-    publications {
-        inverceModRepo(MavenPublication) {
-            groupId 'com.inverce.mod'
-            artifactId project.name
-            version android.defaultConfig.versionName
-            artifact("$buildDir/outputs/aar/${project.name}-release.aar")
-        }
-    }
-    repositories {
-        maven { url "$projectDir/../../maven/repo" }
-    }
-}
+//publishing {
+//    publications {
+//        inverceModRepo(MavenPublication) {
+//            groupId 'com.inverce.mod'
+//            artifactId project.name
+//            version android.defaultConfig.versionName
+//            artifact("$buildDir/outputs/aar/${project.name}-release.aar")
+//        }
+//    }
+//    repositories {
+//        maven { url "$projectDir/../../maven/repo" }
+//    }
+//}

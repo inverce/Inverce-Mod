@@ -1,9 +1,13 @@
 package com.inverce.mod.core;
 
+import android.support.annotation.RestrictTo;
 import android.support.annotation.StringRes;
 
 import com.inverce.mod.core.interfaces.LogListener;
 
+/**
+ * Wrapper around android Log class, with additional benefits.
+ */
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class Log {
     private static boolean DEBUG_MODE = true;
@@ -21,19 +25,36 @@ public class Log {
     private static String libraryPackage = "com.inverce.mod";
     private static String applicationPackage;
 
+    /**
+     * Sets log listener.
+     *
+     * @param listener the listener
+     */
     public static void setListener(LogListener listener) {
         Log.listener = listener;
     }
 
+    /**
+     * Allows user to specify minimum log level to print.
+     * Reduce log messages in production environment without removing all messages.
+     *
+     * @param LOGGING_LEVEL the logging level
+     */
     public static void setLogLevel(int LOGGING_LEVEL) {
         Log.LOGGING_LEVEL = LOGGING_LEVEL;
     }
 
+    /**
+     * Sets debug mode.
+     *
+     * @param debugMode the debug mode
+     */
     public static void setDebugMode(boolean debugMode) {
         DEBUG_MODE = debugMode;
     }
 
-    public static boolean shouldPrint(String className) {
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    static boolean shouldPrint(String className) {
         if (applicationPackage == null) {
             applicationPackage = IM.context().getPackageName();
         }
@@ -44,6 +65,14 @@ public class Log {
         return IM.resources().getString(format, params);
     }
 
+    /**
+     * Handle msg.
+     *
+     * @param lvl the lvl
+     * @param tag the tag
+     * @param msg the msg
+     * @param o   the o
+     */
     public static void handleMsg(int lvl, int tag, int msg, Object ... o) {
         if (!(DEBUG_MODE && LOGGING_LEVEL <= lvl)) {
             return;
@@ -56,6 +85,14 @@ public class Log {
         }
     }
 
+    /**
+     * Handle message.
+     *
+     * @param lvl the level of message
+     * @param tag the tag of message
+     * @param msg the message
+     * @param o   the list of additional parameters for String.format of message
+     */
     public static void handleMsg(int lvl, String tag, String msg, Object ... o) {
         if (!(DEBUG_MODE && LOGGING_LEVEL <= lvl && msg != null)) {
             return;
@@ -84,6 +121,14 @@ public class Log {
         }
     }
 
+    /**
+     * Handle exception.
+     *
+     * @param lvl the lvl of message
+     * @param tag the tag used for this message
+     * @param msg the message
+     * @param o   the reported exception
+     */
     public static void handleExc(int lvl, int tag, int msg, Throwable o) {
         if (!(DEBUG_MODE && LOGGING_LEVEL <= lvl)) {
             return;
@@ -96,6 +141,14 @@ public class Log {
         }
     }
 
+    /**
+     * Handle exception.
+     *
+     * @param simple_lvl the simple lvl of message
+     * @param tag        the tag used for this message
+     * @param msg        the message
+     * @param o          the reported exception
+     */
     public static void handleExc(int simple_lvl, String tag, String msg, Throwable o) {
         if (!(DEBUG_MODE && LOGGING_LEVEL <= EXCEPTION)) {
             return;

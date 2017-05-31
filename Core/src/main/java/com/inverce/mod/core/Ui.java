@@ -17,14 +17,30 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 
+/**
+ * The Ui utilities
+ */
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class Ui {
     private static String PADDING_NPE = "To set padding you must provide VIEW";
 
+    /**
+     * Is on ui thread.
+     *
+     * @return the boolean
+     */
     public static boolean isUiThread() {
         return Looper.myLooper() == Looper.getMainLooper();
     }
 
+    /**
+     * Make selector state for specified colors
+     *
+     * @param drawable    the drawable
+     * @param pressedRes  the pressed res
+     * @param disabledRes the disabled res
+     * @return the state list drawable
+     */
     public static StateListDrawable makeSelector(Drawable drawable, @ColorRes int pressedRes, @ColorRes int disabledRes) {
         StateListDrawable state = new StateListDrawable();
         LayerDrawable pressed = new LayerDrawable(new Drawable[]{
@@ -41,10 +57,25 @@ public class Ui {
         return state;
     }
 
+    /**
+     * Changes visibility of view in safe and simple manner.
+     *
+     * @param view    the view
+     * @param visible the visibility
+     * @return whatever view will be visible
+     */
     public static boolean visible(View view, boolean visible) {
         return visible(view, visible, true);
     }
 
+    /**
+     * Changes visibility of view in safe and simple manner.
+     *
+     * @param view    the view
+     * @param visible the visibility
+     * @param gone    whatever use GONE or INVISIBLE when visible is false
+     * @return whatever view will be visible
+     */
     public static boolean visible(View view, boolean visible, boolean gone) {
         if (view != null) {
             if (visible) {
@@ -62,6 +93,12 @@ public class Ui {
         return false;
     }
 
+    /**
+     * Run on next layout.
+     *
+     * @param rootView the root view
+     * @param run      the run
+     */
     public static void runOnNextLayout(final View rootView, final Runnable run) {
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -77,6 +114,11 @@ public class Ui {
         });
     }
 
+    /**
+     * Hide soft input.
+     *
+     * @param view the view
+     */
     public static void hideSoftInput(View view) {
         try {
             InputMethodManager imm = (InputMethodManager) IM.context().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -86,7 +128,6 @@ public class Ui {
 
     @SuppressWarnings("ResourceType")
     public static class Layout {
-
         @Nullable
         View view;
         ViewGroup.LayoutParams params;

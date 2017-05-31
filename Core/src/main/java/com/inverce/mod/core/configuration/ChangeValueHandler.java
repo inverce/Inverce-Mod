@@ -31,7 +31,7 @@ public class ChangeValueHandler<T> implements MultiEvent<ValueChanged<T>> {
         list().clear();
     }
 
-    public void postNewValue(ValuePreference<T> preference, T value) {
+    public void postNewValue(Value<T> preference, T value) {
         for (ValueChanged<T> event: new ArrayList<>(list())) {
             event.valueChanged(preference, value);
         }

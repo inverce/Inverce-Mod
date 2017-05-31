@@ -1,3 +1,2 @@
 include ':Core', ':VisionForCamera'
-include ':Navigation'
 include ':test'

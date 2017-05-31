@@ -3,34 +3,55 @@ package com.inverce.mod.core;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.support.annotation.RestrictTo;
 
 import com.inverce.mod.core.interfaces.ActivityState;
 import com.inverce.mod.core.interfaces.ActivityStateListener;
 import com.inverce.mod.core.internal.IMInternal;
 import com.inverce.mod.events.Event;
 
+/**
+ * The Lifecycle utilities.
+ */
 public class Lifecycle {
     private static ActivityState currentActivityState = ActivityState.NotCreated;
     private static ActivityStateListener listener;
     private static boolean postEvents;
 
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     static void initialize() {
         if (IMInternal.get().isInEdit()) return;
         IM.application().registerActivityLifecycleCallbacks(new StatesAdapterImpl());
     }
 
+    /**
+     * Sets whatever this class should post ActivityStateListener event, whenever activity state changes.
+     *
+     * @param postEvents the post events
+     */
     public static void setPostEvents(boolean postEvents) {
         Lifecycle.postEvents = postEvents;
     }
 
+    /**
+     * Sets ActivityState listener.
+     *
+     * @param listener the listener
+     */
     public static void setListener(ActivityStateListener listener) {
         Lifecycle.listener = listener;
     }
 
+    /**
+     * Gets activity state.
+     *
+     * @return the activity state
+     */
     public static ActivityState getActivityState() {
         return currentActivityState;
     }
 
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     synchronized static void onActivityState(ActivityState state, Activity activity, Bundle extra) {
         currentActivityState = state;
 
