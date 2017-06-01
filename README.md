@@ -8,19 +8,6 @@
 
 Collection of simple utilities for android and java
 
-## Prerequisites
-
-Add following maven repository to your root build.gradle
-
-```gradle
-...
-allprojects {
-    ...
-    repositories {
-        ...
-        maven { url 'https://github.com/inverce/maven/raw/master/repo' }
-```
-
 ## Core
 
 This library includes basic utility methods. 
@@ -34,7 +21,7 @@ This library includes basic utility methods.
 
 ###### Instalation
 ```gradle
-compile 'com.inverce.mod:Core:1.0.3'
+compile 'com.inverce.mod:Core:1.0.5'
 ```
 ###### [Documentation](/Core)
 
