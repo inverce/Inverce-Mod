@@ -4,7 +4,7 @@ No initialization, no boilercode, utilities for android.
 
 #### Instalation
 ```gradle
-compile 'com.inverce.mod:Core:1.0.3'
+compile 'com.inverce.mod:Core:1.0.5'
 ```
 
 ### IM \<Class\>
