@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.RestrictTo;
 
+import com.inverce.mod.core.threadpool.DefaultHandlerThread;
 import com.inverce.mod.core.threadpool.DynamicScheduledExecutor;
 import com.inverce.mod.core.threadpool.UIScheduler;
 
@@ -23,6 +24,7 @@ public class IMInternal {
     private UIScheduler uiExecutor;
     private WeakReference<Activity> activity = new WeakReference<>(null);
     private static boolean inEdit;
+    private DefaultHandlerThread looperHandlerThread;
 
     public static IMInternal get() {
         return internal != null ? internal : (internal = new IMInternal());
@@ -66,5 +68,13 @@ public class IMInternal {
 
     public Activity getActivity() {
         return activity.get();
+    }
+
+    public DefaultHandlerThread getLooperHandlerThread() {
+        if (looperHandlerThread == null) {
+            looperHandlerThread = new DefaultHandlerThread();
+            looperHandlerThread.start();
+        }
+        return looperHandlerThread;
     }
 }

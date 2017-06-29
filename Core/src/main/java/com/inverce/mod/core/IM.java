@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.inverce.mod.core.internal.IMInternal;
+import com.inverce.mod.core.threadpool.DefaultHandlerThread;
 import com.inverce.mod.core.threadpool.DynamicScheduledExecutor;
 import com.inverce.mod.core.threadpool.UIScheduler;
 
@@ -97,6 +98,15 @@ public class IM {
      */
     public static UIScheduler onUi() {
         return internal.getUiExecutor();
+    }
+
+    /**
+     * Shared thread worked TODO use HandlerThread
+     *
+     * @return the ui scheduler
+     */
+    public static DefaultHandlerThread onLooper() {
+        return internal.getLooperHandlerThread();
     }
 
     /**
