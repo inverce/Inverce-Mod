@@ -41,3 +41,20 @@ public void onNewDetection(Barcode result) {
     Log.w("Scanned: " + result.rawValue);
 }
 ```
+
+## Notes
+
+When using from fragment this fragment (as any other) should be removed from childManager when fragment is destroyed
+
+```java
+@Override
+public void onDestroyView() {
+  super.onDestroyView();
+  if (visionFragment != null) {
+      getChildFragmentManager()
+            .beginTransaction()
+            .remove(visionFragment)
+            .commitAllowingStateLoss();
+  }
+}
+```
