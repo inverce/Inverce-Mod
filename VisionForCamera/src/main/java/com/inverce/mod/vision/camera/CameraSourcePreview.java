@@ -61,7 +61,7 @@ public class CameraSourcePreview extends ViewGroup {
     }
 
     @RequiresPermission(Manifest.permission.CAMERA)
-    private void startIfReady() throws IOException, SecurityException {
+    private void startIfReady() throws IOException, SecurityException, RuntimeException {
         if (mStartRequested && mSurfaceAvailable) {
             mCameraSource.start(mSurfaceView.getHolder());
             mStartRequested = false;
@@ -76,7 +76,7 @@ public class CameraSourcePreview extends ViewGroup {
                 startIfReady();
             } catch (SecurityException se) {
                 Log.e(TAG, "Do not have permission to start the camera", se);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 Log.e(TAG, "Could not start camera source.", e);
             }
         }
@@ -145,7 +145,7 @@ public class CameraSourcePreview extends ViewGroup {
         try {
             //noinspection MissingPermission // we will not enter here without permission
             startIfReady();
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.e(TAG, "Could not start camera source.", e);
         }
     }

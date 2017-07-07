@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// Note: This requires Google Play Services 8.1 or higher, due to using indirect byte buffers for
+// This requires Google Play Services 8.1 or higher, due to using indirect byte buffers for
 // storing images.
 
 /**
@@ -524,6 +524,14 @@ public class CameraSource {
 
             return false;
         }
+    }
+
+    public Camera getCamera() {
+        return mCamera;
+    }
+
+    public Object getCameraLock() {
+        return mCameraLock;
     }
 
     /**
