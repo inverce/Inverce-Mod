@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -21,16 +20,22 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.inverce.mod.core.IM;
 import com.inverce.mod.vision.adapters.BarcodeTrackerFactory;
 import com.inverce.mod.vision.camera.CameraSource;
 import com.inverce.mod.vision.camera.CameraSourcePreview;
+import com.inverce.mod.vision.camera.Permissions;
 import com.inverce.mod.vision.interfaces.BarcodeFormats;
 import com.inverce.mod.vision.interfaces.NewDetectionListener;
 
 import java.io.IOException;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import static android.hardware.Camera.Parameters.FLASH_MODE_OFF;
 import static android.hardware.Camera.Parameters.FLASH_MODE_TORCH;
+import static android.hardware.Camera.Parameters.FOCUS_MODE_AUTO;
+import static android.hardware.Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE;
 
 @SuppressWarnings({"unused", "deprecation"})
 public class VisionScannerFragment extends Fragment {
@@ -48,6 +53,7 @@ public class VisionScannerFragment extends Fragment {
     protected CameraSourcePreview mCameraSourcePreview;
     protected int barcodeFormats = Barcode.ALL_FORMATS;
     protected NewDetectionListener detectionListener;
+    ScheduledFuture<?> selfFocus;
 
     /**
      * true if no further barcode should be detected or given as a result
@@ -76,7 +82,7 @@ public class VisionScannerFragment extends Fragment {
         return new CameraSource.Builder(activity, barcodeDetector)
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
                 .setFlashMode(null)
-                .setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)
+                .setFocusMode(FOCUS_MODE_CONTINUOUS_PICTURE)
                 .build();
     }
 
@@ -109,7 +115,45 @@ public class VisionScannerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        startCameraSource();
+        if (Permissions.hasPermissions(Permissions.CAMERA_PERMISSIONS, getActivity())) {
+            startCameraSource();
+        }
+
+        IM.onBg().schedule(this::checkUpFocus, 3, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mCameraSourcePreview != null) {
+            mCameraSourcePreview.stop();
+        }
+
+        if (selfFocus != null) {
+            selfFocus.cancel(false);
+            selfFocus = null;
+        }
+    }
+
+    private void checkUpFocus() {
+        if (mCameraSource != null) {
+            synchronized (mCameraSource.getCameraLock()) {
+                if (!mCameraSource.getCamera().getParameters().getSupportedFocusModes().contains(FOCUS_MODE_CONTINUOUS_PICTURE)) {
+                    mCameraSource.setFocusMode(FOCUS_MODE_AUTO);
+                    selfFocus = IM.onUi().scheduleAtFixedRate(this::tryFocus, 0, 3, TimeUnit.SECONDS);
+                }
+            }
+        }
+    }
+
+    private void tryFocus() {
+        try {
+            if (mCameraSource != null) {
+                mCameraSource.autoFocus(null);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -126,9 +170,9 @@ public class VisionScannerFragment extends Fragment {
         }
 
         if (mCameraSource != null && barcodeDetector != null) {
-            BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(detectionListener);
-            barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
             try {
+                BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(detectionListener);
+                barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
                 mCameraSourcePreview.start(mCameraSource);
             } catch (IOException e) {
                 Log.e(TAG, "Unable to start camera source.", e);
@@ -143,9 +187,9 @@ public class VisionScannerFragment extends Fragment {
             if (checkPermissions(getContext(), false) && mCameraSource != null) {
                 mCameraSource.setFlashMode(enabled ? FLASH_MODE_TORCH : FLASH_MODE_OFF);
                 //noinspection MissingPermission
-                mCameraSource.start();
+//                mCameraSource.start();
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -198,14 +242,6 @@ public class VisionScannerFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        if (mCameraSourcePreview != null) {
-            mCameraSourcePreview.stop();
-        }
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         if (isRemoving()) {
@@ -220,3 +256,4 @@ public class VisionScannerFragment extends Fragment {
         }
     }
 }
+

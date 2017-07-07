@@ -40,6 +40,10 @@ dependencies {
     compile ('com.google.android.gms:play-services-vision:9.8.0') {
         transitive true
     }
+
+    compile ('com.inverce.mod:Core:1.0.5') {
+        transitive = true
+    }
 }
 
 apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
