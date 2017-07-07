@@ -25,6 +25,15 @@ compile 'com.inverce.mod:Core:1.0.5'
 ```
 ###### [Documentation](/Core)
 
+## Vision
+
+The simplest way to use google-vision with camera. 
+
+###### Instalation
+```gradle
+compile 'com.inverce.mod:Vision:1.0.6'
+```
+###### [Documentation](/VisionForCamera)
 
 ## Legal 
 
