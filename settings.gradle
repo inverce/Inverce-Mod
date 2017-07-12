@@ -1,2 +1,2 @@
-include ':Core', ':VisionForCamera'
+include ':Core', ':VisionForCamera', ':Integrations'
 include ':test'
