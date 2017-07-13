@@ -1,14 +1,18 @@
-package com.inverce.mod.integrations.processing;
+package com.inverce.mod.processing;
 
 import android.support.annotation.WorkerThread;
 
 import com.inverce.mod.core.IM;
 import com.inverce.mod.core.threadpool.NamedThreadPool;
+import com.inverce.mod.events.Event;
+import com.inverce.mod.events.annotation.Listener;
+import com.inverce.mod.processing.Processor.EX;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadFactory;
+import java.util.function.Consumer;
 
 import static com.inverce.mod.core.verification.Preconditions.checkArgument;
 import static com.inverce.mod.core.verification.Preconditions.checkNotNull;
@@ -16,13 +20,20 @@ import static com.inverce.mod.core.verification.Preconditions.checkState;
 
 public class ProcessingQueue {
     List<Job<?, ?>> processing, finished, awaiting;
+    List<Thread> activeThreads;
     boolean asynchronous, started, cancelled;
     FailureAction failureAction;
     ThreadFactory threadFactory;
     int poolSize = 8;
+    Events events;
 
-    public ProcessingQueue() {
+    public static ProcessingQueue create() {
+        return new ProcessingQueue();
+    }
+
+    private ProcessingQueue() {
         awaiting = Collections.synchronizedList(new ArrayList<>());
+        activeThreads = Collections.synchronizedList(new ArrayList<>());
         asynchronous = false;
         failureAction = FailureAction.ABORT;
         threadFactory = new NamedThreadPool("ProcessingQueue#" + hashCode());
@@ -53,9 +64,20 @@ public class ProcessingQueue {
         return this;
     }
 
-    public <T, R> ProcessingQueue process(Processor<T, R> processor, T item) {
-        process(processor, Collections.singletonList(item));
+    public ProcessingQueue setEventsListener(Events events) {
+        if (events == null) {
+            events = new Event<>(Events.class).post();
+        }
+        this.events = events;
         return this;
+    }
+
+    public <T> ProcessingQueue processTask(TaskMapper<T> handler, List<T> list) {
+        return process(EX.map(Processor.RUNNABLES, handler::processJob), list);
+    }
+
+    public <T> ProcessingQueue process(Consumer<T> handler, List<T> list) {
+        return process(EX.map(Processor.RUNNABLES, o -> () -> handler.accept(o)), list);
     }
 
     public <T, R> ProcessingQueue process(Processor<T, R> processor, List<T> list) {
@@ -76,6 +98,7 @@ public class ProcessingQueue {
 
         started = true;
         IM.onBg().execute(this::fillQueue);
+        events.onQueueStarted();
     }
 
     @WorkerThread
@@ -89,8 +112,14 @@ public class ProcessingQueue {
         awaiting.remove(job);
         processing.add(job);
 
-        job.startJob(this);
+        Thread thread = threadFactory.newThread(() -> {
+            job.consume(ProcessingQueue.this);
+        });
 
+        thread.start();
+        activeThreads.add(thread);
+
+        events.onJobStarted(job);
         return true;
     }
 
@@ -99,14 +128,14 @@ public class ProcessingQueue {
         processing.remove(jobResult.job);
         finished.add(jobResult.job);
 
-        // handle post actions
+        events.onJobFinished(jobResult);
 
         if (awaiting.size() > 0 && !cancelled) {
             fillQueue();
         }
 
         if (processing.size() == 0 && awaiting.size() == 0 && !cancelled) {
-            // dispatch finished
+            events.onQueueFinished();
         }
     }
 
@@ -124,11 +153,26 @@ public class ProcessingQueue {
     }
 
     public synchronized void cancel() {
-        // handle other clean up
+        this.cancelled = true;
+
+        for (Thread t: activeThreads) {
+            synchronized (t) {
+                t.interrupt();
+            }
+        }
+
+        events.onQueueCancelled();
     }
 
     public enum FailureAction {
         ABORT, IGNORE
     }
 
+    public interface Events extends Listener {
+        void onQueueFinished();
+        void onQueueStarted();
+        void onQueueCancelled();
+        void onJobFinished(JobResult<?, ?> job);
+        void onJobStarted(Job<?, ?> job);
+    }
 }

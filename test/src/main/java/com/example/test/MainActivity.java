@@ -4,19 +4,21 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.inverce.mod.core.Log;
-import com.inverce.mod.integrations.processing.ProcessingQueue;
+import com.inverce.mod.processing.ProcessingQueue;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 
 public class MainActivity extends AppCompatActivity {
+    ProcessingQueue queue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
-        new ProcessingQueue()
+        ProcessingQueue queue = ProcessingQueue.create()
                 .setAsynchronous(true)
                 .setFailureAction(ProcessingQueue.FailureAction.ABORT)
                 .process(p -> {
@@ -24,14 +26,22 @@ public class MainActivity extends AppCompatActivity {
                     Thread.sleep(3000);
                     Log.w("Job finishing: " + p);
                     return Integer.parseInt(p);
-                }, "33")
-                .process((String s) -> {
-                        Log.w("Job started: " + s);
-                        Thread.sleep(3000);
-                        Log.w("Job finishing: " + s);
-                        return Integer.parseInt(s);
-                }, Arrays.asList("1", "33", "26", "s", "55", "1", "33", "26", "s", "55", "1", "33", "26", "s", "55", "1", "33", "26", "s", "55"))
-                .start();
+                }, Collections.singletonList("33"))
+
+                ;
+        queue.start();
     }
 
+    public class HandleReques implements Runnable{
+        long d;
+
+        public HandleReques(long d) {
+            this.d = d;
+        }
+
+        @Override
+        public void run() {
+
+        }
+    }
 }

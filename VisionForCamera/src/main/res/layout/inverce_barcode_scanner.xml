@@ -3,7 +3,7 @@
     android:id="@+id/topLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.inverce.mod.barcode.camera.CameraSourcePreview
+    <com.inverce.mod.vision.camera.CameraSourcePreview
         android:id="@+id/inverce_camera_preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

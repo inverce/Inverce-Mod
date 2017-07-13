@@ -1,6 +1,6 @@
 package com.inverce.mod.integrations.okhttp;
 
-import com.inverce.mod.integrations.processing.Processor;
+import com.inverce.mod.processing.Processor;
 
 import java.io.IOException;
 
