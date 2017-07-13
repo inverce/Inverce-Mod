@@ -21,10 +21,7 @@ import static com.inverce.mod.core.verification.Preconditions.checkState;
 public class ProcessingQueue {
     List<Job<?, ?>> processing, finished, awaiting;
     List<Thread> activeThreads;
-    boolean asynchronous, started, cancelled;
-    FailureAction failureAction;
-    ThreadFactory threadFactory;
-    int poolSize = 8;
+    Settings cfg;
     Events events;
 
     public static ProcessingQueue create() {
@@ -34,33 +31,34 @@ public class ProcessingQueue {
     private ProcessingQueue() {
         awaiting = Collections.synchronizedList(new ArrayList<>());
         activeThreads = Collections.synchronizedList(new ArrayList<>());
-        asynchronous = false;
-        failureAction = FailureAction.ABORT;
-        threadFactory = new NamedThreadPool("ProcessingQueue#" + hashCode());
+        cfg = new Settings();
+        cfg.asynchronous = false;
+        cfg.failureAction = FailureAction.ABORT;
+        cfg.threadFactory = new NamedThreadPool("ProcessingQueue#" + hashCode());
     }
 
     public ProcessingQueue setAsynchronous(boolean asynchronous) {
-        checkState(!started, "ProcessingQueue already started");
-        this.asynchronous = asynchronous;
+        checkState(!cfg.isStarted, "ProcessingQueue already isStarted");
+        cfg.asynchronous = asynchronous;
         return this;
     }
 
     public ProcessingQueue setPoolSize(int poolSize) {
         checkArgument(poolSize < 1, "Pool size must be greater than 0");
-        this.poolSize = poolSize;
+        cfg.poolSize = poolSize;
         return this;
     }
 
     public ProcessingQueue setFailureAction(FailureAction failureAction) {
-        checkState(!started, "ProcessingQueue already started");
-        this.failureAction = failureAction;
+        checkState(!cfg.isStarted, "ProcessingQueue already isStarted");
+        cfg.failureAction = failureAction;
         return this;
     }
 
     public ProcessingQueue setThreadFactory(ThreadFactory threadFactory) {
-        checkState(!started, "ProcessingQueue already started");
+        checkState(!cfg.isStarted, "ProcessingQueue already isStarted");
         checkNotNull(threadFactory, "Factory cannot be null");
-        this.threadFactory = threadFactory;
+        cfg.threadFactory = threadFactory;
         return this;
     }
 
@@ -90,20 +88,21 @@ public class ProcessingQueue {
     }
 
     public synchronized void start() {
-        checkArgument(!started);
+        checkArgument(!cfg.isStarted);
+        checkArgument(!cfg.isDone);
         checkArgument(awaiting.size() > 0, "You need to add at least one item to process");
 
         processing = Collections.synchronizedList(new ArrayList<>());
         finished = Collections.synchronizedList(new ArrayList<>());
 
-        started = true;
+        cfg.isStarted = true;
         IM.onBg().execute(this::fillQueue);
         events.onQueueStarted();
     }
 
     @WorkerThread
     private boolean offerJob(Job<?, ?> job) {
-        int max = asynchronous ? poolSize : 1;
+        int max = cfg.asynchronous ? cfg.poolSize : 1;
 
         if (processing.size() >= max) {
             return false;
@@ -112,7 +111,7 @@ public class ProcessingQueue {
         awaiting.remove(job);
         processing.add(job);
 
-        Thread thread = threadFactory.newThread(() -> {
+        Thread thread = cfg.threadFactory.newThread(() -> {
             job.consume(ProcessingQueue.this);
         });
 
@@ -130,18 +129,19 @@ public class ProcessingQueue {
 
         events.onJobFinished(jobResult);
 
-        if (awaiting.size() > 0 && !cancelled) {
+        if (awaiting.size() > 0 && !cfg.isCancelled) {
             fillQueue();
         }
 
-        if (processing.size() == 0 && awaiting.size() == 0 && !cancelled) {
+        if (processing.size() == 0 && awaiting.size() == 0 && !cfg.isCancelled) {
+            cfg.isDone = true;
             events.onQueueFinished();
         }
     }
 
     @WorkerThread
     private void fillQueue() {
-        if (asynchronous) {
+        if (cfg.asynchronous) {
             for (Job<?, ?> job : new ArrayList<>(awaiting)) {
                 if (!offerJob(job)) {
                     break;
@@ -153,7 +153,7 @@ public class ProcessingQueue {
     }
 
     public synchronized void cancel() {
-        this.cancelled = true;
+        cfg.isCancelled = true;
 
         for (Thread t: activeThreads) {
             synchronized (t) {
@@ -174,5 +174,12 @@ public class ProcessingQueue {
         void onQueueCancelled();
         void onJobFinished(JobResult<?, ?> job);
         void onJobStarted(Job<?, ?> job);
+    }
+
+    private static class Settings {
+        boolean asynchronous, isStarted, isCancelled, isDone;
+        FailureAction failureAction;
+        ThreadFactory threadFactory;
+        int poolSize = 8;
     }
 }
