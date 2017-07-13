@@ -5,7 +5,6 @@ import android.support.annotation.WorkerThread;
 import com.inverce.mod.core.IM;
 import com.inverce.mod.core.threadpool.NamedThreadPool;
 import com.inverce.mod.events.Event;
-import com.inverce.mod.events.annotation.Listener;
 import com.inverce.mod.processing.Processor.EX;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public class ProcessingQueue {
     List<Job<?, ?>> processing, finished, awaiting;
     List<Thread> activeThreads;
     Settings cfg;
-    Events events;
+    QueueListener events;
 
     public static ProcessingQueue create() {
         return new ProcessingQueue();
@@ -62,9 +61,9 @@ public class ProcessingQueue {
         return this;
     }
 
-    public ProcessingQueue setEventsListener(Events events) {
+    public ProcessingQueue setListener(QueueListener events) {
         if (events == null) {
-            events = new Event<>(Events.class).post();
+            events = new Event<>(QueueListener.class).post();
         }
         this.events = events;
         return this;
@@ -97,7 +96,7 @@ public class ProcessingQueue {
 
         cfg.isStarted = true;
         IM.onBg().execute(this::fillQueue);
-        events.onQueueStarted();
+        events.onQueueStarted(this);
     }
 
     @WorkerThread
@@ -118,7 +117,7 @@ public class ProcessingQueue {
         thread.start();
         activeThreads.add(thread);
 
-        events.onJobStarted(job);
+        events.onJobStarted(this, job.item, job.processor);
         return true;
     }
 
@@ -127,7 +126,7 @@ public class ProcessingQueue {
         processing.remove(jobResult.job);
         finished.add(jobResult.job);
 
-        events.onJobFinished(jobResult);
+        events.onJobFinished(this, jobResult);
 
         if (awaiting.size() > 0 && !cfg.isCancelled) {
             fillQueue();
@@ -135,7 +134,7 @@ public class ProcessingQueue {
 
         if (processing.size() == 0 && awaiting.size() == 0 && !cfg.isCancelled) {
             cfg.isDone = true;
-            events.onQueueFinished();
+            events.onQueueFinished(this);
         }
     }
 
@@ -161,19 +160,11 @@ public class ProcessingQueue {
             }
         }
 
-        events.onQueueCancelled();
+        events.onQueueCancelled(this);
     }
 
     public enum FailureAction {
         ABORT, IGNORE
-    }
-
-    public interface Events extends Listener {
-        void onQueueFinished();
-        void onQueueStarted();
-        void onQueueCancelled();
-        void onJobFinished(JobResult<?, ?> job);
-        void onJobStarted(Job<?, ?> job);
     }
 
     private static class Settings {
