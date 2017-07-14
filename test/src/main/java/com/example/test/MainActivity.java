@@ -10,7 +10,6 @@ import java.util.Collections;
 
 
 public class MainActivity extends AppCompatActivity {
-    ProcessingQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,19 +28,8 @@ public class MainActivity extends AppCompatActivity {
                 }, Collections.singletonList("33"))
 
                 ;
+
         queue.start();
     }
 
-    public class HandleReques implements Runnable{
-        long d;
-
-        public HandleReques(long d) {
-            this.d = d;
-        }
-
-        @Override
-        public void run() {
-
-        }
-    }
 }

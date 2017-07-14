@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import static com.inverce.mod.core.verification.Preconditions.checkArgument;
@@ -61,6 +62,24 @@ public class ProcessingQueue {
         return this;
     }
 
+    public ProcessingQueue setContinuous(boolean continuous) {
+        checkState(!cfg.isStarted, "ProcessingQueue already isStarted");
+        cfg.isContinuous = continuous;
+        return this;
+    }
+
+    public List<Job<?, ?>> getProcessing() {
+        return Collections.unmodifiableList(processing);
+    }
+
+    public List<Job<?, ?>> getFinished() {
+        return Collections.unmodifiableList(finished);
+    }
+
+    public List<Job<?, ?>> getAwaiting() {
+        return Collections.unmodifiableList(awaiting);
+    }
+
     public ProcessingQueue setListener(QueueListener events) {
         if (events == null) {
             events = new Event<>(QueueListener.class).post();
@@ -78,11 +97,18 @@ public class ProcessingQueue {
     }
 
     public <T, R> ProcessingQueue process(Processor<T, R> processor, List<T> list) {
-        checkNotNull(processor);
-        checkNotNull(list);
+        checkNotNull(processor, "Processor connot be null");
+        checkNotNull(list, "You must specify elements");
+        checkArgument(!cfg.isDone || cfg.isContinuous, "Use continous mode for ");
+
         for (T item : list) {
             awaiting.add(new Job<>(item, processor));
         }
+
+        if (cfg.isContinuous && cfg.isStarted) {
+            IM.onBg().execute(this::fillQueue);
+        }
+
         return this;
     }
 
@@ -126,6 +152,13 @@ public class ProcessingQueue {
         processing.remove(jobResult.job);
         finished.add(jobResult.job);
 
+        if (jobResult.exception != null && cfg.failureAction == FailureAction.ABORT) {
+            cancel();
+            cfg.isDone = true;
+            events.onQueueFinished(this);
+            return;
+        }
+
         events.onJobFinished(this, jobResult);
 
         if (awaiting.size() > 0 && !cfg.isCancelled) {
@@ -159,8 +192,10 @@ public class ProcessingQueue {
                 t.interrupt();
             }
         }
+        activeThreads.clear();
 
-        events.onQueueCancelled(this);
+        // give queue a moment to handle thread interuptions
+        IM.onBg().schedule(() -> events.onQueueCancelled(this), 100, TimeUnit.MILLISECONDS);
     }
 
     public enum FailureAction {
@@ -168,7 +203,7 @@ public class ProcessingQueue {
     }
 
     private static class Settings {
-        boolean asynchronous, isStarted, isCancelled, isDone;
+        boolean asynchronous, isStarted, isCancelled, isDone, isContinuous;
         FailureAction failureAction;
         ThreadFactory threadFactory;
         int poolSize = 8;
