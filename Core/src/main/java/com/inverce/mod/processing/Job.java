@@ -6,6 +6,7 @@ import com.inverce.mod.core.functional.IConsumer;
 class Job<ITEM, RESULT> implements IConsumer<ProcessingQueue> {
     ITEM item;
     Processor<ITEM, RESULT> processor;
+    Thread thread;
 
     public Job(ITEM item, Processor<ITEM, RESULT> processor) {
         this.item = item;

@@ -112,6 +112,18 @@ public class ProcessingQueue {
         return this;
     }
 
+    public boolean isStarted() {
+        return cfg.isStarted;
+    }
+
+    public boolean isCancelled() {
+        return cfg.isCancelled;
+    }
+
+    public boolean isFinished() {
+        return cfg.isDone && !cfg.isContinuous;
+    }
+
     public synchronized void start() {
         checkArgument(!cfg.isStarted);
         checkArgument(!cfg.isDone);
@@ -126,7 +138,7 @@ public class ProcessingQueue {
     }
 
     @WorkerThread
-    private boolean offerJob(Job<?, ?> job) {
+    private synchronized boolean offerJob(Job<?, ?> job) {
         int max = cfg.asynchronous ? cfg.poolSize : 1;
 
         if (processing.size() >= max) {
@@ -140,6 +152,7 @@ public class ProcessingQueue {
             job.consume(ProcessingQueue.this);
         });
 
+        job.thread = thread;
         thread.start();
         activeThreads.add(thread);
 
@@ -148,9 +161,10 @@ public class ProcessingQueue {
     }
 
     @WorkerThread
-    void finishJob(JobResult<?, ?> jobResult) {
+    synchronized void finishJob(JobResult<?, ?> jobResult) {
         processing.remove(jobResult.job);
         finished.add(jobResult.job);
+        activeThreads.remove(jobResult.job.thread);
 
         if (jobResult.exception != null && cfg.failureAction == FailureAction.ABORT) {
             cancel();
@@ -172,7 +186,7 @@ public class ProcessingQueue {
     }
 
     @WorkerThread
-    private void fillQueue() {
+    private synchronized void fillQueue() {
         if (cfg.asynchronous) {
             for (Job<?, ?> job : new ArrayList<>(awaiting)) {
                 if (!offerJob(job)) {
