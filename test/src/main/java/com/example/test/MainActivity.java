@@ -29,13 +29,13 @@ public class MainActivity extends AppCompatActivity {
 
         Processor<String, Integer> processor = p -> {
             Thread.sleep(2000);
+            Log.w("22");
             return Integer.parseInt(p);
         };
 
         ProcessingQueue queue = ProcessingQueue.create()
-                .setAsynchronous(true)
                 .setFailureAction(ProcessingQueue.FailureAction.ABORT)
-                .setContinuous(true)
+                .setContinuous(false)
                 .process(processor, list)
                 .setListener(new QueueListenerAdapter() {
                     @Override

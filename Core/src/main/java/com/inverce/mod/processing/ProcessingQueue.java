@@ -31,8 +31,9 @@ public class ProcessingQueue {
     private ProcessingQueue() {
         awaiting = Collections.synchronizedList(new ArrayList<>());
         activeThreads = Collections.synchronizedList(new ArrayList<>());
+        events = new Event<>(QueueListener.class).post();
         cfg = new Settings();
-        cfg.asynchronous = false;
+        cfg.asynchronous = true;
         cfg.failureAction = FailureAction.ABORT;
         cfg.threadFactory = new NamedThreadPool("ProcessingQueue#" + hashCode());
     }
@@ -44,7 +45,7 @@ public class ProcessingQueue {
     }
 
     public ProcessingQueue setPoolSize(int poolSize) {
-        checkArgument(poolSize < 1, "Pool size must be greater than 0");
+        checkArgument(poolSize > 0, "Pool size must be greater than 0");
         cfg.poolSize = poolSize;
         return this;
     }
@@ -99,7 +100,7 @@ public class ProcessingQueue {
     public <T, R> ProcessingQueue process(Processor<T, R> processor, List<T> list) {
         checkNotNull(processor, "Processor connot be null");
         checkNotNull(list, "You must specify elements");
-        checkArgument(!cfg.isDone || cfg.isContinuous, "Use continous mode for ");
+        checkArgument(!cfg.isDone || cfg.isContinuous, "Adding more task after queue started supported with continous mode");
 
         for (T item : list) {
             awaiting.add(new Job<>(item, processor));
