@@ -38,26 +38,25 @@ public class MainActivity extends AppCompatActivity {
                 .setContinuous(false)
                 .process(processor, list)
                 .setListener(new QueueListenerAdapter() {
-                    @Override
-                    public void onQueueFinished(ProcessingQueue queue) {
-                        super.onQueueFinished(queue);
-                        Log.w("Finished: " + queue.getFinished().size());
-                        Log.w("Processing: " + queue.getProcessing().size());
-                        Log.w("Awaiting: " + queue.getAwaiting().size());
+                        @Override
+                        public void onQueueFinished(ProcessingQueue queue) {
+                            super.onQueueFinished(queue);
+                            Log.w("Finished: " + queue.getFinished().size());
+                            Log.w("Processing: " + queue.getProcessing().size());
+                            Log.w("Awaiting: " + queue.getAwaiting().size());
 
-                        IM.onBg().schedule(() -> queue.process(processor, list), 5, TimeUnit.SECONDS);
-                    }
+                            IM.onBg().schedule(() -> queue.process(processor, list), 5, TimeUnit.SECONDS);
+                        }
 
-                    @Override
-                    public void onJobFinished(ProcessingQueue queue, JobResult<?, ?> job) {
-                        super.onJobFinished(queue, job);
+                        @Override
+                        public void onJobFinished(ProcessingQueue queue, JobResult<?, ?> job) {
+                            super.onJobFinished(queue, job);
 //                        Log.w("Finished: " + queue.getFinished().size());
 //                        Log.w("Processing: " + queue.getProcessing().size());
 //                        Log.w("Awaiting: " + queue.getAwaiting().size());
 //                        queue.process(processor, Collections.singletonList("22"));
-                    }
-                })
-                ;
+                        }
+                });
 
         queue.start();
     }

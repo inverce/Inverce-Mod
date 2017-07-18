@@ -1,6 +1,7 @@
 package com.inverce.mod.core;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -11,6 +12,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.util.StateSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +93,30 @@ public class Ui {
             }
         }
         return false;
+    }
+
+    @Nullable
+    public static Bitmap createScreenShoot(Fragment view) {
+        return view != null ? createScreenShoot(view.getView()) : null;
+    }
+
+    @Nullable
+    public static Bitmap createScreenShoot(View view) {
+        if (view == null) {
+            return null;
+        }
+        try {
+            // create bitmap screen capture
+            view.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+            view.setDrawingCacheEnabled(false);
+            return bitmap;
+        } catch (Throwable e) {
+            // Several error may come out with file handling or OOM
+            Log.exs(e);
+        }
+
+        return null;
     }
 
     /**

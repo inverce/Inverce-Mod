@@ -5,7 +5,7 @@ import android.app.Application;
 import android.os.Bundle;
 import android.support.annotation.RestrictTo;
 
-import com.inverce.mod.core.interfaces.ActivityState;
+import com.inverce.mod.core.interfaces.LifecycleState;
 import com.inverce.mod.core.interfaces.ActivityStateListener;
 import com.inverce.mod.core.internal.IMInternal;
 import com.inverce.mod.events.Event;
@@ -14,7 +14,7 @@ import com.inverce.mod.events.Event;
  * The Lifecycle utilities.
  */
 public class Lifecycle {
-    private static ActivityState currentActivityState = ActivityState.NotCreated;
+    private static LifecycleState currentLifecycleState = LifecycleState.NotCreated;
     private static ActivityStateListener listener;
     private static boolean postEvents;
 
@@ -47,13 +47,13 @@ public class Lifecycle {
      *
      * @return the activity state
      */
-    public static ActivityState getActivityState() {
-        return currentActivityState;
+    public static LifecycleState getActivityState() {
+        return currentLifecycleState;
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    synchronized static void onActivityState(ActivityState state, Activity activity, Bundle extra) {
-        currentActivityState = state;
+    synchronized static void onActivityState(LifecycleState state, Activity activity, Bundle extra) {
+        currentLifecycleState = state;
 
         if (state.ordinal() < 4) {
             IMInternal.get().setActivity(activity);
@@ -71,31 +71,31 @@ public class Lifecycle {
 
     private static class StatesAdapterImpl implements Application.ActivityLifecycleCallbacks {
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-            onActivityState(ActivityState.Created, activity, savedInstanceState);
+            onActivityState(LifecycleState.Created, activity, savedInstanceState);
         }
 
         public void onActivityStarted(Activity activity) {
-            onActivityState(ActivityState.Started, activity, null);
+            onActivityState(LifecycleState.Started, activity, null);
         }
 
         public void onActivityResumed(Activity activity) {
-            onActivityState(ActivityState.Resumed, activity, null);
+            onActivityState(LifecycleState.Resumed, activity, null);
         }
 
         public void onActivityPaused(Activity activity) {
-            onActivityState(ActivityState.Paused, activity, null);
+            onActivityState(LifecycleState.Paused, activity, null);
         }
 
         public void onActivityStopped(Activity activity) {
-            onActivityState(ActivityState.Stopped, activity, null);
+            onActivityState(LifecycleState.Stopped, activity, null);
         }
 
         public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-            onActivityState(ActivityState.SaveInstanceState, activity, outState);
+            onActivityState(LifecycleState.SaveInstanceState, activity, outState);
         }
 
         public void onActivityDestroyed(Activity activity) {
-            onActivityState(ActivityState.Destroyed, activity, null);
+            onActivityState(LifecycleState.Destroyed, activity, null);
         }
     }
 }

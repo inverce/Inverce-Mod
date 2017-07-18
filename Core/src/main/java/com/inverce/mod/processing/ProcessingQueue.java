@@ -70,15 +70,15 @@ public class ProcessingQueue {
     }
 
     public List<Job<?, ?>> getProcessing() {
-        return Collections.unmodifiableList(processing);
+        return Collections.unmodifiableList(new ArrayList<>(processing));
     }
 
     public List<Job<?, ?>> getFinished() {
-        return Collections.unmodifiableList(finished);
+        return Collections.unmodifiableList(new ArrayList<>(finished));
     }
 
     public List<Job<?, ?>> getAwaiting() {
-        return Collections.unmodifiableList(awaiting);
+        return Collections.unmodifiableList(new ArrayList<>(awaiting));
     }
 
     public ProcessingQueue setListener(QueueListener events) {
