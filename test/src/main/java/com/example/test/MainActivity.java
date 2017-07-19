@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Intre {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         ProcessingQueue queue = ProcessingQueue.create()
-                .setFailureAction(ProcessingQueue.FailureAction.ABORT)
+                .setFailureAction(ProcessingQueue.FailureAction.IGNORE)
                 .setContinuous(false)
                 .process(processor, list)
                 .setListener(new QueueListenerAdapter() {
@@ -61,4 +61,8 @@ public class MainActivity extends AppCompatActivity {
         queue.start();
     }
 
+    @Override
+    public void pp() {
+        Log.w("PP");
+    }
 }

@@ -1,7 +1,6 @@
 package com.inverce.mod.events;
 
-import android.util.Log;
-
+import com.inverce.mod.core.Log;
 import com.inverce.mod.core.collections.WeakArrayList;
 import com.inverce.mod.events.annotation.EventInfo;
 import com.inverce.mod.events.annotation.Listener;
@@ -103,7 +102,9 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
     public void addListener(T listener) {
         if (listener != null) {
             synchronized (list) {
-                list.add(listener);
+                if (!list.contains(listener)) {
+                    list.add(listener);
+                }
             }
         }
     }
@@ -205,6 +206,31 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
     public static class Bus {
         static Channel defaultChannel;
         static ChannelGroup channels;
+        static long tsLastRegister = 0, tsLastNotify = 0, tsLastCount = 0;
+        static long hashLastRegister = 0, tsTimeNotify = 2000;
+
+        private static void handleRegisterHint(Object listener) {
+            if (Log.isLoggable(Log.INFO) && listener != null) {
+                int hash = listener.hashCode();
+                if (hashLastRegister != hash) {
+                    tsLastRegister = 0;
+                    hashLastRegister = hash;
+                    tsLastCount = 0;
+                    return;
+                } else {
+                    tsLastCount++;
+                }
+
+                long ts = System.currentTimeMillis();
+                if ((ts - tsLastRegister) < 15 && (ts - tsLastNotify) > tsTimeNotify && tsLastCount > 2) {
+                    Log.i("Consider using Bus.registerAll for registering multiple event on same object.");
+                    tsLastNotify = ts;
+                }
+
+                tsLastRegister = ts;
+                hashLastRegister = hash;
+            }
+        }
 
         /**
          * Allows user to register all listener for specified object
@@ -232,6 +258,7 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
          * @param <T>      event type (not used as type is implicitly specified while defining clazz
          */
         public static <T extends Listener> void register(Class<T> clazz, T listener) {
+            handleRegisterHint(listener);
             channel().event(clazz).addListener(listener);
         }
 
