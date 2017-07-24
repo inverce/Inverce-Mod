@@ -1,6 +1,7 @@
 package com.example.test;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.inverce.mod.core.IM;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements Intre {
                 .process(processor, list)
                 .setListener(new QueueListenerAdapter() {
                         @Override
-                        public void onQueueFinished(ProcessingQueue queue) {
+                        public void onQueueFinished(@NonNull ProcessingQueue queue) {
                             super.onQueueFinished(queue);
                             Log.w("Finished: " + queue.getFinished().size());
                             Log.w("Processing: " + queue.getProcessing().size());
@@ -48,14 +49,7 @@ public class MainActivity extends AppCompatActivity implements Intre {
                             IM.onBg().schedule(() -> queue.process(processor, list), 5, TimeUnit.SECONDS);
                         }
 
-                        @Override
-                        public void onJobFinished(ProcessingQueue queue, JobResult<?, ?> job) {
-                            super.onJobFinished(queue, job);
-//                        Log.w("Finished: " + queue.getFinished().size());
-//                        Log.w("Processing: " + queue.getProcessing().size());
-//                        Log.w("Awaiting: " + queue.getAwaiting().size());
-//                        queue.process(processor, Collections.singletonList("22"));
-                        }
+                       
                 });
 
         queue.start();

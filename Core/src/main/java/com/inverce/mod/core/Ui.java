@@ -152,6 +152,21 @@ public class Ui {
         } catch (Exception ignored) { /* safely ignore, as ex in here means we could not hide keyboard */ }
     }
 
+    public static void showSoftInput(View view) {
+        showSoftInput(view, false);
+    }
+
+    public static void showSoftInput(View view, boolean useImplicit) {
+        try {
+            InputMethodManager imm = (InputMethodManager) IM.context().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (useImplicit) {
+                imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+            } else {
+                imm.toggleSoftInput(0, 0);
+            }
+        } catch (Exception ignored) { /* safely ignore, as ex in here means we could not hide keyboard */ }
+    }
+
     @SuppressWarnings("ResourceType")
     public static class Layout {
         @Nullable

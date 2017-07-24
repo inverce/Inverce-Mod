@@ -33,7 +33,7 @@ public abstract class RecyclerAdapter<ITEM, VH extends RecyclerView.ViewHolder> 
     }
 
     public void setData(List<? extends ITEM> elements) {
-        setData(elements, true);
+        setData(elements, false);
     }
 
     public void setData(List<? extends ITEM> elements, boolean useDiffUtil) {

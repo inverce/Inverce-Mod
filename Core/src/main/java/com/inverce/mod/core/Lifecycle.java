@@ -17,6 +17,7 @@ public class Lifecycle {
     private static LifecycleState currentLifecycleState = LifecycleState.NotCreated;
     private static ActivityStateListener listener;
     private static boolean postEvents;
+    private static int activityHash;
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     static void initialize() {
@@ -53,9 +54,15 @@ public class Lifecycle {
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     synchronized static void onActivityState(LifecycleState state, Activity activity, Bundle extra) {
+        if (state.ordinal() > 3 && activity.hashCode() != activityHash) {
+            // don't post activity state change for previous activity
+            return;
+        }
+
         currentLifecycleState = state;
 
         if (state.ordinal() < 4) {
+            activityHash = activity.hashCode();
             IMInternal.get().setActivity(activity);
         }
 

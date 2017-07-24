@@ -4,7 +4,6 @@ import android.support.annotation.WorkerThread;
 
 import com.inverce.mod.core.IM;
 import com.inverce.mod.core.threadpool.NamedThreadPool;
-import com.inverce.mod.events.Event;
 import com.inverce.mod.processing.Processor.EX;
 
 import java.util.ArrayList;
@@ -18,8 +17,9 @@ import static com.inverce.mod.core.verification.Preconditions.checkArgument;
 import static com.inverce.mod.core.verification.Preconditions.checkNotNull;
 import static com.inverce.mod.core.verification.Preconditions.checkState;
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class ProcessingQueue {
-    List<Job<?, ?>> processing, finished, awaiting;
+    List<Job<?, ?>> processing, awaiting;
     List<Thread> activeThreads;
     Settings cfg;
     QueueListener events;
@@ -31,7 +31,7 @@ public class ProcessingQueue {
     private ProcessingQueue() {
         awaiting = Collections.synchronizedList(new ArrayList<>());
         activeThreads = Collections.synchronizedList(new ArrayList<>());
-        events = new Event<>(QueueListener.class).post();
+        events = new QueueListenerAdapter();
         cfg = new Settings();
         cfg.asynchronous = true;
         cfg.failureAction = FailureAction.ABORT;
@@ -73,37 +73,52 @@ public class ProcessingQueue {
         return Collections.unmodifiableList(new ArrayList<>(processing));
     }
 
-    public List<Job<?, ?>> getFinished() {
-        return Collections.unmodifiableList(new ArrayList<>(finished));
-    }
-
     public List<Job<?, ?>> getAwaiting() {
         return Collections.unmodifiableList(new ArrayList<>(awaiting));
     }
 
     public ProcessingQueue setListener(QueueListener events) {
         if (events == null) {
-            events = new Event<>(QueueListener.class).post();
+            events = new QueueListenerAdapter();
         }
         this.events = events;
         return this;
     }
 
     public <T> ProcessingQueue processTask(TaskMapper<T> handler, List<T> list) {
-        return process(EX.map(Processor.RUNNABLES, handler::processJob), list);
+        return processInternal(EX.map(Processor.RUNNABLES, handler::processJob), list, false);
     }
 
     public <T> ProcessingQueue process(Consumer<T> handler, List<T> list) {
-        return process(EX.map(Processor.RUNNABLES, o -> () -> handler.accept(o)), list);
+        return processInternal(EX.map(Processor.RUNNABLES, o -> () -> handler.accept(o)), list, false);
     }
 
     public <T, R> ProcessingQueue process(Processor<T, R> processor, List<T> list) {
+        return processInternal(processor, list, false);
+    }
+
+    public <T> ProcessingQueue processTaskIfNotAdded(TaskMapper<T> handler, List<T> list) {
+        return processInternal(EX.map(Processor.RUNNABLES, handler::processJob), list, true);
+    }
+
+    public <T> ProcessingQueue processIfNotAdded(Consumer<T> handler, List<T> list) {
+        return processInternal(EX.map(Processor.RUNNABLES, o -> () -> handler.accept(o)), list, true);
+    }
+
+    public <T, R> ProcessingQueue processIfNotAdded(Processor<T, R> processor, List<T> list) {
+        return processInternal(processor, list, true);
+    }
+
+    <T, R> ProcessingQueue processInternal(Processor<T, R> processor, List<T> list, boolean checkExist) {
         checkNotNull(processor, "Processor connot be null");
         checkNotNull(list, "You must specify elements");
+        checkArgument(!cfg.isCancelled, "Cant add task to cancelled queue");
         checkArgument(!cfg.isDone || cfg.isContinuous, "Adding more task after queue started supported with continous mode");
 
         for (T item : list) {
-            awaiting.add(new Job<>(item, processor));
+            if (!(checkExist && contains(item))) {
+                awaiting.add(new Job<>(item, processor));
+            }
         }
 
         if (cfg.isContinuous && cfg.isStarted) {
@@ -112,6 +127,7 @@ public class ProcessingQueue {
 
         return this;
     }
+
 
     public boolean isStarted() {
         return cfg.isStarted;
@@ -131,7 +147,6 @@ public class ProcessingQueue {
         checkArgument(awaiting.size() > 0, "You need to add at least one item to process");
 
         processing = Collections.synchronizedList(new ArrayList<>());
-        finished = Collections.synchronizedList(new ArrayList<>());
 
         cfg.isStarted = true;
         IM.onBg().execute(this::fillQueue);
@@ -164,7 +179,6 @@ public class ProcessingQueue {
     @WorkerThread
     synchronized void finishJob(JobResult<?, ?> jobResult) {
         processing.remove(jobResult.job);
-        finished.add(jobResult.job);
         activeThreads.remove(jobResult.job.thread);
 
         if (jobResult.exception != null && cfg.failureAction == FailureAction.ABORT) {
@@ -174,7 +188,11 @@ public class ProcessingQueue {
             return;
         }
 
-        events.onJobFinished(this, jobResult);
+        if (jobResult.exception == null) {
+            events.onJobResult(this, jobResult.job, jobResult.result);
+        } else {
+            events.onJobFailure(this, jobResult.job, jobResult.exception);
+        }
 
         if (awaiting.size() > 0 && !cfg.isCancelled) {
             fillQueue();
@@ -199,8 +217,51 @@ public class ProcessingQueue {
         }
     }
 
+    public synchronized boolean contains(Object item) {
+        for (Job<?, ?> job: new ArrayList<>(processing)) {
+            if (job.getItem().equals(item)) {
+                return true;
+            }
+        }
+        for (Job<?, ?> job: new ArrayList<>(awaiting)) {
+            if (job.getItem().equals(item)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * This will NOT cancel the queue
+     * @param item
+     * @return
+     */
+    public synchronized boolean cancelItem(Object item) {
+        for (Job<?, ?> job: new ArrayList<>(awaiting)) {
+            if (job.getItem().equals(item)) {
+                awaiting.remove(job);
+                return true;
+            }
+        }
+        for (Job<?, ?> job: new ArrayList<>(processing)) {
+            if (job.getItem().equals(item)) {
+                synchronized (job.getThread()) {
+                    job.getThread().interrupt();
+                }
+                activeThreads.remove(job.thread);
+                processing.remove(job);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public synchronized void cancel() {
         cfg.isCancelled = true;
+        cfg.isFinishing = true;
+        cfg.isStarted = false;
+        cfg.isDone = !cfg.isContinuous;
 
         for (Thread t: activeThreads) {
             synchronized (t) {
@@ -209,8 +270,11 @@ public class ProcessingQueue {
         }
         activeThreads.clear();
 
-        // give queue a moment to handle thread interuptions
-        IM.onBg().schedule(() -> events.onQueueCancelled(this), 100, TimeUnit.MILLISECONDS);
+        // give queue a moment to handle thread interruptions
+        IM.onBg().schedule(() -> {
+            events.onQueueCancelled(this);
+            cfg.isFinishing = false;
+        }, 100, TimeUnit.MILLISECONDS);
     }
 
     public enum FailureAction {
@@ -218,7 +282,8 @@ public class ProcessingQueue {
     }
 
     private static class Settings {
-        boolean asynchronous, isStarted, isCancelled, isDone, isContinuous;
+        boolean asynchronous, isContinuous,
+                isStarted, isCancelled, isDone, isFinishing, isWaitingToStart;
         FailureAction failureAction;
         ThreadFactory threadFactory;
         int poolSize = 8;
