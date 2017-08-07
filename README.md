@@ -31,7 +31,7 @@ The simplest way to use google-vision with camera.
 
 ###### Instalation
 ```gradle
-compile 'com.inverce.mod:Vision:1.0.7'
+compile 'com.inverce.mod:Vision:1.0.8'
 ```
 ###### [Documentation](/VisionForCamera)
 
