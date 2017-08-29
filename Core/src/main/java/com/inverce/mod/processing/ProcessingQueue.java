@@ -31,6 +31,7 @@ public class ProcessingQueue {
     private ProcessingQueue() {
         awaiting = Collections.synchronizedList(new ArrayList<>());
         activeThreads = Collections.synchronizedList(new ArrayList<>());
+        processing = Collections.synchronizedList(new ArrayList<>());
         events = new QueueListenerAdapter();
         cfg = new Settings();
         cfg.asynchronous = true;
@@ -146,8 +147,6 @@ public class ProcessingQueue {
         checkArgument(!cfg.isDone);
         checkArgument(awaiting.size() > 0, "You need to add at least one item to process");
 
-        processing = Collections.synchronizedList(new ArrayList<>());
-
         cfg.isStarted = true;
         IM.onBg().execute(this::fillQueue);
         events.onQueueStarted(this);
@@ -165,7 +164,7 @@ public class ProcessingQueue {
         processing.add(job);
 
         Thread thread = cfg.threadFactory.newThread(() -> {
-            job.consume(ProcessingQueue.this);
+            job.accept(ProcessingQueue.this);
         });
 
         job.thread = thread;

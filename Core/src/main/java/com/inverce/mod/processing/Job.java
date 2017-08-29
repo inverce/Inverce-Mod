@@ -14,7 +14,7 @@ public class Job<ITEM, RESULT> implements IConsumer<ProcessingQueue> {
     }
 
     @Override
-    public void consume(ProcessingQueue queue) {
+    public void accept(ProcessingQueue queue) {
         try {
             RESULT result = processor.processJob(item);
             IM.onBg().execute(() -> queue.finishJob(new JobResult<>(this, result)));

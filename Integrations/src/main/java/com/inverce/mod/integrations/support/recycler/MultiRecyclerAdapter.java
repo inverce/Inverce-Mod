@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 
 import com.inverce.mod.core.functional.IFunction;
 import com.inverce.mod.core.functional.IPredicate;
+import com.inverce.mod.integrations.support.annotations.IBind;
+import com.inverce.mod.integrations.support.annotations.IBinder;
+import com.inverce.mod.integrations.support.annotations.ICreateVH;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,15 +59,35 @@ public class MultiRecyclerAdapter<ITEM> extends RecyclerAdapter<ITEM, RecyclerVi
     }
 
     public <I extends ITEM, VH extends RecyclerView.ViewHolder> int register(IPredicate<ITEM> checkType, IBind<I, VH> binder, IFunction<View, VH> createViewHolder, @LayoutRes int layout) {
-        return register(checkType, binder, (parent, inflater) -> createViewHolder.apply(inflater.inflate(layout, parent, false)));
+        return register(checkType, binder, new ICreateVH<VH>() {
+            @Override
+            public VH onCreateViewHolder(ViewGroup parent, LayoutInflater inflater) {
+                return createViewHolder.apply(inflater.inflate(layout, parent, false));
+            }
+        });
     }
 
     public <I extends ITEM, VH extends RecyclerView.ViewHolder & IBinder<I>> int register(IPredicate<ITEM> checkType, ICreateVH<VH> createViewHolder) {
-        return register(checkType, VH::onBindViewHolder, createViewHolder);
+        return register(checkType, new IBind<I, VH>() {
+            @Override
+            public void onBindViewHolder(VH vh, I item, int position) {
+                vh.onBindViewHolder(item, position);
+            }
+        }, createViewHolder);
     }
 
     public <I extends ITEM, VH extends RecyclerView.ViewHolder & IBinder<I>> int register(IPredicate<ITEM> checkType, IFunction<View, VH> createViewHolder, @LayoutRes int layout) {
-        return register(checkType, VH::onBindViewHolder, (parent, inflater) -> createViewHolder.apply(inflater.inflate(layout, parent, false)));
+        return register(checkType, new IBind<I, VH>() {
+            @Override
+            public void onBindViewHolder(VH vh, I item, int position) {
+                vh.onBindViewHolder(item, position);
+            }
+        }, new ICreateVH<VH>() {
+            @Override
+            public VH onCreateViewHolder(ViewGroup parent, LayoutInflater inflater) {
+                return createViewHolder.apply(inflater.inflate(layout, parent, false));
+            }
+        });
     }
 
     private class MultiInfo<I extends ITEM, VH extends RecyclerView.ViewHolder> {
@@ -83,17 +106,5 @@ public class MultiRecyclerAdapter<ITEM> extends RecyclerAdapter<ITEM, RecyclerVi
             //noinspection unchecked
             binder.onBindViewHolder((VH)holder, (I)item, position);
         }
-    }
-
-    public interface IBind<I, VH extends RecyclerView.ViewHolder> {
-        void onBindViewHolder(VH holder, I item, int position);
-    }
-
-    public interface ICreateVH<VH extends RecyclerView.ViewHolder> {
-        VH onCreateViewHolder(ViewGroup parent, LayoutInflater inflater);
-    }
-
-    public interface IBinder<I> {
-        void onBindViewHolder(I item, int position);
     }
 }

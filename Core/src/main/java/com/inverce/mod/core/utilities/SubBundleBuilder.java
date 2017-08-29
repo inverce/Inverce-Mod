@@ -23,7 +23,7 @@ public class SubBundleBuilder<TYPE> extends SubBuilder<TYPE> {
     @Override
     public TYPE create() {
         if (setter != null) {
-            setter.consume(extras);
+            setter.accept(extras);
         }
         return super.create();
     }
@@ -90,7 +90,7 @@ public class SubBundleBuilder<TYPE> extends SubBuilder<TYPE> {
 
     @CheckResult
     public SubBundleBuilder<TYPE> setup(IConsumer<Bundle> setup) {
-        setup.consume(extras);
+        setup.accept(extras);
         return this;
     }
 }

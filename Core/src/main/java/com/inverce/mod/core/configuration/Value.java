@@ -44,7 +44,7 @@ public class Value<T> extends ReadOnlyValue<T> {
 
     public boolean set(T e) {
         if (validator.test(e)) {
-            setter.consume(e);
+            setter.accept(e);
             changeValueHandler.postNewValue(this, e);
             return true;
         }

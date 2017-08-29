@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.inverce.mod.core.IM;
 import com.inverce.mod.core.Log;
-import com.inverce.mod.processing.JobResult;
 import com.inverce.mod.processing.ProcessingQueue;
 import com.inverce.mod.processing.Processor;
 import com.inverce.mod.processing.QueueListenerAdapter;
@@ -42,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements Intre {
                         @Override
                         public void onQueueFinished(@NonNull ProcessingQueue queue) {
                             super.onQueueFinished(queue);
-                            Log.w("Finished: " + queue.getFinished().size());
                             Log.w("Processing: " + queue.getProcessing().size());
                             Log.w("Awaiting: " + queue.getAwaiting().size());
 
