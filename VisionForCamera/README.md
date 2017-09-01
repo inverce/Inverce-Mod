@@ -4,7 +4,7 @@ Simples camera vision code
 
 #### Instalation
 ```gradle
-compile 'com.inverce.mod:Vision:1.0.6'
+compile 'com.inverce.mod:Vision:1.0.8'
 ```
 
 ## Step 1
