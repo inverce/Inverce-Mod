@@ -21,7 +21,7 @@ This library includes basic utility methods.
 
 ###### Instalation
 ```gradle
-compile 'com.inverce.mod:Core:1.0.5'
+compile 'com.inverce.mod:Core:1.0.9'
 ```
 ###### [Documentation](/Core)
 
