@@ -9,11 +9,28 @@ import com.inverce.mod.core.functional.IConsumer;
 import java.io.Serializable;
 
 public class SubBundleBuilder<TYPE> extends SubBuilder<TYPE> {
+    private IConsumer<Bundle> setter;
     protected Bundle extras;
 
     public SubBundleBuilder(TYPE parent, Bundle extras) {
         super(parent);
+        if (extras == null) {
+            extras = new Bundle();
+        }
         this.extras = extras;
+    }
+
+    @Override
+    public TYPE create() {
+        if (setter != null) {
+            setter.accept(extras);
+        }
+        return super.create();
+    }
+
+    public SubBundleBuilder(TYPE baseFragment, Bundle arguments, IConsumer<Bundle> setter) {
+        this(baseFragment, arguments);
+        this.setter = setter;
     }
 
     @CheckResult
@@ -73,7 +90,7 @@ public class SubBundleBuilder<TYPE> extends SubBuilder<TYPE> {
 
     @CheckResult
     public SubBundleBuilder<TYPE> setup(IConsumer<Bundle> setup) {
-        setup.consume(extras);
+        setup.accept(extras);
         return this;
     }
 }

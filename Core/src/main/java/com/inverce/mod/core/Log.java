@@ -53,6 +53,10 @@ public class Log {
         DEBUG_MODE = debugMode;
     }
 
+    public static boolean isLoggable(int level) {
+        return DEBUG_MODE && LOGGING_LEVEL <= level;
+    }
+
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     static boolean shouldPrint(String className) {
         if (applicationPackage == null) {

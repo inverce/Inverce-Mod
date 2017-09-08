@@ -1,6 +1,7 @@
 package com.inverce.mod.navigation;
 
 import android.support.annotation.CheckResult;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 
 import com.inverce.mod.core.IM;
 import com.inverce.mod.core.Log;
+import com.inverce.mod.core.R;
 import com.inverce.mod.core.functional.ISupplier;
 import com.inverce.mod.core.verification.Preconditions;
 
@@ -22,6 +24,8 @@ import java.util.List;
  */
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class Navigator {
+    static @IdRes int defaultContainer = R.id.page_container;
+
     private Navigator() { }
 
     public static void test() {
@@ -82,9 +86,12 @@ public class Navigator {
         return new ActionCreateAll(new Manager(managerSupplier));
     }
 
+    public static void setDefaultContainer(@IdRes int defaultContainer) {
+        Navigator.defaultContainer = defaultContainer;
+    }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    public static void submitInvertedStack(@NonNull ActionStack stack) {
+    static void submitInvertedStack(@NonNull ActionStack stack) {
         List<ActionStack> list = new ArrayList<>(1);
         Preconditions.checkNotNull(stack, "Nope, null stack, is no good.");
         list.add(stack);
@@ -120,10 +127,13 @@ public class Navigator {
     }
 
     private static void handleForward(Manager manager, FragmentManager fm, Forward action) {
+        Fragment fragment = action.fragmentSupplier.get();
+        String tag = manager.tagSupplier.apply(fragment);
+        String backStackName = manager.nameSupplier.apply(fragment);
         fm
                 .beginTransaction()
-                .replace(manager.container, action.fragmentSupplier.get())
-                .addToBackStack(null)
+                .replace(manager.container, fragment, tag)
+                .addToBackStack(backStackName)
                 .commit();
     }
 
@@ -158,14 +168,5 @@ public class Navigator {
             }
         }
         fm.executePendingTransactions();
-    }
-
-    private static class Manager extends ActionStack {
-        ISupplier<FragmentManager> managerSupplier;
-        int container = 0;
-        Manager(ISupplier<FragmentManager> managerSupplier) {
-            super(null);
-            this.managerSupplier = managerSupplier;
-        }
     }
 }

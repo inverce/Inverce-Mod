@@ -6,5 +6,5 @@ import android.graphics.PointF
 @SuppressLint("ParcelCreator")
 class KotlinTest : PointF() {
 
-    var test : Boolean = false
+    var test: Boolean = false
 }

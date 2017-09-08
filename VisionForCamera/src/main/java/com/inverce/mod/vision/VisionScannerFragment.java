@@ -136,14 +136,19 @@ public class VisionScannerFragment extends Fragment {
     }
 
     private void checkUpFocus() {
-        if (mCameraSource != null) {
-            synchronized (mCameraSource.getCameraLock()) {
-                if (!mCameraSource.getCamera().getParameters().getSupportedFocusModes().contains(FOCUS_MODE_CONTINUOUS_PICTURE)) {
-                    mCameraSource.setFocusMode(FOCUS_MODE_AUTO);
-                    selfFocus = IM.onUi().scheduleAtFixedRate(this::tryFocus, 0, 3, TimeUnit.SECONDS);
+        try {
+            if (mCameraSource != null && mCameraSource.getCamera() != null && mCameraSource.getCamera().getParameters() != null) {
+                synchronized (mCameraSource.getCameraLock()) {
+                    if (!mCameraSource.getCamera().getParameters().getSupportedFocusModes().contains(FOCUS_MODE_CONTINUOUS_PICTURE)) {
+                        mCameraSource.setFocusMode(FOCUS_MODE_AUTO);
+                        selfFocus = IM.onUi().scheduleAtFixedRate(this::tryFocus, 0, 3, TimeUnit.SECONDS);
+                    }
                 }
             }
+        } catch (Exception e) {
+            Log.e(TAG, "camera: " + e.toString());
         }
+
     }
 
     private void tryFocus() {
