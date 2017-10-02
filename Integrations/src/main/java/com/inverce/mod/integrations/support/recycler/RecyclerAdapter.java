@@ -50,6 +50,7 @@ public abstract class RecyclerAdapter<ITEM, VH extends RecyclerView.ViewHolder> 
             List<? extends ITEM> oldItems = new ArrayList<>(data);
             DiffUtil.calculateDiff(new EasyDiffUtilCallBack<>(elements, oldItems))
                     .dispatchUpdatesTo(this);
+            data = elements;
         } else {
             data = elements;
             notifyDataSetChanged();

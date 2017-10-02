@@ -2,7 +2,6 @@ package com.inverce.mod.core.configuration.shared;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class SharedFloatValue extends SharedValue<Float> {
-    SharedValueImpl<Float> impl;
 
     public SharedFloatValue(String key) {
         this(key, "im_shared", null);

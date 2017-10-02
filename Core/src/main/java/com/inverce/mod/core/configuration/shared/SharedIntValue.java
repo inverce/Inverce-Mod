@@ -2,7 +2,6 @@ package com.inverce.mod.core.configuration.shared;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class SharedIntValue extends SharedValue<Integer> {
-    SharedValueImpl<Integer> impl;
 
     public SharedIntValue(String key) {
         this(key, "im_shared", null);

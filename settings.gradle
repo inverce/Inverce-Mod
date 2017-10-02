@@ -1,3 +1,4 @@
-include ':Core', ':VisionForCamera'
+include ':Core'
+include ':VisionForCamera'
 include ':Integrations'
 include ':test'

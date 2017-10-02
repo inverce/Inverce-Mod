@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements Intre {
                             super.onQueueFinished(queue);
                             Log.w("Processing: " + queue.getProcessing().size());
                             Log.w("Awaiting: " + queue.getAwaiting().size());
-
                             IM.onBg().schedule(() -> queue.process(processor, list), 5, TimeUnit.SECONDS);
                         }
 
@@ -51,6 +50,13 @@ public class MainActivity extends AppCompatActivity implements Intre {
                 });
 
         queue.start();
+
+//        SharedCipherValue d1 = new SharedCipherValue("key", "cipher1");
+//        d1.set("value");
+//
+//        SharedCipherValue d2 = new SharedCipherValue("key", "cipher1");
+//
+//        Log.w("LL: " + d1.get() + " " + d2.get());
     }
 
     @Override

@@ -1,9 +1,11 @@
+plugins { id "me.tatarka.retrolambda" version "3.7.0" }
+
 apply plugin: 'com.android.library'
 
 ext {
     PUBLISH_GROUP_ID = 'com.inverce.mod'
     PUBLISH_ARTIFACT_ID = 'Core'
-    PUBLISH_VERSION = '1.1.Alpha-0'
+    PUBLISH_VERSION = '1.0.10'
 }
 
 android {
@@ -14,7 +16,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
-        versionName "1.1.Alpha-0"
+        versionName "1.0.10"
     }
     buildTypes {
         release {

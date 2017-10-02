@@ -161,6 +161,11 @@ public class VisionScannerFragment extends Fragment {
         }
     }
 
+    @Nullable
+    public CameraSource getCameraSource() {
+        return mCameraSource;
+    }
+
     /**
      * Starts or restarts the camera source, if it exists.  If the camera source doesn't exist yet
      * (e.g., because onResume was called before the camera source was created), this will be called
@@ -176,7 +181,9 @@ public class VisionScannerFragment extends Fragment {
 
         if (mCameraSource != null && barcodeDetector != null) {
             try {
-                BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(detectionListener);
+                BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(p -> {
+                    if (detectionListener != null) detectionListener.onNewDetection(p);
+                });
                 barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
                 mCameraSourcePreview.start(mCameraSource);
             } catch (IOException e) {

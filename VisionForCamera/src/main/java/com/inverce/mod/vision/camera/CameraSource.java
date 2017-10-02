@@ -53,26 +53,26 @@ import java.util.Map;
  * <li>android.permissions.CAMERA</li>
  * </ul>
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "MissingPermission", "unused"})
 public class CameraSource {
     @SuppressLint("InlinedApi")
     public static final int CAMERA_FACING_BACK = CameraInfo.CAMERA_FACING_BACK;
     @SuppressLint("InlinedApi")
     public static final int CAMERA_FACING_FRONT = CameraInfo.CAMERA_FACING_FRONT;
 
-    private static final String TAG = "OpenCameraSource";
+    protected static final String TAG = "OpenCameraSource";
 
     /**
      * The dummy surface texture must be assigned a chosen name.  Since we never use an OpenGL
      * context, we can choose any ID we want here.
      */
-    private static final int DUMMY_TEXTURE_NAME = 100;
+    protected static final int DUMMY_TEXTURE_NAME = 100;
 
     /**
      * If the absolute difference between a preview size aspect ratio and a picture size aspect
      * ratio is less than this tolerance, they are considered to be the same aspect ratio.
      */
-    private static final float ASPECT_RATIO_TOLERANCE = 0.01f;
+    protected static final float ASPECT_RATIO_TOLERANCE = 0.01f;
 
     @StringDef({
             Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE,
@@ -84,7 +84,7 @@ public class CameraSource {
             Camera.Parameters.FOCUS_MODE_MACRO
     })
     @Retention(RetentionPolicy.SOURCE)
-    private @interface FocusMode {}
+    protected @interface FocusMode {}
 
     @StringDef({
             Camera.Parameters.FLASH_MODE_ON,
@@ -94,54 +94,54 @@ public class CameraSource {
             Camera.Parameters.FLASH_MODE_TORCH
     })
     @Retention(RetentionPolicy.SOURCE)
-    private @interface FlashMode {}
+    protected @interface FlashMode {}
 
-    private Context mContext;
+    protected Context mContext;
 
-    private final Object mCameraLock = new Object();
+    protected final Object mCameraLock = new Object();
 
     // Guarded by mCameraLock
-    private Camera mCamera;
+    protected Camera mCamera;
 
-    private int mFacing = CAMERA_FACING_BACK;
+    protected int mFacing = CAMERA_FACING_BACK;
 
     /**
      * Rotation of the device, and thus the associated preview images captured from the device.
      * See {@link Frame.Metadata#getRotation()}.
      */
-    private int mRotation;
+    protected int mRotation;
 
-    private Size mPreviewSize;
+    protected Size mPreviewSize;
 
     // These values may be requested by the caller.  Due to hardware limitations, we may need to
     // select close, but not exactly the same values for these.
-    private float mRequestedFps = 30.0f;
-    private int mRequestedPreviewWidth = 1024;
-    private int mRequestedPreviewHeight = 768;
+    protected float mRequestedFps = 30.0f;
+    protected int mRequestedPreviewWidth = 1024;
+    protected int mRequestedPreviewHeight = 768;
 
 
-    private String mFocusMode = null;
-    private String mFlashMode = null;
+    protected String mFocusMode = null;
+    protected String mFlashMode = null;
 
     // These instances need to be held onto to avoid GC of their underlying resources.  Even though
     // these aren't used outside of the method that creates them, they still must have hard
     // references maintained to them.
-    private SurfaceView mDummySurfaceView;
-    private SurfaceTexture mDummySurfaceTexture;
+    protected SurfaceView mDummySurfaceView;
+    protected SurfaceTexture mDummySurfaceTexture;
 
     /**
      * Dedicated thread and associated runnable for calling into the detector with frames, as the
      * frames become available from the camera.
      */
-    private Thread mProcessingThread;
-    private FrameProcessingRunnable mFrameProcessor;
+    protected Thread mProcessingThread;
+    protected FrameProcessingRunnable mFrameProcessor;
 
     /**
      * Map to convert between a byte array, received from the camera, and its associated byte
      * buffer.  We use byte buffers internally because this is a more efficient way to call into
      * native code later (avoids a potential copy).
      */
-    private Map<byte[], ByteBuffer> mBytesToByteBuffer = new HashMap<>();
+    protected Map<byte[], ByteBuffer> mBytesToByteBuffer = new HashMap<>();
 
     //==============================================================================================
     // Builder
@@ -151,8 +151,8 @@ public class CameraSource {
      * Builder for configuring and creating an associated camera source.
      */
     public static class Builder {
-        private final Detector<?> mDetector;
-        private CameraSource mCameraSource = new CameraSource();
+        protected final Detector<?> mDetector;
+        protected CameraSource mCameraSource = new CameraSource();
 
         /**
          * Creates a camera source builder with the supplied context and detector.  Camera preview
@@ -647,20 +647,20 @@ public class CameraSource {
     }
 
     //==============================================================================================
-    // Private
+    // protected
     //==============================================================================================
 
     /**
      * Only allow creation via the builder class.
      */
-    private CameraSource() {
+    protected CameraSource() {
     }
 
     /**
      * Wraps the camera1 shutter callback so that the deprecated API isn't exposed.
      */
-    private class PictureStartCallback implements Camera.ShutterCallback {
-        private ShutterCallback mDelegate;
+    protected class PictureStartCallback implements Camera.ShutterCallback {
+        protected ShutterCallback mDelegate;
 
         @Override
         public void onShutter() {
@@ -674,8 +674,8 @@ public class CameraSource {
      * Wraps the final callback in the camera sequence, so that we can automatically turn the camera
      * preview back on after the picture has been taken.
      */
-    private class PictureDoneCallback implements Camera.PictureCallback {
-        private PictureCallback mDelegate;
+    protected class PictureDoneCallback implements Camera.PictureCallback {
+        protected PictureCallback mDelegate;
 
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
@@ -693,8 +693,8 @@ public class CameraSource {
     /**
      * Wraps the camera1 auto focus callback so that the deprecated API isn't exposed.
      */
-    private class CameraAutoFocusCallback implements Camera.AutoFocusCallback {
-        private AutoFocusCallback mDelegate;
+    protected class CameraAutoFocusCallback implements Camera.AutoFocusCallback {
+        protected AutoFocusCallback mDelegate;
 
         @Override
         public void onAutoFocus(boolean success, Camera camera) {
@@ -708,8 +708,8 @@ public class CameraSource {
      * Wraps the camera1 auto focus move callback so that the deprecated API isn't exposed.
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private class CameraAutoFocusMoveCallback implements Camera.AutoFocusMoveCallback {
-        private AutoFocusMoveCallback mDelegate;
+    protected class CameraAutoFocusMoveCallback implements Camera.AutoFocusMoveCallback {
+        protected AutoFocusMoveCallback mDelegate;
 
         @Override
         public void onAutoFocusMoving(boolean start, Camera camera) {
@@ -725,7 +725,7 @@ public class CameraSource {
      * @throws RuntimeException if the method fails
      */
     @SuppressLint("InlinedApi")
-    private Camera createCamera() {
+    protected Camera createCamera() {
         int requestedCameraId = getIdForRequestedCamera(mFacing);
         if (requestedCameraId == -1) {
             throw new RuntimeException("Could not find requested camera.");
@@ -804,7 +804,7 @@ public class CameraSource {
      *
      * @param facing the desired camera (front-facing or rear-facing)
      */
-    private static int getIdForRequestedCamera(int facing) {
+    protected static int getIdForRequestedCamera(int facing) {
         CameraInfo cameraInfo = new CameraInfo();
         for (int i = 0; i < Camera.getNumberOfCameras(); ++i) {
             Camera.getCameraInfo(i, cameraInfo);
@@ -827,7 +827,7 @@ public class CameraSource {
      * @param desiredHeight the desired height of the camera preview frames
      * @return the selected preview and picture size pair
      */
-    private static SizePair selectSizePair(Camera camera, int desiredWidth, int desiredHeight) {
+    protected static SizePair selectSizePair(Camera camera, int desiredWidth, int desiredHeight) {
         List<SizePair> validPreviewSizes = generateValidPreviewSizeList(camera);
 
         // The method for selecting the best size is to minimize the sum of the differences between
@@ -855,9 +855,9 @@ public class CameraSource {
      * aspect ratio as the preview size or the preview may end up being distorted.  If the picture
      * size is null, then there is no picture size with the same aspect ratio as the preview size.
      */
-    private static class SizePair {
-        private Size mPreview;
-        private Size mPicture;
+    protected static class SizePair {
+        protected Size mPreview;
+        protected Size mPicture;
 
         public SizePair(android.hardware.Camera.Size previewSize,
                         android.hardware.Camera.Size pictureSize) {
@@ -885,7 +885,7 @@ public class CameraSource {
      * set to a size that is the same aspect ratio as the preview size we choose.  Otherwise, the
      * preview images may be distorted on some devices.
      */
-    private static List<SizePair> generateValidPreviewSizeList(Camera camera) {
+    protected static List<SizePair> generateValidPreviewSizeList(Camera camera) {
         Camera.Parameters parameters = camera.getParameters();
         List<android.hardware.Camera.Size> supportedPreviewSizes =
                 parameters.getSupportedPreviewSizes();
@@ -929,7 +929,7 @@ public class CameraSource {
      * @param desiredPreviewFps the desired frames per second for the camera preview frames
      * @return the selected preview frames per second range
      */
-    private int[] selectPreviewFpsRange(Camera camera, float desiredPreviewFps) {
+    protected int[] selectPreviewFpsRange(Camera camera, float desiredPreviewFps) {
         // The camera API uses integers scaled by a factor of 1000 instead of floating-point frame
         // rates.
         int desiredPreviewFpsScaled = (int) (desiredPreviewFps * 1000.0f);
@@ -961,7 +961,7 @@ public class CameraSource {
      * @param parameters the camera parameters for which to set the rotation
      * @param cameraId   the camera id to set rotation based on
      */
-    private void setRotation(Camera camera, Camera.Parameters parameters, int cameraId) {
+    protected void setRotation(Camera camera, Camera.Parameters parameters, int cameraId) {
         WindowManager windowManager =
                 (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         int degrees = 0;
@@ -1009,7 +1009,7 @@ public class CameraSource {
      *
      * @return a new preview buffer of the appropriate size for the current camera settings
      */
-    private byte[] createPreviewBuffer(Size previewSize) {
+    protected byte[] createPreviewBuffer(Size previewSize) {
         int bitsPerPixel = ImageFormat.getBitsPerPixel(ImageFormat.NV21);
         long sizeInBits = previewSize.getHeight() * previewSize.getWidth() * bitsPerPixel;
         int bufferSize = (int) Math.ceil(sizeInBits / 8.0d) + 1;
@@ -1039,7 +1039,7 @@ public class CameraSource {
     /**
      * Called when the camera has a new preview frame.
      */
-    private class CameraPreviewCallback implements Camera.PreviewCallback {
+    protected class CameraPreviewCallback implements Camera.PreviewCallback {
         @Override
         public void onPreviewFrame(byte[] data, Camera camera) {
             mFrameProcessor.setNextFrame(data, camera);
@@ -1055,18 +1055,18 @@ public class CameraSource {
      * associated processing are done for the previous frame, detection on the mostly recently
      * received frame will immediately start on the same thread.
      */
-    private class FrameProcessingRunnable implements Runnable {
-        private Detector<?> mDetector;
-        private long mStartTimeMillis = SystemClock.elapsedRealtime();
+    protected class FrameProcessingRunnable implements Runnable {
+        protected Detector<?> mDetector;
+        protected long mStartTimeMillis = SystemClock.elapsedRealtime();
 
         // This lock guards all of the member variables below.
-        private final Object mLock = new Object();
-        private boolean mActive = true;
+        protected final Object mLock = new Object();
+        protected boolean mActive = true;
 
         // These pending variables hold the state associated with the new frame awaiting processing.
-        private long mPendingTimeMillis;
-        private int mPendingFrameId = 0;
-        private ByteBuffer mPendingFrameData;
+        protected long mPendingTimeMillis;
+        protected int mPendingFrameId = 0;
+        protected ByteBuffer mPendingFrameData;
 
         FrameProcessingRunnable(Detector<?> detector) {
             mDetector = detector;

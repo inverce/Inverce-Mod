@@ -2,6 +2,7 @@ package com.inverce.mod.core;
 
 import android.graphics.PointF;
 import android.support.annotation.ColorInt;
+import android.util.Base64;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -61,5 +62,21 @@ public final class MathEx {
 
     public static float distance(float x1, float x2, float y1, float y2) {
         return (float) sqrt(pow(x2 - x1, 2)  + pow(y2 - y1, 2));
+    }
+
+    public static String toBase64(String input) {
+        return input == null ? null : Base64.encodeToString(input.getBytes(), Base64.NO_WRAP);
+    }
+
+    public static String toBase64(byte[] input) {
+        return input == null ? null : Base64.encodeToString(input, Base64.NO_WRAP);
+    }
+
+    public static String fromBase64(String input) {
+        return input == null ? null : new String(Base64.decode(input, Base64.NO_WRAP));
+    }
+
+    public static byte[] fromBase64Bytes(String input) {
+        return input == null ? null : Base64.decode(input, Base64.NO_WRAP);
     }
 }

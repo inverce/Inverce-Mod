@@ -1,6 +1,7 @@
 package com.inverce.mod.core.collections;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.inverce.mod.core.functional.IFunction;
 import com.inverce.mod.core.reflection.TypeToken;
@@ -17,14 +18,14 @@ public class CacheFunctionMap<Key, Value> extends HashMap<Key, Value> {
         this.generator = generator;
     }
 
-    public CacheFunctionMap(Class<Key> keyClass, IFunction<Key, Value> generator) {
+    public CacheFunctionMap(@NonNull Class<Key> keyClass, @NonNull IFunction<Key, Value> generator) {
         this.generator = generator;
         this.keyClass = keyClass;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public Value get(Object key) {
+    public Value get(@Nullable Object key) {
         Value value = super.get(key);
 
         if (value == null && keyClass.isInstance(key)) {

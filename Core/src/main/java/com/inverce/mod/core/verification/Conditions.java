@@ -1,6 +1,7 @@
 package com.inverce.mod.core.verification;
 
 import android.database.Cursor;
+import android.view.View;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;
@@ -8,19 +9,6 @@ import java.util.Collection;
 @SuppressWarnings("unused")
 public class Conditions {
     private Conditions() { }
-
-    public static boolean nonNull(Object value) {
-        return value != null;
-    }
-
-    public static boolean nonNull(Object ... value) {
-        for (Object k: value) {
-            if (k == null) {
-                return false;
-            }
-        }
-        return true;
-    }
 
     @SafeVarargs
     public static <T> T firstNonNull(T value, T ... values) {
@@ -53,5 +41,27 @@ public class Conditions {
         return value != null && value.getCount() > 0;
     }
 
+    public static boolean nullOrEmpty(String value) {
+        return value == null || value.length() > 0;
+    }
 
+    public static boolean nullOrEmpty(WeakReference<?> value) {
+        return value == null || value.get() != null;
+    }
+
+    public static <T> boolean nullOrEmpty(T [] value) {
+        return value == null || value.length > 0;
+    }
+
+    public static boolean nullOrEmpty(Collection<?> value) {
+        return value == null || value.size() > 0;
+    }
+
+    public static boolean nullOrEmpty(Cursor value) {
+        return value == null || value.getCount() > 0;
+    }
+
+    public static boolean isVisible(View view) {
+        return view != null && view.getVisibility() == View.VISIBLE;
+    }
 }

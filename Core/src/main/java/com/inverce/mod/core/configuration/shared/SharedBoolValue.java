@@ -2,7 +2,6 @@ package com.inverce.mod.core.configuration.shared;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class SharedBoolValue extends SharedValue<Boolean> {
-    SharedValueImpl<Boolean> impl;
 
     public SharedBoolValue(String key) {
         this(key, "im_shared", null);
