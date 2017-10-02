@@ -21,7 +21,7 @@ This library includes basic utility methods.
 
 ###### Instalation
 ```gradle
-compile 'com.inverce.mod:Core:1.0.5'
+compile 'com.inverce.mod:Core:1.0.9'
 ```
 ###### [Documentation](/Core)
 
@@ -31,7 +31,7 @@ The simplest way to use google-vision with camera.
 
 ###### Instalation
 ```gradle
-compile 'com.inverce.mod:Vision:1.0.6'
+compile 'com.inverce.mod:Vision:1.0.8'
 ```
 ###### [Documentation](/VisionForCamera)
 
