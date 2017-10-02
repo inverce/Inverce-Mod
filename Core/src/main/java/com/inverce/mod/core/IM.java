@@ -109,6 +109,16 @@ public class IM {
         return internal.getLooperHandlerThread();
     }
 
+//    public static Identification identificators() {
+//    }
+//
+//    class Identification {
+//        public boolean isFirstRun() { }
+//        public String uuid() { }
+//        public String firebase() { }
+//        public String androidId () { }
+//    }
+
     /**
      * Enables usage of IM utilities in debug mode for Specified view,
      * does nothing in running application
