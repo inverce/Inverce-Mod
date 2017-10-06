@@ -2,7 +2,7 @@
 
 [![codebeat badge](https://codebeat.co/badges/1aff48e2-2406-4f2b-9e63-6b63b983d2f0)](https://codebeat.co/projects/github-com-inverce-inverce-mod)
 [![travis badge](https://travis-ci.org/inverce/Inverce-Mod.svg?branch=master)](https://travis-ci.org/inverce/Inverce-Mod.svg?branch=master)
-[ ![Download](https://api.bintray.com/packages/inverce/Inverce-Mod/IM-Core/images/download.svg) ](https://bintray.com/inverce/Inverce-Mod/IM-Core/_latestVersion)
+[![Download](https://api.bintray.com/packages/inverce/Inverce-Mod/IM-Core/images/download.svg) ](https://bintray.com/inverce/Inverce-Mod/IM-Core/_latestVersion)
 
 
 
@@ -10,20 +10,26 @@ Collection of simple utilities for android and java
 
 ## Core
 
-This library includes basic utility methods. 
-
-* Logger 
-* Ui and Layout utilities
-* Lifecycle utilities
-* Preconditions (WIP)
-* Access to contexts (application / activity)
-* Thread schedulers for background task and ui
+Utility methods for android.
 
 ###### Instalation
 ```gradle
-compile 'com.inverce.mod:Core:1.0.9'
+compile 'com.inverce.mod:Core:1.0.10'
 ```
-###### [Documentation](/Core)
+###### [Documentation](/docs/core)
+
+
+## Integrations
+
+Utilities and tools for common patters and libraries in Android.
+
+###### Instalation
+```gradle
+compile 'com.inverce.mod:Integrations:1.0.10'
+```
+###### [Documentation](/docs/integrations)
+
+
 
 ## Vision
 
@@ -31,9 +37,11 @@ The simplest way to use google-vision with camera.
 
 ###### Instalation
 ```gradle
-compile 'com.inverce.mod:Vision:1.0.8'
+compile 'com.inverce.mod:Vision:1.0.10'
 ```
-###### [Documentation](/VisionForCamera)
+###### [Documentation](/docs/vision)
+
+
 
 ## Legal 
 

@@ -4,6 +4,10 @@ import android.graphics.PointF;
 import android.support.annotation.ColorInt;
 import android.util.Base64;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.pow;
@@ -78,5 +82,28 @@ public final class MathEx {
 
     public static byte[] fromBase64Bytes(String input) {
         return input == null ? null : Base64.decode(input, Base64.NO_WRAP);
+    }
+
+    public static <E> List<List<E>> generatePermutations(List<E> original) {
+        if (original.size() == 0) {
+            List<List<E>> result = new ArrayList<>();
+            result.add(new ArrayList<E>());
+            return result;
+        }
+        E firstElement = original.remove(0);
+        List<List<E>> returnValue = new ArrayList<>();
+        List<List<E>> permutations = generatePermutations(original);
+        for (List<E> smallerPermutated : permutations) {
+            for (int index=0; index <= smallerPermutated.size(); index++) {
+                List<E> temp = new ArrayList<>(smallerPermutated);
+                temp.add(index, firstElement);
+                returnValue.add(temp);
+            }
+        }
+        return returnValue;
+    }
+
+    public static String decimFormat(String format, double val) {
+        return new DecimalFormat(format).format(val);
     }
 }
