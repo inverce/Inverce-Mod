@@ -4,7 +4,7 @@ apply plugin: 'com.android.library'
 
 ext {
     PUBLISH_GROUP_ID = 'com.inverce.mod'
-    PUBLISH_ARTIFACT_ID = 'Core'
+    PUBLISH_ARTIFACT_ID = 'Debug'
     PUBLISH_VERSION = rootProject.ext.lib.versionName
 }
 
@@ -34,6 +34,10 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile "com.android.support:appcompat-v7:$rootProject.ext.dep.support"
+    compile "com.android.support:recyclerview-v7:$rootProject.ext.dep.support"
+
+    compile ("com.inverce.mod:Core:$rootProject.ext.self.latest") { transitive = true }
+    compile ("com.inverce.mod:Integrations:$rootProject.ext.self.latest") { transitive = true }
 }
 
 apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'

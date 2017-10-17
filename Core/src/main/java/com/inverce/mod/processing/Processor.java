@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 public interface Processor<ITEM, RESULT> {
     RESULT processJob(ITEM item) throws Exception;
 
-    Processor<Callable<?>, ?> CALLABLE = Callable::call;
+    Processor<Callable<?>, ?> CALLABLE = (callable) -> callable.call();
     Processor<Runnable, Void> RUNNABLES = p -> {
         p.run();
         return null;

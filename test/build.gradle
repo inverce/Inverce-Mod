@@ -9,7 +9,7 @@ repositories {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
         applicationId "com.example.test"
@@ -33,7 +33,7 @@ android {
 def nytimes_version = "2.0.3";
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
 
     compile project(':Core')
 //    compile project(':Integrations')

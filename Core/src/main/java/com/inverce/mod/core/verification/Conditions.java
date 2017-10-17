@@ -42,23 +42,23 @@ public class Conditions {
     }
 
     public static boolean nullOrEmpty(String value) {
-        return value == null || value.length() > 0;
+        return value == null || value.length() == 0;
     }
 
     public static boolean nullOrEmpty(WeakReference<?> value) {
-        return value == null || value.get() != null;
+        return value == null || value.get() == null;
     }
 
     public static <T> boolean nullOrEmpty(T [] value) {
-        return value == null || value.length > 0;
+        return value == null || value.length == 0;
     }
 
     public static boolean nullOrEmpty(Collection<?> value) {
-        return value == null || value.size() > 0;
+        return value == null || value.size() == 0;
     }
 
     public static boolean nullOrEmpty(Cursor value) {
-        return value == null || value.getCount() > 0;
+        return value == null || value.getCount() == 0;
     }
 
     public static boolean isVisible(View view) {

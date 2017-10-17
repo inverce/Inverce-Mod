@@ -197,9 +197,9 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
     }
 
     /**
-     * Event bus is "simple" class used to manage registering and calling application global events <BR/>
-     * It must be noted that this class saves every registered listener in weak reference instance, thus listeners might be removed without explicit warning or unregister call <BR/>
-     * Bus has small overhead over managing events globally and MANUALLY, its not recommended to use Bus as way to replace standard listeners <BR/>
+     * Event bus is "simple" class used to manage registering and calling application global events
+     * It must be noted that this class saves every registered listener in weak reference instance, thus listeners might be removed without explicit warning or unregister call
+     * Bus has small overhead over managing events globally and MANUALLY, its not recommended to use Bus as way to replace standard listeners
      * Overhead is around 20-30% in function call per listener (not function total execution time, but time it takes to start method), thus is strongly advised not to use Bus in events that are repeated multiple times per second (onDraw | mouseMove.)
      */
     @SuppressWarnings("unchecked")
