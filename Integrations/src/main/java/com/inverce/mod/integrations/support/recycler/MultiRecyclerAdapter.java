@@ -90,6 +90,10 @@ public class MultiRecyclerAdapter<ITEM> extends RecyclerAdapter<ITEM, RecyclerVi
         });
     }
 
+    public <I extends ITEM, VH extends RecyclerView.ViewHolder & IBinder<I>> int register(IPredicate<ITEM> checkType, DataBinder<I> binder, @LayoutRes int layout) {
+        return register(checkType, (itemView) -> new BindViewHolder<>(itemView, binder), layout);
+    }
+
     private class MultiInfo<I extends ITEM, VH extends RecyclerView.ViewHolder> {
         int registeredType;
         IPredicate<ITEM> checkType;

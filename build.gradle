@@ -29,7 +29,7 @@ ext {
 
     lib = [
         versionCode : 1,
-        versionName : "1.0.10",
+        versionName : "1.0.11",
         compileSdkVersion: 25,
         buildToolsVersion: "25.0.3",
         minSdkVersion: 15,
@@ -37,7 +37,10 @@ ext {
     ]
 
     self = [
-        latest: lib.versionName
+        latestCore: "1.0.11",
+        latestIntegrations: "1.0.10",
+        latestDebug: "1.0.10",
+        latestVision: "1.0.10"
     ]
 
     dep = [

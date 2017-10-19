@@ -36,8 +36,8 @@ dependencies {
     compile "com.android.support:appcompat-v7:$rootProject.ext.dep.support"
     compile "com.android.support:recyclerview-v7:$rootProject.ext.dep.support"
 
-    compile ("com.inverce.mod:Core:$rootProject.ext.self.latest") { transitive = true }
-    compile ("com.inverce.mod:Integrations:$rootProject.ext.self.latest") { transitive = true }
+    compile ("com.inverce.mod:Core:$rootProject.ext.self.latestCore") { transitive = true }
+    compile ("com.inverce.mod:Integrations:$rootProject.ext.self.latestIntegrations") { transitive = true }
 }
 
 apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'

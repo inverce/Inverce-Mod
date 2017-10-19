@@ -1,6 +1,5 @@
 package com.inverce.mod.integrations.support.recycler;
 
-import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.DividerItemDecoration;

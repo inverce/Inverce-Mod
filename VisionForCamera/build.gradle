@@ -36,7 +36,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:$rootProject.ext.dep.support"
     compile "com.android.support:design:$rootProject.ext.dep.support"
 
-    compile ("com.inverce.mod:Core:$rootProject.ext.self.latest") { transitive = true }
+    compile ("com.inverce.mod:Core:$rootProject.ext.self.latestCore") { transitive = true }
     compile ("com.google.android.gms:play-services-vision:$rootProject.ext.dep.play") { transitive true }
 }
 
