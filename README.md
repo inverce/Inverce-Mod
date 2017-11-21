@@ -5,6 +5,8 @@
 
 Collection of simple utilities for android and java
 
+[Documentation](https://github.com/inverce/Inverce-Mod/wiki)
+
 ## Core [![Download](https://api.bintray.com/packages/inverce/Inverce-Mod/IM-Core/images/download.svg) ](https://bintray.com/inverce/Inverce-Mod/IM-Core/_latestVersion)
 
 Utility methods for android.
