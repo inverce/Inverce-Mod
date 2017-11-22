@@ -19,10 +19,10 @@ import static com.inverce.mod.core.verification.Preconditions.checkState;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class ProcessingQueue {
-    List<Job<?, ?>> processing, awaiting;
-    List<Thread> activeThreads;
-    Settings cfg;
-    QueueListener events;
+    protected List<Job<?, ?>> processing, awaiting;
+    protected List<Thread> activeThreads;
+    protected Settings cfg;
+    protected QueueListener events;
 
     public static ProcessingQueue create() {
         return new ProcessingQueue();

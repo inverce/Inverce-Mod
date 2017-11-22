@@ -4,7 +4,7 @@ import com.inverce.mod.core.functional.ISupplier;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class ReadOnlyValue<T> {
-    private ISupplier<T> supplier;
+    protected ISupplier<T> supplier;
 
     protected ReadOnlyValue() { }
 

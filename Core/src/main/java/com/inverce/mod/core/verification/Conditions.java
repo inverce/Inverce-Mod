@@ -5,6 +5,8 @@ import android.view.View;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings("unused")
 public class Conditions {
@@ -54,6 +56,10 @@ public class Conditions {
     }
 
     public static boolean nullOrEmpty(Collection<?> value) {
+        return value == null || value.size() == 0;
+    }
+
+    public static boolean nullOrEmpty(Map<?, ?> value) {
         return value == null || value.size() == 0;
     }
 

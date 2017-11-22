@@ -38,7 +38,7 @@ public class FlatArrayList<E> extends AbstractList<E> implements List<E>, Random
         return optimize ? cache.size() : calculateSize();
     }
 
-    boolean flatError = false;
+    protected boolean flatError = false;
     private synchronized E getFlatElement(int index) {
         int size = size();
         if (index < 0 || index >= size) {

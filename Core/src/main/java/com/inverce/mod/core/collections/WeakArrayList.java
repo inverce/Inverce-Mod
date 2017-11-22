@@ -12,7 +12,7 @@ import java.util.Iterator;
  * @param <T>
  */
 public class WeakArrayList<T> extends AbstractList<T> {
-    private ArrayList<WeakReference<T>> impl = new ArrayList<>(1);
+    protected ArrayList<WeakReference<T>> impl = new ArrayList<>(1);
 
     @Override @Nullable
     public T get(int index) {

@@ -17,8 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MultiRecyclerAdapter<ITEM> extends RecyclerAdapter<ITEM, RecyclerView.ViewHolder>  {
-    private List<MultiInfo<?, ?>> types;
-    private SparseArray<MultiInfo<?, ?>> typesSparse;
+    public IPredicate<?> ANY = p -> true;
+    protected List<MultiInfo<?, ?>> types;
+    protected SparseArray<MultiInfo<?, ?>> typesSparse;
 
     public MultiRecyclerAdapter() {
         types = new ArrayList<>();
@@ -90,11 +91,11 @@ public class MultiRecyclerAdapter<ITEM> extends RecyclerAdapter<ITEM, RecyclerVi
         });
     }
 
-    public <I extends ITEM, VH extends RecyclerView.ViewHolder & IBinder<I>> int register(IPredicate<ITEM> checkType, DataBinder<I> binder, @LayoutRes int layout) {
-        return register(checkType, (itemView) -> new BindViewHolder<>(itemView, binder), layout);
+    public <I extends ITEM> int register(IPredicate<ITEM> checkType, DataBinder<I> binder, @LayoutRes int layout) {
+        return register(checkType, binder, BindViewHolder::new, layout);
     }
 
-    private class MultiInfo<I extends ITEM, VH extends RecyclerView.ViewHolder> {
+    protected class MultiInfo<I extends ITEM, VH extends RecyclerView.ViewHolder> {
         int registeredType;
         IPredicate<ITEM> checkType;
         IBind<I, VH> binder;
@@ -111,4 +112,5 @@ public class MultiRecyclerAdapter<ITEM> extends RecyclerAdapter<ITEM, RecyclerVi
             binder.onBindViewHolder((VH)holder, (I)item, position);
         }
     }
+
 }

@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 class AsyncResult<T> extends AbstractList<T> {
-    List<T> store;
+    protected List<T> store;
 
     AsyncResult(List<T> list) {
         store = list;

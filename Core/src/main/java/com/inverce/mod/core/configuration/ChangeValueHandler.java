@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChangeValueHandler<T> implements MultiEvent<ValueChanged<T>> {
-    private List<ValueChanged<T>> list = null;
+    protected List<ValueChanged<T>> list = null;
 
     private List<ValueChanged<T>> list() {
         if (list == null) {

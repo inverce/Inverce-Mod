@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import java.util.concurrent.Executor;
 
 /* internal */ class DefaultUiExecutor implements Executor {
-    private Handler handler;
+    protected Handler handler;
 
     public DefaultUiExecutor() {
         handler = new Handler(Looper.getMainLooper());

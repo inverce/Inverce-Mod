@@ -3,7 +3,7 @@ package com.inverce.mod.core.configuration.extended;
 import com.inverce.mod.core.configuration.primitive.BoolValue;
 
 public class BoolValueAutoToggle extends BoolValue {
-    boolean toggled;
+    protected boolean toggled;
 
     public BoolValueAutoToggle(boolean initialValue, boolean toggledValue) {
         super(initialValue);

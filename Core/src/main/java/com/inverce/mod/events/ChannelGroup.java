@@ -3,8 +3,8 @@ package com.inverce.mod.events;
 import android.util.SparseArray;
 
 public class ChannelGroup {
-    private final boolean useWeekEvents;
-    private SparseArray<Channel> channels;
+    protected final boolean useWeekEvents;
+    protected SparseArray<Channel> channels;
 
     public ChannelGroup() {
         this(true);

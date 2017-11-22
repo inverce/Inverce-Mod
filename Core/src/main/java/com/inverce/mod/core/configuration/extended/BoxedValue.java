@@ -1,7 +1,7 @@
-package com.inverce.mod.core.configuration;
+package com.inverce.mod.core.configuration.extended;
 
-class BoxedValue<T> {
-    private T value;
+public class BoxedValue<T> {
+    protected T value;
 
     public BoxedValue(T value) {
         this.value = value;

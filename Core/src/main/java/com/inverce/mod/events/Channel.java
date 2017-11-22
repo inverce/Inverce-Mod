@@ -10,7 +10,7 @@ import java.util.Set;
 
 @SuppressWarnings({"unchecked", "unused"})
 public class Channel extends HashMap<Class<? extends Listener>, Event<? extends Listener>> {
-    private static CacheFunctionMap<Class<?>, Set<Class<?>>> listenersInClass;
+    protected static CacheFunctionMap<Class<?>, Set<Class<?>>> listenersInClass;
 
     static {
         listenersInClass = new CacheFunctionMap<>(Channel::getListenersInClassImpl);

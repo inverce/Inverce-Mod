@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class DynamicScheduledExecutor extends ThreadPoolExecutor implements ScheduledExecutorService {
-    private static ScheduledThreadPoolExecutor scheduler;
+    protected static ScheduledThreadPoolExecutor scheduler;
 
     public DynamicScheduledExecutor() {
         super(0, Integer.MAX_VALUE, 1, TimeUnit.SECONDS, new SynchronousQueue<>());

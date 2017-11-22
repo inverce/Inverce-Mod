@@ -12,9 +12,9 @@ public class Preset {
         return new Preset().new Builder();
     }
 
-    private ArrayList<Record<?>> records;
+    protected ArrayList<Record<?>> records;
 
-    Preset() {
+    protected Preset() {
         records = new ArrayList<>();
     }
 
@@ -25,7 +25,7 @@ public class Preset {
         return this;
     }
 
-    private class Record<T> {
+    protected class Record<T> {
         Value<T> preference;
         ISupplier<T> value;
 

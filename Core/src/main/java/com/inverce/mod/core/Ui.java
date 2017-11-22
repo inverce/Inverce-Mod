@@ -2,6 +2,7 @@ package com.inverce.mod.core;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -16,8 +17,11 @@ import android.support.v4.app.Fragment;
 import android.util.StateSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
+
+import static com.inverce.mod.core.verification.Conditions.notNullOrEmpty;
 
 /**
  * The Ui utilities
@@ -93,6 +97,30 @@ public class Ui {
             }
         }
         return false;
+    }
+
+    public static Point getRelativePosition(@NonNull View view, @Nullable View parent) {
+        Point position = new Point(view.getLeft(), view.getTop());
+        ViewParent actView = view.getParent();
+
+        if (actView == null) {
+            return position;
+        }
+        do {
+            if (actView instanceof View) {
+                position.x += ((View) actView).getLeft();
+                position.y += ((View) actView).getTop();
+            }
+            actView = actView.getParent();
+        }
+        while (actView instanceof View && actView != parent);
+        return position;
+    }
+
+    public static Point getPositionOnScreen(@NonNull View view) {
+        int[] pos = new int[2];
+        view.getLocationOnScreen(pos);
+        return new Point(pos[0], pos[1]);
     }
 
     @Nullable

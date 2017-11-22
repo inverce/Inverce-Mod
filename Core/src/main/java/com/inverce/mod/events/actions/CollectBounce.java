@@ -13,11 +13,11 @@ import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class CollectBounce<T> {
-    private ScheduledFuture<?> feature;
-    private IConsumer<List<T>> report;
-    private long delay = 500;
-    private List<T> events;
-    private boolean emitOnDelay;
+    protected ScheduledFuture<?> feature;
+    protected IConsumer<List<T>> report;
+    protected long delay = 500;
+    protected List<T> events;
+    protected boolean emitOnDelay;
 
     public CollectBounce() {
         events = Collections.synchronizedList(new ArrayList<>());

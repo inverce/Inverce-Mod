@@ -13,10 +13,10 @@ import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class DeBounce<T> {
-    private ScheduledFuture<?> feature;
-    private IConsumer<T> report;
-    private long delay = 500;
-    private T evt;
+    protected ScheduledFuture<?> feature;
+    protected IConsumer<T> report;
+    protected long delay = 500;
+    protected T evt;
 
     public DeBounce() { }
 

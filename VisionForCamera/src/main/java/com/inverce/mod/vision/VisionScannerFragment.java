@@ -44,21 +44,19 @@ public class VisionScannerFragment extends Fragment {
 
     private static final String TAG = "IM.Barcode";
 
-    protected
     @Nullable
-    BarcodeDetector barcodeDetector;
-    protected
+    protected BarcodeDetector barcodeDetector;
     @Nullable
-    CameraSource mCameraSource;
+    protected CameraSource mCameraSource;
     protected CameraSourcePreview mCameraSourcePreview;
     protected int barcodeFormats = Barcode.ALL_FORMATS;
     protected NewDetectionListener detectionListener;
-    ScheduledFuture<?> selfFocus;
+    protected ScheduledFuture<?> selfFocus;
 
     /**
      * true if no further barcode should be detected or given as a result
      */
-    private boolean mDetectionConsumed = false;
+    protected boolean mDetectionConsumed = false;
 
     @Nullable
     @Override

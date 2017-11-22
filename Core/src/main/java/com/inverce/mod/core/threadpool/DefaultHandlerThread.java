@@ -9,7 +9,7 @@ import java.util.concurrent.Executor;
 
 
 public class DefaultHandlerThread extends HandlerThread implements Executor {
-    Handler handler;
+    protected Handler handler;
     public DefaultHandlerThread() {
         super("Handler-thread", Thread.NORM_PRIORITY);
     }

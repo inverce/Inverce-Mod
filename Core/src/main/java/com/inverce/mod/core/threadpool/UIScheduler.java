@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit;
 
 
 public class UIScheduler implements Executor {
-    private static ScheduledThreadPoolExecutor scheduler;
-    private final Handler uiHandler;
+    protected static ScheduledThreadPoolExecutor scheduler;
+    protected final Handler uiHandler;
 
     public UIScheduler() {
         uiHandler = new Handler(Looper.getMainLooper());

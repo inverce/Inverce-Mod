@@ -1,5 +1,6 @@
 package com.inverce.mod.core.configuration;
 
+import com.inverce.mod.core.configuration.extended.BoxedValue;
 import com.inverce.mod.core.functional.IConsumer;
 import com.inverce.mod.core.functional.IPredicate;
 import com.inverce.mod.core.functional.ISupplier;
@@ -7,16 +8,16 @@ import com.inverce.mod.events.interfaces.MultiEvent;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class Value<T> extends ReadOnlyValue<T> {
-    private IPredicate<T> validator;
-    private IConsumer<T> setter;
-    private ChangeValueHandler<T> changeValueHandler;
+    protected IPredicate<T> validator;
+    protected IConsumer<T> setter;
+    protected ChangeValueHandler<T> changeValueHandler;
 
     protected Value() {
         changeValueHandler = new ChangeValueHandler<>();
     }
 
     public Value(T value) {
-        this(value, P -> true);
+        this(value, p -> true);
     }
 
     public Value(T value, IPredicate<T> validator) {
@@ -34,6 +35,7 @@ public class Value<T> extends ReadOnlyValue<T> {
 
     public Value(ISupplier<T> supplier, IConsumer<T> setter, IPredicate<T> validator) {
         super(supplier);
+        this.changeValueHandler = new ChangeValueHandler<>();
         this.validator = validator;
         this.setter = setter;
     }

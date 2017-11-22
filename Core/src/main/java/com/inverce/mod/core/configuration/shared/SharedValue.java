@@ -4,7 +4,7 @@ import com.inverce.mod.core.configuration.Value;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class SharedValue<T> extends Value<T> {
-    SharedValueImpl<T> impl;
+    protected SharedValueImpl<T> impl;
 
     public SharedValue(Class<T> clazz, String key) {
         this(clazz, key, "im_shared", null);

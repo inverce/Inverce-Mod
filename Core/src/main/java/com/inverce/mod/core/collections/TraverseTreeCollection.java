@@ -19,8 +19,8 @@ import static com.inverce.mod.core.collections.TraversalMethod.DESC;
 import static com.inverce.mod.core.collections.TraversalMethod.DFS;
 
 public class TraverseTreeCollection<T extends TreeNode<T>> extends AbstractCollection<T> {
-    private final boolean isDfs, isAsc;
-    private final T node;
+    protected final boolean isDfs, isAsc;
+    protected final T node;
 
     public TraverseTreeCollection(T node) {
         this(node, DFS | ASC);

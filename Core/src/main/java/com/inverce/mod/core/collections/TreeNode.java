@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TreeNode<T extends TreeNode<T>>  {
-    private List<T> children;
+    protected List<T> children;
 
     public TreeNode() {
         this(new ArrayList<>());

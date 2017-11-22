@@ -21,14 +21,14 @@ import static java.lang.reflect.Proxy.newProxyInstance;
 
 @SuppressWarnings("unused")
 public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>, EventCaller<T>, InvocationHandler {
-    private Class<T> service;
+    protected Class<T> service;
 
     // weak referenced used to clean_up listeners even if user forgets to, or didn't had time
-    private final List<T> list;
+    protected final List<T> list;
 
-    private final T proxyCaller;
-    private boolean needCleanUp;
-    private static Executor uiExecutor, bgExecutor;
+    protected final T proxyCaller;
+    protected boolean needCleanUp;
+    protected static Executor uiExecutor, bgExecutor;
 
     static {
         uiExecutor = new DefaultUiExecutor();
