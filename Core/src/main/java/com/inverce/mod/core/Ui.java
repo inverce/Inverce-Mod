@@ -21,7 +21,7 @@ import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 
-import static com.inverce.mod.core.verification.Conditions.notNullOrEmpty;
+import java.text.Normalizer;
 
 /**
  * The Ui utilities
@@ -193,6 +193,13 @@ public class Ui {
                 imm.toggleSoftInput(0, 0);
             }
         } catch (Exception ignored) { /* safely ignore, as ex in here means we could not hide keyboard */ }
+    }
+
+    public static String deAccent(String name) {
+        return Normalizer.normalize(name, Normalizer.Form.NFD)
+                .replaceAll("ł", "l")
+                .replaceAll("Ł", "L")
+                .replaceAll("[^\\p{ASCII}]", "");
     }
 
     @SuppressWarnings("ResourceType")

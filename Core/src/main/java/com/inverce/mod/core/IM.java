@@ -10,10 +10,14 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.inverce.mod.core.configuration.extended.LazyValue;
+import com.inverce.mod.core.configuration.shared.SharedBoolAutoToggle;
 import com.inverce.mod.core.internal.IMInternal;
 import com.inverce.mod.core.threadpool.DefaultHandlerThread;
 import com.inverce.mod.core.threadpool.DynamicScheduledExecutor;
 import com.inverce.mod.core.threadpool.UIScheduler;
+
+import java.util.UUID;
 
 /**
  * Provides easy access to context and executors.
@@ -23,6 +27,9 @@ import com.inverce.mod.core.threadpool.UIScheduler;
 @SuppressLint("StaticFieldLeak")
 public class IM {
     private static IMInternal internal = IMInternal.get();
+    private static final SharedBoolAutoToggle FIRST_RUN = new SharedBoolAutoToggle("im_first_run", true, false);
+    private static final LazyValue<String> SESSION_UUID = new LazyValue<>(() -> UUID.randomUUID().toString());
+    private static final LazyValue<Boolean> IS_FIRST_RUN = new LazyValue<>(FIRST_RUN::get);
 
     /**
      * Provides current context, this will be either activity or application based on whats available.
@@ -109,16 +116,6 @@ public class IM {
         return internal.getLooperHandlerThread();
     }
 
-//    public static Identification identificators() {
-//    }
-//
-//    class Identification {
-//        public boolean isFirstRun() { }
-//        public String uuid() { }
-//        public String firebase() { }
-//        public String androidId () { }
-//    }
-
     /**
      * Enables usage of IM utilities in debug mode for Specified view,
      * does nothing in running application
@@ -131,4 +128,13 @@ public class IM {
             IMInitializer.initialize(view.getContext());
         }
     }
+
+    public static boolean isFirstRun() {
+        return IS_FIRST_RUN.get();
+    }
+
+    public static String sessionUuid() {
+        return SESSION_UUID.get();
+    }
+
 }

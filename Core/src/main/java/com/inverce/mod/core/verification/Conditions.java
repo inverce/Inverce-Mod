@@ -6,7 +6,6 @@ import android.view.View;
 import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 @SuppressWarnings("unused")
 public class Conditions {

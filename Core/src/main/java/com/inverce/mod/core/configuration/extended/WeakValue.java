@@ -21,5 +21,4 @@ public class WeakValue<T> extends Value<T> {
         setValidator(validator);
         set(value);
     }
-
 }

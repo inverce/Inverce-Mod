@@ -22,10 +22,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
+        maven { url 'https://maven.google.com/'  }
     }
 }
 
@@ -37,7 +34,7 @@ ext {
 
     lib = [
         versionCode : 1,
-        versionName : "1.0.13",
+        versionName : "1.0.14",
         compileSdkVersion: 27,
         buildToolsVersion: "27.0.1",
         minSdkVersion: 15,
@@ -45,7 +42,7 @@ ext {
     ]
 
     self = [
-        latestCore: "1.0.12",
+        latestCore: "1.0.14",
         latestIntegrations: "1.0.12",
         latestDebug: "1.0.12",
         latestVision: "1.0.12"

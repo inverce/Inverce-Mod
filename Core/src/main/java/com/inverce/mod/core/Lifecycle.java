@@ -30,7 +30,7 @@ public class Lifecycle {
      *
      * @param postEvents the post events
      */
-    public static void setPostEvents(boolean postEvents) {
+    public static void setShouldPostEvents(boolean postEvents) {
         Lifecycle.postEvents = postEvents;
     }
 
