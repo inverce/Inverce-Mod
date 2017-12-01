@@ -74,28 +74,6 @@ public class CameraSource {
      */
     protected static final float ASPECT_RATIO_TOLERANCE = 0.01f;
 
-    @StringDef({
-            Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE,
-            Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO,
-            Camera.Parameters.FOCUS_MODE_AUTO,
-            Camera.Parameters.FOCUS_MODE_EDOF,
-            Camera.Parameters.FOCUS_MODE_FIXED,
-            Camera.Parameters.FOCUS_MODE_INFINITY,
-            Camera.Parameters.FOCUS_MODE_MACRO
-    })
-    @Retention(RetentionPolicy.SOURCE)
-    protected @interface FocusMode {}
-
-    @StringDef({
-            Camera.Parameters.FLASH_MODE_ON,
-            Camera.Parameters.FLASH_MODE_OFF,
-            Camera.Parameters.FLASH_MODE_AUTO,
-            Camera.Parameters.FLASH_MODE_RED_EYE,
-            Camera.Parameters.FLASH_MODE_TORCH
-    })
-    @Retention(RetentionPolicy.SOURCE)
-    protected @interface FlashMode {}
-
     protected Context mContext;
 
     protected final Object mCameraLock = new Object();
@@ -494,12 +472,12 @@ public class CameraSource {
      * Starts camera auto-focus and registers a callback function to run when
      * the camera is focused.  This method is only valid when preview is active
      * (between {@link #start()} or {@link #start(SurfaceHolder)} and before {@link #stop()} or {@link #release()}).
-     *  Callers should check
+     * Callers should check
      * {@link #getFocusMode()} to determine if
      * this method should be called. If the camera does not support auto-focus,
      * it is a no-op and {@link AutoFocusCallback#onAutoFocus(boolean)}
      * callback will be called immediately.
-     *  If the current flash mode is not
+     * If the current flash mode is not
      * {@link Camera.Parameters#FLASH_MODE_OFF}, flash may be
      * fired during auto-focus, depending on the driver and camera hardware.
      *
@@ -1198,5 +1176,29 @@ public class CameraSource {
             mCameraSource.mFrameProcessor = mCameraSource.new FrameProcessingRunnable(mDetector);
             return mCameraSource;
         }
+    }
+
+    @StringDef({
+            Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE,
+            Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO,
+            Camera.Parameters.FOCUS_MODE_AUTO,
+            Camera.Parameters.FOCUS_MODE_EDOF,
+            Camera.Parameters.FOCUS_MODE_FIXED,
+            Camera.Parameters.FOCUS_MODE_INFINITY,
+            Camera.Parameters.FOCUS_MODE_MACRO
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    protected @interface FocusMode {
+    }
+
+    @StringDef({
+            Camera.Parameters.FLASH_MODE_ON,
+            Camera.Parameters.FLASH_MODE_OFF,
+            Camera.Parameters.FLASH_MODE_AUTO,
+            Camera.Parameters.FLASH_MODE_RED_EYE,
+            Camera.Parameters.FLASH_MODE_TORCH
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    protected @interface FlashMode {
     }
 }
