@@ -36,16 +36,14 @@ public abstract class RecyclerAdapter<ITEM, VH extends RecyclerView.ViewHolder> 
         setData(elements, false);
     }
 
-    public void setData(List<? extends ITEM> elements, boolean useDiffUtil) {
+    public void setData(List<? extends ITEM> items, boolean useDiffUtil) {
+        final List<? extends ITEM> elements = items != null ? items : new ArrayList<>();
+
         if (!Ui.isUiThread()) {
-            List<? extends ITEM> finalElements = elements;
-            IM.onUi().execute(() -> setData(finalElements, useDiffUtil));
+            IM.onUi().execute(() -> setData(elements, useDiffUtil));
             return;
         }
 
-        if (elements == null) {
-            elements = new ArrayList<>();
-        }
         if (useDiffUtil) {
             List<? extends ITEM> oldItems = new ArrayList<>(data);
             DiffUtil.calculateDiff(new EasyDiffUtilCallBack<>(elements, oldItems))

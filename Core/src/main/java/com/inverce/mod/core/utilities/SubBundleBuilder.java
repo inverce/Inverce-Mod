@@ -14,10 +14,7 @@ public class SubBundleBuilder<TYPE> extends SubBuilder<TYPE> {
 
     public SubBundleBuilder(TYPE parent, Bundle extras) {
         super(parent);
-        if (extras == null) {
-            extras = new Bundle();
-        }
-        this.extras = extras;
+        this.extras = extras == null ? new Bundle() : extras;
     }
 
     @Override

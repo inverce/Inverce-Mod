@@ -27,17 +27,17 @@ public class VoidItemAnimator extends RecyclerView.ItemAnimator {
 
     @Override
     public void runPendingAnimations() {
-
+        // leave empty for user to override
     }
 
     @Override
     public void endAnimation(RecyclerView.ViewHolder item) {
-
+        // leave empty for user to override
     }
 
     @Override
     public void endAnimations() {
-
+        // leave empty for user to override
     }
 
     @Override

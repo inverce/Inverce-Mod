@@ -3,6 +3,7 @@ package com.inverce.mod.processing;
 import android.support.annotation.WorkerThread;
 
 import com.inverce.mod.core.IM;
+import com.inverce.mod.core.functional.IConsumer;
 import com.inverce.mod.core.threadpool.NamedThreadPool;
 import com.inverce.mod.processing.Processor.EX;
 
@@ -11,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 import static com.inverce.mod.core.verification.Preconditions.checkArgument;
 import static com.inverce.mod.core.verification.Preconditions.checkNotNull;
@@ -79,10 +79,7 @@ public class ProcessingQueue {
     }
 
     public ProcessingQueue setListener(QueueListener events) {
-        if (events == null) {
-            events = new QueueListenerAdapter();
-        }
-        this.events = events;
+        this.events = events == null ? new QueueListenerAdapter() : events;
         return this;
     }
 
@@ -90,7 +87,7 @@ public class ProcessingQueue {
         return processInternal(EX.map(Processor.RUNNABLES, handler::processJob), list, false);
     }
 
-    public <T> ProcessingQueue process(Consumer<T> handler, List<T> list) {
+    public <T> ProcessingQueue process(IConsumer<T> handler, List<T> list) {
         return processInternal(EX.map(Processor.RUNNABLES, o -> () -> handler.accept(o)), list, false);
     }
 
@@ -102,7 +99,7 @@ public class ProcessingQueue {
         return processInternal(EX.map(Processor.RUNNABLES, handler::processJob), list, true);
     }
 
-    public <T> ProcessingQueue processIfNotAdded(Consumer<T> handler, List<T> list) {
+    public <T> ProcessingQueue processIfNotAdded(IConsumer<T> handler, List<T> list) {
         return processInternal(EX.map(Processor.RUNNABLES, o -> () -> handler.accept(o)), list, true);
     }
 

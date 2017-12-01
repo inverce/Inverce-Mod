@@ -395,29 +395,29 @@ public final class Preconditions {
      * placeholders, the unmatched arguments will be appended to the end of the formatted message in
      * square braces.
      *
-     * @param template a non-null string containing 0 or more {@code %s} placeholders.
+     * @param msg a non-null string containing 0 or more {@code %s} placeholders.
      * @param args     the arguments to be substituted into the message template. Arguments are converted
      *                 to strings using {@link String#valueOf(Object)}. Arguments can be null.
      */
     // Note that this is somewhat-improperly used from Verify.java as well.
     static String format(String template, @Nullable Object... args) {
-        template = String.valueOf(template); // null -> "null"
+        final String msg = String.valueOf(template); // null -> "null"
 
         // start substituting the arguments into the '%s' placeholders
         assert args != null;
-        StringBuilder builder = new StringBuilder(template.length() + 16 * args.length);
+        StringBuilder builder = new StringBuilder(msg.length() + 16 * args.length);
         int templateStart = 0;
         int i = 0;
         while (i < args.length) {
-            int placeholderStart = template.indexOf("%s", templateStart);
+            int placeholderStart = msg.indexOf("%s", templateStart);
             if (placeholderStart == -1) {
                 break;
             }
-            builder.append(template, templateStart, placeholderStart);
+            builder.append(msg, templateStart, placeholderStart);
             builder.append(args[i++]);
             templateStart = placeholderStart + 2;
         }
-        builder.append(template, templateStart, template.length());
+        builder.append(msg, templateStart, msg.length());
 
         // if we run out of placeholders, append the extra args in square braces
         if (i < args.length) {

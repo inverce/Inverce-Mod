@@ -106,10 +106,7 @@ public class TraverseTreeCollection<T extends TreeNode<T>> extends AbstractColle
         private List<E> inner;
 
         ReverseOrderList(List<E> inner) {
-            if (inner == null) {
-                inner = new ArrayList<>();
-            }
-            this.inner = inner;
+            this.inner = inner != null ? inner : new ArrayList<>();
         }
 
         @Override

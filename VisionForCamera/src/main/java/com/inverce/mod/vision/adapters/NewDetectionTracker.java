@@ -21,17 +21,17 @@ public class NewDetectionTracker extends Tracker<Barcode> {
 
     @Override
     public void onUpdate(Detector.Detections<Barcode> detectionResults, Barcode item) {
-
+        // leave empty for user to override
     }
 
     @Override
     public void onMissing(Detector.Detections<Barcode> detectionResults) {
-
+        // leave empty for user to override
     }
 
     @Override
     public void onDone() {
-
+        // leave empty for user to override
     }
 
 }
