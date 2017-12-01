@@ -2,6 +2,9 @@
 
 [![codebeat badge](https://codebeat.co/badges/1aff48e2-2406-4f2b-9e63-6b63b983d2f0)](https://codebeat.co/projects/github-com-inverce-inverce-mod)
 [![travis badge](https://travis-ci.org/inverce/Inverce-Mod.svg?branch=master)](https://travis-ci.org/inverce/Inverce-Mod.svg?branch=master)
+[![Known Vulnerabilities](https://snyk.io/test/github/inverce/inverce-mod/badge.svg)](https://snyk.io/test/github/inverce/inverce-mod)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8f61e0ab74bd42b2b97882510a4c156a)](https://www.codacy.com/app/dominik.opolski/Inverce-Mod?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=inverce/Inverce-Mod&amp;utm_campaign=Badge_Grade)
+
 
 Collection of simple utilities for android and java
 

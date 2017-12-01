@@ -22,11 +22,6 @@ public class AutoResizeTextView extends AppCompatTextView {
     // Minimum text size for this text view
     public static final float MIN_TEXT_SIZE = 20;
 
-    // Interface for resize notifications
-    public interface OnTextResizeListener {
-        void onTextResize(TextView textView, float oldSize, float newSize);
-    }
-
     // Our ellipse string
     private static final String mEllipsis = "...";
 
@@ -303,4 +298,8 @@ public class AutoResizeTextView extends AppCompatTextView {
         return layout.getHeight();
     }
 
+    // Interface for resize notifications
+    public interface OnTextResizeListener {
+        void onTextResize(TextView textView, float oldSize, float newSize);
+    }
 }

@@ -21,11 +21,6 @@ public class AutoResizeButton extends android.support.v7.widget.AppCompatButton 
     // Minimum text size for this text view
     public static final float MIN_TEXT_SIZE = 20;
 
-    // Interface for resize notifications
-    public interface OnTextResizeListener {
-        void onTextResize(TextView textView, float oldSize, float newSize);
-    }
-
     // Our ellipse string
     private static final String mEllipsis = "...";
 
@@ -91,6 +86,7 @@ public class AutoResizeButton extends android.support.v7.widget.AppCompatButton 
 
     /**
      * Register listener to receive resize notifications
+     *
      * @param listener
      */
     public void setOnResizeListener(OnTextResizeListener listener) {
@@ -127,6 +123,7 @@ public class AutoResizeButton extends android.support.v7.widget.AppCompatButton 
 
     /**
      * Set the upper text size limit and invalidate the view
+     *
      * @param maxTextSize
      */
     public void setMaxTextSize(float maxTextSize) {
@@ -137,6 +134,7 @@ public class AutoResizeButton extends android.support.v7.widget.AppCompatButton 
 
     /**
      * Return upper text size limit
+     *
      * @return
      */
     public float getMaxTextSize() {
@@ -145,6 +143,7 @@ public class AutoResizeButton extends android.support.v7.widget.AppCompatButton 
 
     /**
      * Set the lower text size limit and invalidate the view
+     *
      * @param minTextSize
      */
     public void setMinTextSize(float minTextSize) {
@@ -155,6 +154,7 @@ public class AutoResizeButton extends android.support.v7.widget.AppCompatButton 
 
     /**
      * Return lower text size limit
+     *
      * @return
      */
     public float getMinTextSize() {
@@ -163,6 +163,7 @@ public class AutoResizeButton extends android.support.v7.widget.AppCompatButton 
 
     /**
      * Set flag to add ellipsis to text that overflows at the smallest text size
+     *
      * @param addEllipsis
      */
     public void setAddEllipsis(boolean addEllipsis) {
@@ -171,6 +172,7 @@ public class AutoResizeButton extends android.support.v7.widget.AppCompatButton 
 
     /**
      * Return flag to add ellipsis to text that overflows at the smallest text size
+     *
      * @return
      */
     public boolean getAddEllipsis() {
@@ -212,6 +214,7 @@ public class AutoResizeButton extends android.support.v7.widget.AppCompatButton 
 
     /**
      * Resize the text size with specified width and height
+     *
      * @param width
      * @param height
      */
@@ -302,4 +305,8 @@ public class AutoResizeButton extends android.support.v7.widget.AppCompatButton 
         return layout.getHeight();
     }
 
+    // Interface for resize notifications
+    public interface OnTextResizeListener {
+        void onTextResize(TextView textView, float oldSize, float newSize);
+    }
 }
