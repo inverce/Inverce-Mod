@@ -177,17 +177,17 @@ public class ProcessingQueue {
         processing.remove(jobResult.job);
         activeThreads.remove(jobResult.job.thread);
 
-        if (jobResult.exception != null && cfg.failureAction == FailureAction.ABORT) {
-            cancel();
-            cfg.isDone = true;
-            events.onQueueFinished(this);
-            return;
-        }
-
         if (jobResult.exception == null) {
             events.onJobResult(this, jobResult.job, jobResult.result);
         } else {
             events.onJobFailure(this, jobResult.job, jobResult.exception);
+        }
+
+        if (jobResult.exception != null && cfg.failureAction == FailureAction.ABORT) {
+            cancel();
+            cfg.isDone = true;
+//            events.onQueueFinished(this);
+            return;
         }
 
         if (awaiting.size() > 0 && !cfg.isCancelled) {
