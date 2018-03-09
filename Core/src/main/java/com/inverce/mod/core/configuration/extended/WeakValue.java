@@ -7,17 +7,19 @@ import java.lang.ref.WeakReference;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class WeakValue<T> extends Value<T> {
-    protected WeakReference<T> simpleValue;
+    protected WeakReference<T> weakValue;
 
-    protected WeakValue() { }
+    protected WeakValue() {
+        this(null);
+    }
 
     public WeakValue(T value) {
         this(value, P -> true);
     }
 
     public WeakValue(T value, IPredicate<T> validator) {
-        setSetter(p -> simpleValue = new WeakReference<>(p));
-        setGetter(() -> simpleValue.get());
+        setSetter(p -> weakValue = new WeakReference<>(p));
+        setGetter(() -> weakValue.get());
         setValidator(validator);
         set(value);
     }

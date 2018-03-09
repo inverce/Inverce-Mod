@@ -1,10 +1,11 @@
 package com.inverce.mod.core.configuration;
 
+import android.support.annotation.NonNull;
+
 import com.inverce.mod.core.configuration.extended.BoxedValue;
 import com.inverce.mod.core.functional.IConsumer;
 import com.inverce.mod.core.functional.IPredicate;
 import com.inverce.mod.core.functional.ISupplier;
-import com.inverce.mod.events.interfaces.MultiEvent;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class Value<T> extends ReadOnlyValue<T> {
@@ -40,7 +41,8 @@ public class Value<T> extends ReadOnlyValue<T> {
         this.setter = setter;
     }
 
-    public MultiEvent<ValueChanged<T>> changeValueEvent() {
+    @NonNull
+    public ValueChangedEvent<ValueChanged<T>> changeValueEvent() {
         return changeValueHandler;
     }
 
@@ -59,11 +61,6 @@ public class Value<T> extends ReadOnlyValue<T> {
 
     protected void setSetter(IConsumer<T> setter) {
         this.setter = setter;
-    }
-
-    @Override
-    public String toString() {
-        return String.valueOf(get());
     }
 
     public ReadOnlyValue<T> asReadOnly() {

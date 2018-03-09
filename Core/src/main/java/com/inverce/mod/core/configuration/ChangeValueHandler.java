@@ -1,12 +1,11 @@
 package com.inverce.mod.core.configuration;
 
-
-import com.inverce.mod.events.interfaces.MultiEvent;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChangeValueHandler<T> implements MultiEvent<ValueChanged<T>> {
+public class ChangeValueHandler<T> implements ValueChangedEvent<ValueChanged<T>> {
     protected List<ValueChanged<T>> list = null;
 
     private List<ValueChanged<T>> list() {
@@ -17,7 +16,7 @@ public class ChangeValueHandler<T> implements MultiEvent<ValueChanged<T>> {
     }
 
     @Override
-    public void addListener(ValueChanged<T> listener) {
+    public void addListener(@NonNull ValueChanged<T> listener) {
         list().add(listener);
     }
 
@@ -36,4 +35,5 @@ public class ChangeValueHandler<T> implements MultiEvent<ValueChanged<T>> {
             event.valueChanged(preference, value);
         }
     }
+
 }

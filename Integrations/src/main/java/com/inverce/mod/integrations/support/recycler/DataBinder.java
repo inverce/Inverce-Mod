@@ -32,21 +32,21 @@ public class DataBinder<T> implements IBind<T, BindViewHolder> {
     }
 
     public DataBinder() {
-        loadImage = (u, i) -> {
+        loadImage = (u, i, p) -> {
             throw new IllegalStateException("Image processor not specified");
         };
         tasks = new ArrayList<>();
     }
 
     public <V extends android.view.View> DataBinder<T> bind(ToHolder<T> bind) {
-        tasks.add((holder, item, position) -> bind.bind(item, holder));
+        tasks.add((holder, item, position) -> bind.bind(item, holder, position));
         return this;
     }
 
     public <V extends android.view.View> DataBinder<T> bind(IFunction<BindViewHolder, V> view, ToView<T, V> bind) {
         tasks.add((holder, item, position) -> {
             V v = view.apply(holder);
-            if (v != null) bind.bind(item, v);
+            if (v != null) bind.bind(item, v, position);
         });
         return this;
     }
@@ -56,27 +56,27 @@ public class DataBinder<T> implements IBind<T, BindViewHolder> {
     }
 
     public DataBinder<T> bindText(@IdRes int id, MapValue<T, String> map) {
-        return bind(p -> (TextView) p.get(id), (item, view) -> view.setText(map.get(item)));
+        return bind(p -> (TextView) p.get(id), (item, view, position) -> view.setText(map.get(item)));
     }
 
     public DataBinder<T> bindTextRes(@IdRes int id, ToStringRes<T> map) {
-        return bind(p -> (TextView) p.get(id), (item, view) -> view.setText(map.get(item)));
+        return bind(p -> (TextView) p.get(id), (item, view, position) -> view.setText(map.get(item)));
     }
 
     public DataBinder<T> bindImageRes(@IdRes int id, ToDrawableRes<T> map) {
-        return bind(p -> (ImageView) p.get(id), (item, view) -> view.setImageResource(map.get(item)));
+        return bind(p -> (ImageView) p.get(id), (item, view, position) -> view.setImageResource(map.get(item)));
     }
 
     public DataBinder<T> bindImage(@IdRes int id, MapValue<T, String> map) {
-        return bind(p -> (ImageView) p.get(id), (item, view) -> loadImage.bind(map.get(item), view));
+        return bind(p -> (ImageView) p.get(id), (item, view, position) -> loadImage.bind(map.get(item), view, position));
     }
 
     public DataBinder<T> bindBackgroundRes(@IdRes int id, ToDrawableRes<T> map) {
-        return bind(p -> p.get(id), (item, view) -> view.setBackgroundResource(map.get(item)));
+        return bind(p -> p.get(id), (item, view, position) -> view.setBackgroundResource(map.get(item)));
     }
 
     public DataBinder<T> bindBackground(@IdRes int id, ToDrawable<T> map) {
-        return bind(p -> p.get(id), (item, view) -> {
+        return bind(p -> p.get(id), (item, view, position) -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 view.setBackground(map.get(item));
             } else {
@@ -86,11 +86,11 @@ public class DataBinder<T> implements IBind<T, BindViewHolder> {
     }
 
     public DataBinder<T> bindVisibility(@IdRes int id, MapValue<T, Boolean> map) {
-        return bind(p -> p.get(id), (item, view) -> Ui.visible(view, map.get(item)));
+        return bind(p -> p.get(id), (item, view, position) -> Ui.visible(view, map.get(item)));
     }
 
     public DataBinder<T> bindOnClickListener(@IdRes int id, MapValue<T, View.OnClickListener> map) {
-        return bind(p -> p.get(id), (item, view) -> view.setOnClickListener(map.get(item)));
+        return bind(p -> p.get(id), (item, view, position) -> view.setOnClickListener(map.get(item)));
     }
 
     @Override

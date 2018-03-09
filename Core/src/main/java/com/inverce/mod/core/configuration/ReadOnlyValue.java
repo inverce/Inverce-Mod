@@ -21,10 +21,15 @@ public class ReadOnlyValue<T> {
     }
 
     public T get() {
-        return supplier.get();
+        return supplier != null ? supplier.get() : null;
     }
 
     protected void setGetter(ISupplier<T> supplier) {
         this.supplier = supplier;
+    }
+
+    @Override
+    public String toString() {
+        return "Value: " + String.valueOf(get());
     }
 }

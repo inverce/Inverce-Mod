@@ -46,7 +46,7 @@ public class FlatArrayList<E> extends AbstractList<E> implements List<E>, Random
         }
 
         int current = 0, next;
-        List<E> box;
+        List<? extends E> box;
         for (int i = 0; i < container.size(); i++) {
             box = container.get(i);
             next = current + box.size();
@@ -70,7 +70,7 @@ public class FlatArrayList<E> extends AbstractList<E> implements List<E>, Random
 
     private synchronized int calculateSize() {
         int size = 0;
-        for (List<E> el: container) {
+        for (List<? extends E> el: container) {
             size += el.size();
         }
         return size;
@@ -78,7 +78,7 @@ public class FlatArrayList<E> extends AbstractList<E> implements List<E>, Random
 
     public synchronized void refresh() {
         List<E> newCache = new ArrayList<>();
-        for (List<E> el: container) {
+        for (List<? extends E> el: container) {
             newCache.addAll(el);
         }
         this.cache = newCache;
@@ -89,7 +89,7 @@ public class FlatArrayList<E> extends AbstractList<E> implements List<E>, Random
     }
 
     @SuppressWarnings("unused")
-    public static class FlatArrayListStore<T> extends ArrayList<List<T>> {
+    public static class FlatArrayListStore<T> extends ArrayList<List<? extends T>> {
         private List<T> singleton(T element) {
             ArrayList<T> singleton = new ArrayList<>(1);
             singleton.add(element);
@@ -97,7 +97,7 @@ public class FlatArrayList<E> extends AbstractList<E> implements List<E>, Random
         }
 
         public T getSingle(int index) {
-            List<T> el = super.get(index);
+            List<? extends T> el = super.get(index);
             if (el.size() == 1) {
                 return el.get(0);
             } else {
@@ -105,7 +105,7 @@ public class FlatArrayList<E> extends AbstractList<E> implements List<E>, Random
             }
         }
 
-        public List<T> setSingle(int index, T element) {
+        public List<? extends T> setSingle(int index, T element) {
             return super.set(index, singleton(element));
         }
 
@@ -123,7 +123,7 @@ public class FlatArrayList<E> extends AbstractList<E> implements List<E>, Random
             }
 
             for (int i = 0; i < size(); i++) {
-                List<T> box = get(i);
+                List<? extends T> box = get(i);
                 if (box.size() == 1 && c.equals(box.get(0))) {
                     return remove(i) != null;
                 }

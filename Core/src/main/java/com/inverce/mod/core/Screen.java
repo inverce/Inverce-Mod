@@ -71,7 +71,7 @@ public class Screen {
      * @param px the px
      * @return the int
      */
-    public static int pxToDp(int px) {
+    public static int pxToDp(float px) {
         return (int) (px / IM.resources().getDisplayMetrics().density);
     }
 
@@ -81,7 +81,7 @@ public class Screen {
      * @param dp the dp
      * @return the int
      */
-    public static int dpToPx(int dp) {
+    public static int dpToPx(float dp) {
         return (int) (dp * IM.resources().getDisplayMetrics().density);
     }
 

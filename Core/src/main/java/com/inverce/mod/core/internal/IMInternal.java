@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.RestrictTo;
 
+import com.inverce.mod.core.Lifecycle;
 import com.inverce.mod.core.threadpool.DefaultHandlerThread;
 import com.inverce.mod.core.threadpool.DynamicScheduledExecutor;
 import com.inverce.mod.core.threadpool.UIScheduler;
@@ -44,6 +45,7 @@ public class IMInternal {
         this.bgExecutorService = new DynamicScheduledExecutor();
         this.bgExecutorService.setKeepAliveTime(5, TimeUnit.SECONDS);
         this.uiExecutor = new UIScheduler();
+        Lifecycle.initialize();
     }
 
     public Context getContext() {

@@ -15,6 +15,5 @@ public class IMInitializer {
      */
     public static void initialize(Context context) {
         IMInternal.get().initialize(context);
-        Lifecycle.initialize();
     }
 }
