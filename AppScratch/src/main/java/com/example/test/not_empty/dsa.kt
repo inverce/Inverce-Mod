@@ -1,4 +1,4 @@
-package com.example.test
+package com.example.test.not_empty
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

@@ -10,7 +10,7 @@ public class TreeNode<T extends TreeNode<T>>  {
     protected List<T> children;
 
     public TreeNode() {
-        this(new ArrayList<>());
+        this(null);
     }
 
     public TreeNode(@Nullable List<T> children) {

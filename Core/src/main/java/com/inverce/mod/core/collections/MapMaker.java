@@ -18,7 +18,7 @@ public class MapMaker<K, V, T extends Map<K, V>> {
     }
 
     public static <K, V> MapMaker<K, V, HashMap<K, V>> New(K key, V value) {
-        return new MapMaker<>(new HashMap<K, V>()).put(key, value);
+        return New(new HashMap<K, V>(), key, value);
     }
 
     @SafeVarargs

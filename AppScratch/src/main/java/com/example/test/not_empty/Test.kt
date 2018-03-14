@@ -1,8 +1,7 @@
-
+package com.example.test.not_empty
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
-import com.example.test.Category
 import com.example.test.Product
 import com.example.test.R
 import com.inverce.mod.integrations.support.annotations.IBinder
@@ -26,8 +25,8 @@ class MyAdapter : MultiRecyclerAdapter<Any>() {
         register({ it is Product },{ Holder(it) }, R.layout.support_simple_spinner_dropdown_item)
         register({ it is Category }, { Holder2(it) }, R.layout.support_simple_spinner_dropdown_item)
 
-        register( { true }, ::Holder, -1)
-        register( { true }, ::onBindSample, ::Holder, R.layout.support_simple_spinner_dropdown_item)
+        register( { true }, MyAdapter::Holder, -1)
+        register( { true }, ::onBindSample, MyAdapter::Holder, R.layout.support_simple_spinner_dropdown_item)
     }
 
     fun onBindSample(holder: Holder, item: Any, position: Int) {

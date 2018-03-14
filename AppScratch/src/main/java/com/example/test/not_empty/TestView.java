@@ -1,10 +1,11 @@
-package com.example.test;
+package com.example.test.not_empty;
 
 import android.content.Context;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 
+import com.example.test.R;
 import com.inverce.mod.core.IM;
 import com.inverce.mod.core.Screen;
 

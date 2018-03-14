@@ -1,4 +1,4 @@
-package com.example.test;
+package com.example.test.not_empty;
 
 import com.inverce.mod.events.annotation.EventInfo;
 import com.inverce.mod.events.annotation.Listener;
