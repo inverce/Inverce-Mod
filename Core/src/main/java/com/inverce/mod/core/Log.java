@@ -1,5 +1,7 @@
 package com.inverce.mod.core;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StringRes;
 
@@ -21,6 +23,7 @@ public class Log {
 
     private static LogListener listener;
 
+    @NonNull
     @SuppressWarnings("FieldCanBeLocal")
     private static String libraryPackage = "com.inverce.mod";
     private static String applicationPackage;
@@ -58,7 +61,7 @@ public class Log {
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-    static boolean shouldPrint(String className) {
+    static boolean shouldPrint(@NonNull String className) {
         if (applicationPackage == null) {
             applicationPackage = IM.context().getPackageName();
         }
@@ -97,7 +100,7 @@ public class Log {
      * @param msg the message
      * @param o   the list of additional parameters for String.format of message
      */
-    public static void handleMsg(int lvl, String tag, String msg, Object ... o) {
+    public static void handleMsg(int lvl, String tag, @Nullable String msg, @NonNull Object ... o) {
         if (!(DEBUG_MODE && LOGGING_LEVEL <= lvl && msg != null)) {
             return;
         }
@@ -133,7 +136,7 @@ public class Log {
      * @param msg the message
      * @param o   the reported exception
      */
-    public static void handleExc(int lvl, int tag, int msg, Throwable o) {
+    public static void handleExc(int lvl, int tag, int msg, @NonNull Throwable o) {
         if (!(DEBUG_MODE && LOGGING_LEVEL <= lvl)) {
             return;
         }
@@ -153,7 +156,7 @@ public class Log {
      * @param msg        the message
      * @param o          the reported exception
      */
-    public static void handleExc(int simple_lvl, String tag, String msg, Throwable o) {
+    public static void handleExc(int simple_lvl, String tag, String msg, @NonNull Throwable o) {
         if (!(DEBUG_MODE && LOGGING_LEVEL <= EXCEPTION)) {
             return;
         }
@@ -236,22 +239,22 @@ public class Log {
     public static void a(@StringRes int message) {                                                  handleMsg(ASSERT, -1, message); }
     public static void a(@StringRes int message, Object ... o) {                                    handleMsg(ASSERT, -1, message, o); }
 
-    public static void ex(Throwable o) {                                                            handleExc(FULL,         null, null, o); }
-    public static void exs(Throwable o) {                                                           handleExc(SIMPLER,      null, null, o); }
-    public static void exm(Throwable o) {                                                           handleExc(SIMPLEST,     null, null, o); }
+    public static void ex(@NonNull Throwable o) {                                                            handleExc(FULL,         null, null, o); }
+    public static void exs(@NonNull Throwable o) {                                                           handleExc(SIMPLER,      null, null, o); }
+    public static void exm(@NonNull Throwable o) {                                                           handleExc(SIMPLEST,     null, null, o); }
 
-    public static void ex(String tag, String message, Throwable o) {                                handleExc(FULL,         tag,  message, o); }
-    public static void ex(String message, Throwable o) {                                            handleExc(FULL,         null, message, o); }
-    public static void exs(String tag, String message, Throwable o) {                               handleExc(SIMPLER,      tag,  message, o); }
-    public static void exs(String message, Throwable o) {                                           handleExc(SIMPLER,      null, message, o); }
-    public static void exm(String tag, String message, Throwable o) {                               handleExc(SIMPLEST,     tag,  message, o); }
-    public static void exm(String message, Throwable o) {                                           handleExc(SIMPLEST,     null, message, o); }
+    public static void ex(String tag, String message, @NonNull Throwable o) {                                handleExc(FULL,         tag,  message, o); }
+    public static void ex(String message, @NonNull Throwable o) {                                            handleExc(FULL,         null, message, o); }
+    public static void exs(String tag, String message, @NonNull Throwable o) {                               handleExc(SIMPLER,      tag,  message, o); }
+    public static void exs(String message, @NonNull Throwable o) {                                           handleExc(SIMPLER,      null, message, o); }
+    public static void exm(String tag, String message, @NonNull Throwable o) {                               handleExc(SIMPLEST,     tag,  message, o); }
+    public static void exm(String message, @NonNull Throwable o) {                                           handleExc(SIMPLEST,     null, message, o); }
 
-    public static void ex(@StringRes int tag, @StringRes int message, Throwable o) {                handleExc(FULL,         tag,  message, o); }
-    public static void ex(@StringRes int message, Throwable o) {                                    handleExc(FULL,         -1,   message, o); }
-    public static void exs(@StringRes int tag, @StringRes int message, Throwable o) {               handleExc(SIMPLER,      tag,  message, o); }
-    public static void exs(@StringRes int message, Throwable o) {                                   handleExc(SIMPLER,      -1,   message, o); }
-    public static void exm(@StringRes int tag, @StringRes int message, Throwable o) {               handleExc(SIMPLEST,     tag,  message, o); }
-    public static void exm(@StringRes int message, Throwable o) {                                   handleExc(SIMPLEST,     -1,   message, o); }
+    public static void ex(@StringRes int tag, @StringRes int message, @NonNull Throwable o) {                handleExc(FULL,         tag,  message, o); }
+    public static void ex(@StringRes int message, @NonNull Throwable o) {                                    handleExc(FULL,         -1,   message, o); }
+    public static void exs(@StringRes int tag, @StringRes int message, @NonNull Throwable o) {               handleExc(SIMPLER,      tag,  message, o); }
+    public static void exs(@StringRes int message, @NonNull Throwable o) {                                   handleExc(SIMPLER,      -1,   message, o); }
+    public static void exm(@StringRes int tag, @StringRes int message, @NonNull Throwable o) {               handleExc(SIMPLEST,     tag,  message, o); }
+    public static void exm(@StringRes int message, @NonNull Throwable o) {                                   handleExc(SIMPLEST,     -1,   message, o); }
 
 }

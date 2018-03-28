@@ -1,5 +1,7 @@
 package com.inverce.mod.core.collections;
 
+import android.support.annotation.NonNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,10 +15,12 @@ public class MapMaker<K, V, T extends Map<K, V>> {
         this.container = container;
     }
 
-    public static <K, V, T extends Map<K, V>> MapMaker<K, V, T> New(T container, K key, V value) {
+    @NonNull
+    public static <K, V, T extends Map<K, V>> MapMaker<K, V, T> New(@NonNull T container, K key, V value) {
         return new MapMaker<>(container).put(key, value);
     }
 
+    @NonNull
     public static <K, V> MapMaker<K, V, HashMap<K, V>> New(K key, V value) {
         return New(new HashMap<K, V>(), key, value);
     }
@@ -26,6 +30,7 @@ public class MapMaker<K, V, T extends Map<K, V>> {
         return new WithKeys<>(keys);
     }
 
+    @NonNull
     public MapMaker<K, V, T> put(K key, V value) {
         container.put(key, value);
         return this;
@@ -43,7 +48,7 @@ public class MapMaker<K, V, T extends Map<K, V>> {
         }
 
         @SafeVarargs
-        public final <V> MapMaker<K, V, HashMap<K, V>> vals(V... vals) {
+        public final <V> MapMaker<K, V, HashMap<K, V>> vals(@NonNull V... vals) {
             if (keys.length != vals.length) {
                 throw new IllegalArgumentException("Expected: " + keys.length + " values, received: " + vals.length);
             }

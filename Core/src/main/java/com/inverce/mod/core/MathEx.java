@@ -2,6 +2,8 @@ package com.inverce.mod.core;
 
 import android.graphics.PointF;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Base64;
 
 import java.text.DecimalFormat;
@@ -22,7 +24,8 @@ public final class MathEx {
         return start + (end - start) * t;
     }
 
-    public static float[] lerp(float[] start, float[] end, float t) {
+    @NonNull
+    public static float[] lerp(@NonNull float[] start, float[] end, float t) {
         float[] array = new float[start.length];
         for (int i = 0; i < array.length; i++) {
             float s = start[i];
@@ -32,7 +35,8 @@ public final class MathEx {
         return array;
     }
 
-    public static PointF lerp(PointF start, PointF end, float t) {
+    @NonNull
+    public static PointF lerp(@NonNull PointF start, @NonNull PointF end, float t) {
         return new PointF(
                 start.x + (t * (end.x - start.x)),
                 start.y + (t * (end.y - start.y)));
@@ -68,23 +72,28 @@ public final class MathEx {
         return (float) sqrt(pow(x2 - x1, 2)  + pow(y2 - y1, 2));
     }
 
-    public static String toBase64(String input) {
+    @Nullable
+    public static String toBase64(@Nullable String input) {
         return input == null ? null : Base64.encodeToString(input.getBytes(), Base64.NO_WRAP);
     }
 
-    public static String toBase64(byte[] input) {
+    @Nullable
+    public static String toBase64(@Nullable byte[] input) {
         return input == null ? null : Base64.encodeToString(input, Base64.NO_WRAP);
     }
 
-    public static String fromBase64(String input) {
+    @Nullable
+    public static String fromBase64(@Nullable String input) {
         return input == null ? null : new String(Base64.decode(input, Base64.NO_WRAP));
     }
 
-    public static byte[] fromBase64Bytes(String input) {
+    @Nullable
+    public static byte[] fromBase64Bytes(@Nullable String input) {
         return input == null ? null : Base64.decode(input, Base64.NO_WRAP);
     }
 
-    public static <E> List<List<E>> generatePermutations(List<E> original) {
+    @NonNull
+    public static <E> List<List<E>> generatePermutations(@NonNull List<E> original) {
         if (original.size() == 0) {
             List<List<E>> result = new ArrayList<>();
             result.add(new ArrayList<E>());
@@ -103,6 +112,7 @@ public final class MathEx {
         return returnValue;
     }
 
+    @NonNull
     public static String decimFormat(String format, double val) {
         return new DecimalFormat(format).format(val);
     }

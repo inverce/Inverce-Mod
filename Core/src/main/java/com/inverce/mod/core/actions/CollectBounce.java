@@ -1,5 +1,8 @@
 package com.inverce.mod.core.actions;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.inverce.mod.core.IM;
 import com.inverce.mod.core.Log;
 import com.inverce.mod.core.functional.Aggregator;
@@ -13,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class CollectBounce<T> {
+    @Nullable
     protected ScheduledFuture<?> feature;
     protected IConsumer<List<T>> report;
     protected long delay = 500;
@@ -23,27 +27,31 @@ public class CollectBounce<T> {
         events = Collections.synchronizedList(new ArrayList<>());
     }
 
-    public CollectBounce<T> setConsumer(IConsumer<List<T>> report) {
+    @NonNull
+    public CollectBounce<T> setConsumer(@NonNull IConsumer<List<T>> report) {
         this.report = report;
         return this;
     }
 
+    @NonNull
     public CollectBounce<T> setDelay(long delay) {
         this.delay = delay;
         return this;
     }
 
+    @NonNull
     public CollectBounce<T> emitAfterDelay() {
         this.emitOnDelay = true;
         return this;
     }
 
+    @NonNull
     public CollectBounce<T> emitWhenNoNewEvent() {
         this.emitOnDelay = false;
         return this;
     }
 
-    private boolean defaultEquals(T a, T b) {
+    private boolean defaultEquals(@Nullable T a, T b) {
         return (a == b) || (a != null && a.equals(b));
     }
 

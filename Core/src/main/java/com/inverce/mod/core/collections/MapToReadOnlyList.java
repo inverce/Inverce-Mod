@@ -1,6 +1,7 @@
 package com.inverce.mod.core.collections;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.inverce.mod.core.functional.IFunction;
 
@@ -9,10 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MapToReadOnlyList<T> extends AbstractList<T> {
+    @NonNull
     private final List<?> list;
+    @NonNull
     private final IFunction<Object, T> map;
 
-    public <Y> MapToReadOnlyList(List<Y> list, @NonNull IFunction<Y, T> map) {
+    public <Y> MapToReadOnlyList(@Nullable List<Y> list, @NonNull IFunction<Y, T> map) {
         this.list = list != null ? list : new ArrayList<>();
         //noinspection unchecked // well this is some nice quirk of java, we cant use IFx<?,T> as map since you cant cast capture<?> to capture<?>
         this.map = p -> map.apply((Y) p);
@@ -23,6 +26,7 @@ public class MapToReadOnlyList<T> extends AbstractList<T> {
         this(list, p -> (T) p);
     }
 
+    @NonNull
     @Override
     public T get(int index) {
         return map.apply(list.get(index));

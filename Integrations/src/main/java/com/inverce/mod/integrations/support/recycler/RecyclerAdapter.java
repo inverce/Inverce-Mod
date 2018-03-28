@@ -1,6 +1,8 @@
 package com.inverce.mod.integrations.support.recycler;
 
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class RecyclerAdapter<ITEM, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
+    @NonNull
     protected List<? extends ITEM> data = new ArrayList<>();
 
     public ITEM getItem(int position) {
@@ -36,7 +39,7 @@ public abstract class RecyclerAdapter<ITEM, VH extends RecyclerView.ViewHolder> 
         setData(elements, false);
     }
 
-    public void setData(List<? extends ITEM> items, boolean useDiffUtil) {
+    public void setData(@Nullable List<? extends ITEM> items, boolean useDiffUtil) {
         final List<? extends ITEM> elements = items != null ? items : new ArrayList<>();
 
         if (!Ui.isUiThread()) {
@@ -55,7 +58,7 @@ public abstract class RecyclerAdapter<ITEM, VH extends RecyclerView.ViewHolder> 
         }
     }
 
-    protected View inflate(ViewGroup parent, @LayoutRes int res) {
+    protected View inflate(@NonNull ViewGroup parent, @LayoutRes int res) {
         return LayoutInflater.from(parent.getContext())
                 .inflate(res, parent, false);
     }

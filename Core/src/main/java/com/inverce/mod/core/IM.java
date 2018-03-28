@@ -6,6 +6,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import java.util.UUID;
 @SuppressWarnings("WeakerAccess")
 @SuppressLint("StaticFieldLeak")
 public class IM {
+    @NonNull
     private static IMInternal internal = IMInternal.get();
     private static final SharedBoolAutoToggle FIRST_RUN = new SharedBoolAutoToggle("im_first_run", true, false);
     private static final LazyValue<String> SESSION_UUID = new LazyValue<>(() -> UUID.randomUUID().toString());
@@ -36,6 +38,7 @@ public class IM {
      *
      * @return the context
      */
+    @NonNull
     public static Context context() {
         if (internal.getActivity() != null) {
             return internal.getActivity();
@@ -48,6 +51,7 @@ public class IM {
      *
      * @return the application context
      */
+    @NonNull
     public static Application application() {
         return (Application) context().getApplicationContext();
     }
@@ -57,6 +61,7 @@ public class IM {
      *
      * @return the activity
      */
+    @Nullable
     public static Activity activity() {
         return internal.getActivity();
     }
@@ -76,6 +81,7 @@ public class IM {
      *
      * @return the resources
      */
+    @NonNull
     public static Resources resources() {
         return context().getResources();
     }
@@ -85,6 +91,7 @@ public class IM {
      *
      * @return the layout inflater
      */
+    @NonNull
     public static LayoutInflater inflater() {
         return LayoutInflater.from(context());
     }
@@ -94,6 +101,7 @@ public class IM {
      *
      * @return the dynamic scheduled executor
      */
+    @NonNull
     public static DynamicScheduledExecutor onBg() {
         return internal.getBgExecutor();
     }
@@ -103,6 +111,7 @@ public class IM {
      *
      * @return the ui scheduler
      */
+    @NonNull
     public static UIScheduler onUi() {
         return internal.getUiExecutor();
     }
@@ -112,6 +121,7 @@ public class IM {
      *
      * @return the ui scheduler
      */
+    @NonNull
     public static DefaultHandlerThread onLooper() {
         return internal.getLooperHandlerThread();
     }
@@ -133,6 +143,7 @@ public class IM {
         return IS_FIRST_RUN.get();
     }
 
+    @NonNull
     public static String sessionUuid() {
         return SESSION_UUID.get();
     }

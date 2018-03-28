@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TreeNode<T extends TreeNode<T>>  {
+    @Nullable
     protected List<T> children;
 
     public TreeNode() {

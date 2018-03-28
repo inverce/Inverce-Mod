@@ -1,10 +1,13 @@
 package com.inverce.mod.core.collections;
 
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CollectionsEx {
-    public static <T> List<T> join(List<? extends T> A, List<? extends T> B) {
+    @Nullable
+    public static <T> List<T> join(@Nullable List<? extends T> A, @Nullable List<? extends T> B) {
         ArrayList<T> list = A != null ? new ArrayList<T>(A) : new ArrayList<T>();
         if (B != null) {
             list.addAll(B);
@@ -12,7 +15,7 @@ public class CollectionsEx {
         return list;
     }
 
-    public static <T> boolean equals(List<? extends T> A, List<? extends T> B) {
+    public static <T> boolean equals(@Nullable List<? extends T> A, @Nullable List<? extends T> B) {
         if (A == null || B == null) return A == B;
         if (A.size() != B.size()) return false;
 

@@ -3,6 +3,8 @@ package com.inverce.mod.vision.camera;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 
 public class Permissions {
@@ -11,7 +13,7 @@ public class Permissions {
             Manifest.permission.CAMERA
     };
 
-    public static boolean hasPermissions(String[] permissions, Activity activity) {
+    public static boolean hasPermissions(@NonNull String[] permissions, @Nullable Activity activity) {
         if (!isApi(23)) { // if api is less than 23 we dont need to check permissions
             return true;
         }

@@ -2,6 +2,8 @@ package com.inverce.mod.integrations.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
@@ -14,6 +16,7 @@ public class SquareImageView extends AppCompatImageView {
         MajorDim(int id) {
             this.id = id;
         }
+        @NonNull
         static MajorDim fromId(int id) {
             for (MajorDim majorDim : values())
                 if (majorDim.id == id)
@@ -24,15 +27,15 @@ public class SquareImageView extends AppCompatImageView {
 
     private MajorDim majorDim = MajorDim.WIDTH;
 
-    public SquareImageView(Context context) {
+    public SquareImageView(@NonNull Context context) {
         super(context);
     }
 
-    public SquareImageView(Context context, AttributeSet attrs) {
+    public SquareImageView(@NonNull Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public SquareImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SquareImageView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         if(attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SquareImageView, defStyleAttr, 0);
@@ -52,6 +55,7 @@ public class SquareImageView extends AppCompatImageView {
         setMeasuredDimension(dim, dim);
     }
 
+    @NonNull
     public SquareImageView setMajorDim(MajorDim majorDim) {
         this.majorDim = majorDim;
         return this;

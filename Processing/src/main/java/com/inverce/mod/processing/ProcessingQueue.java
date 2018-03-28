@@ -1,5 +1,7 @@
 package com.inverce.mod.processing;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 
 import com.inverce.mod.core.IM;
@@ -39,31 +41,36 @@ public class ProcessingQueue {
         cfg.threadFactory = new NamedThreadPool("ProcessingQueue#" + hashCode());
     }
 
+    @NonNull
     public ProcessingQueue setAsynchronous(boolean asynchronous) {
         checkState(!cfg.isStarted, "ProcessingQueue already isStarted");
         cfg.asynchronous = asynchronous;
         return this;
     }
 
+    @NonNull
     public ProcessingQueue setPoolSize(int poolSize) {
         checkArgument(poolSize > 0, "Pool size must be greater than 0");
         cfg.poolSize = poolSize;
         return this;
     }
 
+    @NonNull
     public ProcessingQueue setFailureAction(FailureAction failureAction) {
         checkState(!cfg.isStarted, "ProcessingQueue already isStarted");
         cfg.failureAction = failureAction;
         return this;
     }
 
-    public ProcessingQueue setThreadFactory(ThreadFactory threadFactory) {
+    @NonNull
+    public ProcessingQueue setThreadFactory(@NonNull ThreadFactory threadFactory) {
         checkState(!cfg.isStarted, "ProcessingQueue already isStarted");
         checkNotNull(threadFactory, "Factory cannot be null");
         cfg.threadFactory = threadFactory;
         return this;
     }
 
+    @NonNull
     public ProcessingQueue setContinuous(boolean continuous) {
         checkState(!cfg.isStarted, "ProcessingQueue already isStarted");
         cfg.isContinuous = continuous;
@@ -78,36 +85,44 @@ public class ProcessingQueue {
         return Collections.unmodifiableList(new ArrayList<>(awaiting));
     }
 
-    public ProcessingQueue setListener(QueueListener events) {
+    @NonNull
+    public ProcessingQueue setListener(@Nullable QueueListener events) {
         this.events = events == null ? new QueueListenerAdapter() : events;
         return this;
     }
 
-    public <T> ProcessingQueue processTask(TaskMapper<T> handler, List<T> list) {
+    @NonNull
+    public <T> ProcessingQueue processTask(@NonNull TaskMapper<T> handler, @NonNull List<T> list) {
         return processInternal(EX.map(Processor.RUNNABLES, handler::processJob), list, false);
     }
 
-    public <T> ProcessingQueue process(IConsumer<T> handler, List<T> list) {
+    @NonNull
+    public <T> ProcessingQueue process(@NonNull IConsumer<T> handler, @NonNull List<T> list) {
         return processInternal(EX.map(Processor.RUNNABLES, o -> () -> handler.accept(o)), list, false);
     }
 
-    public <T, R> ProcessingQueue process(Processor<T, R> processor, List<T> list) {
+    @NonNull
+    public <T, R> ProcessingQueue process(@NonNull Processor<T, R> processor, @NonNull List<T> list) {
         return processInternal(processor, list, false);
     }
 
-    public <T> ProcessingQueue processTaskIfNotAdded(TaskMapper<T> handler, List<T> list) {
+    @NonNull
+    public <T> ProcessingQueue processTaskIfNotAdded(@NonNull TaskMapper<T> handler, @NonNull List<T> list) {
         return processInternal(EX.map(Processor.RUNNABLES, handler::processJob), list, true);
     }
 
-    public <T> ProcessingQueue processIfNotAdded(IConsumer<T> handler, List<T> list) {
+    @NonNull
+    public <T> ProcessingQueue processIfNotAdded(@NonNull IConsumer<T> handler, @NonNull List<T> list) {
         return processInternal(EX.map(Processor.RUNNABLES, o -> () -> handler.accept(o)), list, true);
     }
 
-    public <T, R> ProcessingQueue processIfNotAdded(Processor<T, R> processor, List<T> list) {
+    @NonNull
+    public <T, R> ProcessingQueue processIfNotAdded(@NonNull Processor<T, R> processor, @NonNull List<T> list) {
         return processInternal(processor, list, true);
     }
 
-    <T, R> ProcessingQueue processInternal(Processor<T, R> processor, List<T> list, boolean checkExist) {
+    @NonNull
+    <T, R> ProcessingQueue processInternal(@NonNull Processor<T, R> processor, @NonNull List<T> list, boolean checkExist) {
         checkNotNull(processor, "Processor connot be null");
         checkNotNull(list, "You must specify elements");
         checkArgument(!cfg.isCancelled, "Cant add task to cancelled queue");
@@ -150,7 +165,7 @@ public class ProcessingQueue {
     }
 
     @WorkerThread
-    private synchronized boolean offerJob(Job<?, ?> job) {
+    private synchronized boolean offerJob(@NonNull Job<?, ?> job) {
         int max = cfg.asynchronous ? cfg.poolSize : 1;
 
         if (processing.size() >= max) {
@@ -173,7 +188,7 @@ public class ProcessingQueue {
     }
 
     @WorkerThread
-    synchronized void finishJob(JobResult<?, ?> jobResult) {
+    synchronized void finishJob(@NonNull JobResult<?, ?> jobResult) {
         processing.remove(jobResult.job);
         activeThreads.remove(jobResult.job.thread);
 

@@ -1,5 +1,8 @@
 package com.inverce.mod.core.utilities;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.inverce.mod.core.functional.IFunction;
 
 import java.util.ArrayList;
@@ -13,7 +16,7 @@ public class Compare<T> implements Comparator<T> {
         this.comparators = new ArrayList<>();
     }
 
-    private <Y> int compareNulls(Y a, Y b) {
+    private <Y> int compareNulls(@Nullable Y a, @Nullable Y b) {
         if (a == null) {
             return b == null ? 0 : -1;
         } else if (b == null) {
@@ -23,7 +26,7 @@ public class Compare<T> implements Comparator<T> {
         }
     }
 
-    private <Y> void add(IFunction<T, Y> getter, boolean ascending, Comparator<Y> comparator) {
+    private <Y> void add(@NonNull IFunction<T, Y> getter, boolean ascending, @NonNull Comparator<Y> comparator) {
         comparators.add((_a, _b) -> {
             int proxy = ascending ? 1 : -1;
             int check = compareNulls(_a, _b);
@@ -37,12 +40,14 @@ public class Compare<T> implements Comparator<T> {
         });
     }
 
-    public Compare<T> byString(IFunction<T, String> getter, boolean asc) {
+    @NonNull
+    public Compare<T> byString(@NonNull IFunction<T, String> getter, boolean asc) {
         this.add(getter, asc, String::compareTo);
         return this;
     }
 
-    public Compare<T> byInt(IFunction<T, Integer> getter, boolean asc) {
+    @NonNull
+    public Compare<T> byInt(@NonNull IFunction<T, Integer> getter, boolean asc) {
         this.add(getter, asc, (a, b) -> Integer.compare(a, b));
         return this;
     }

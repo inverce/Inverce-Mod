@@ -1,6 +1,8 @@
 package com.inverce.mod.core.verification;
 
 import android.database.Cursor;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import java.lang.ref.WeakReference;
@@ -12,7 +14,7 @@ public class Conditions {
     private Conditions() { }
 
     @SafeVarargs
-    public static <T> T firstNonNull(T value, T ... values) {
+    public static <T> T firstNonNull(@Nullable T value, @NonNull T ... values) {
         if (value != null) return value;
         for (T k: values) {
             if (k != null) {
@@ -22,51 +24,51 @@ public class Conditions {
         return null;
     }
 
-    public static boolean notNullOrEmpty(String value) {
+    public static boolean notNullOrEmpty(@Nullable String value) {
         return value != null && value.length() > 0;
     }
 
-    public static boolean notNullOrEmpty(WeakReference<?> value) {
+    public static boolean notNullOrEmpty(@Nullable WeakReference<?> value) {
         return value != null && value.get() != null;
     }
 
-    public static <T> boolean notNullOrEmpty(T [] value) {
+    public static <T> boolean notNullOrEmpty(@Nullable T [] value) {
         return value != null && value.length > 0;
     }
 
-    public static boolean notNullOrEmpty(Collection<?> value) {
+    public static boolean notNullOrEmpty(@Nullable Collection<?> value) {
         return value != null && value.size() > 0;
     }
 
-    public static boolean notNullOrEmpty(Cursor value) {
+    public static boolean notNullOrEmpty(@Nullable Cursor value) {
         return value != null && value.getCount() > 0;
     }
 
-    public static boolean nullOrEmpty(String value) {
+    public static boolean nullOrEmpty(@Nullable String value) {
         return value == null || value.length() == 0;
     }
 
-    public static boolean nullOrEmpty(WeakReference<?> value) {
+    public static boolean nullOrEmpty(@Nullable WeakReference<?> value) {
         return value == null || value.get() == null;
     }
 
-    public static <T> boolean nullOrEmpty(T [] value) {
+    public static <T> boolean nullOrEmpty(@Nullable T [] value) {
         return value == null || value.length == 0;
     }
 
-    public static boolean nullOrEmpty(Collection<?> value) {
+    public static boolean nullOrEmpty(@Nullable Collection<?> value) {
         return value == null || value.size() == 0;
     }
 
-    public static boolean nullOrEmpty(Map<?, ?> value) {
+    public static boolean nullOrEmpty(@Nullable Map<?, ?> value) {
         return value == null || value.size() == 0;
     }
 
-    public static boolean nullOrEmpty(Cursor value) {
+    public static boolean nullOrEmpty(@Nullable Cursor value) {
         return value == null || value.getCount() == 0;
     }
 
-    public static boolean isVisible(View view) {
+    public static boolean isVisible(@Nullable View view) {
         return view != null && view.getVisibility() == View.VISIBLE;
     }
 }

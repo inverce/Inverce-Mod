@@ -17,6 +17,9 @@
  */
 package com.inverce.mod.core.reflection;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -47,6 +50,7 @@ import static com.inverce.mod.core.verification.Preconditions.checkNotNull;
  */
 @SuppressWarnings("unused")
 public class TypeToken<T> {
+    @NonNull
     final Class<? super T> rawType;
     final Type type;
     final int hashCode;
@@ -80,7 +84,7 @@ public class TypeToken<T> {
      * Returns the type from super class's type parameter in {@link Types#canonicalize
      * canonical form}.
      */
-    static Type getSuperclassTypeParameter(Class<?> subclass) {
+    static Type getSuperclassTypeParameter(@NonNull Class<?> subclass) {
         Type superclass = subclass.getGenericSuperclass();
         if (superclass instanceof Class) {
             throw new RuntimeException("Missing type parameter.");
@@ -92,6 +96,7 @@ public class TypeToken<T> {
     /**
      * Returns the raw (non-generic) type for this type.
      */
+    @NonNull
     public final Class<? super T> getRawType() {
         return rawType;
     }
@@ -121,7 +126,7 @@ public class TypeToken<T> {
      * with wildcards.
      */
     @Deprecated
-    public boolean isAssignableFrom(Type from) {
+    public boolean isAssignableFrom(@Nullable Type from) {
         if (from == null) {
             return false;
         }
@@ -151,7 +156,7 @@ public class TypeToken<T> {
      * with wildcards.
      */
     @Deprecated
-    public boolean isAssignableFrom(TypeToken<?> token) {
+    public boolean isAssignableFrom(@NonNull TypeToken<?> token) {
         return isAssignableFrom(token.getType());
     }
 
@@ -159,7 +164,7 @@ public class TypeToken<T> {
      * Private helper function that performs some assignability checks for
      * the provided GenericArrayType.
      */
-    private static boolean isAssignableFrom(Type from, GenericArrayType to) {
+    private static boolean isAssignableFrom(Type from, @NonNull GenericArrayType to) {
         Type toGenericComponentType = to.getGenericComponentType();
         if (toGenericComponentType instanceof ParameterizedType) {
             Type t = from;
@@ -184,8 +189,8 @@ public class TypeToken<T> {
      * Private recursive helper function to actually do the type-safe checking
      * of assignability.
      */
-    private static boolean isAssignableFrom(Type from, ParameterizedType to,
-                                            Map<String, Type> typeVarMap) {
+    private static boolean isAssignableFrom(@Nullable Type from, @NonNull ParameterizedType to,
+                                            @NonNull Map<String, Type> typeVarMap) {
 
         if (from == null) {
             return false;
@@ -237,8 +242,8 @@ public class TypeToken<T> {
      * Checks if two parameterized types are exactly equal, under the variable
      * replacement described in the typeVarMap.
      */
-    private static boolean typeEquals(ParameterizedType from,
-                                      ParameterizedType to, Map<String, Type> typeVarMap) {
+    private static boolean typeEquals(@NonNull ParameterizedType from,
+                                      @NonNull ParameterizedType to, @NonNull Map<String, Type> typeVarMap) {
         if (from.getRawType().equals(to.getRawType())) {
             Type[] fromArgs = from.getActualTypeArguments();
             Type[] toArgs = to.getActualTypeArguments();
@@ -253,7 +258,7 @@ public class TypeToken<T> {
     }
 
     private static AssertionError buildUnexpectedTypeError(
-            Type token, Class<?>... expected) {
+            @NonNull Type token, @NonNull Class<?>... expected) {
 
         // Build exception message
         StringBuilder exceptionMessage =
@@ -271,7 +276,7 @@ public class TypeToken<T> {
      * Checks if two types are the same or are equivalent under a variable mapping
      * given in the type map that was provided.
      */
-    private static boolean matches(Type from, Type to, Map<String, Type> typeMap) {
+    private static boolean matches(Type from, @NonNull Type to, @NonNull Map<String, Type> typeMap) {
         return to.equals(from)
                 || (from instanceof TypeVariable
                 && to.equals(typeMap.get(((TypeVariable<?>) from).getName())));

@@ -3,6 +3,7 @@ package com.inverce.mod.integrations.support.recycler;
 import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,12 +39,14 @@ public class DataBinder<T> implements IBind<T, BindViewHolder> {
         tasks = new ArrayList<>();
     }
 
-    public <V extends android.view.View> DataBinder<T> bind(ToHolder<T> bind) {
+    @NonNull
+    public <V extends android.view.View> DataBinder<T> bind(@NonNull ToHolder<T> bind) {
         tasks.add((holder, item, position) -> bind.bind(item, holder, position));
         return this;
     }
 
-    public <V extends android.view.View> DataBinder<T> bind(IFunction<BindViewHolder, V> view, ToView<T, V> bind) {
+    @NonNull
+    public <V extends android.view.View> DataBinder<T> bind(@NonNull IFunction<BindViewHolder, V> view, @NonNull ToView<T, V> bind) {
         tasks.add((holder, item, position) -> {
             V v = view.apply(holder);
             if (v != null) bind.bind(item, v, position);
@@ -51,31 +54,38 @@ public class DataBinder<T> implements IBind<T, BindViewHolder> {
         return this;
     }
 
-    public <V extends android.view.View> DataBinder<T> bind(@IdRes int res, ToView<T, V> bind) {
+    @NonNull
+    public <V extends android.view.View> DataBinder<T> bind(@IdRes int res, @NonNull ToView<T, V> bind) {
         return bind(h -> h.get(res), bind);
     }
 
-    public DataBinder<T> bindText(@IdRes int id, MapValue<T, String> map) {
+    @NonNull
+    public DataBinder<T> bindText(@IdRes int id, @NonNull MapValue<T, String> map) {
         return bind(p -> (TextView) p.get(id), (item, view, position) -> view.setText(map.get(item)));
     }
 
-    public DataBinder<T> bindTextRes(@IdRes int id, ToStringRes<T> map) {
+    @NonNull
+    public DataBinder<T> bindTextRes(@IdRes int id, @NonNull ToStringRes<T> map) {
         return bind(p -> (TextView) p.get(id), (item, view, position) -> view.setText(map.get(item)));
     }
 
-    public DataBinder<T> bindImageRes(@IdRes int id, ToDrawableRes<T> map) {
+    @NonNull
+    public DataBinder<T> bindImageRes(@IdRes int id, @NonNull ToDrawableRes<T> map) {
         return bind(p -> (ImageView) p.get(id), (item, view, position) -> view.setImageResource(map.get(item)));
     }
 
-    public DataBinder<T> bindImage(@IdRes int id, MapValue<T, String> map) {
+    @NonNull
+    public DataBinder<T> bindImage(@IdRes int id, @NonNull MapValue<T, String> map) {
         return bind(p -> (ImageView) p.get(id), (item, view, position) -> loadImage.bind(map.get(item), view, position));
     }
 
-    public DataBinder<T> bindBackgroundRes(@IdRes int id, ToDrawableRes<T> map) {
+    @NonNull
+    public DataBinder<T> bindBackgroundRes(@IdRes int id, @NonNull ToDrawableRes<T> map) {
         return bind(p -> p.get(id), (item, view, position) -> view.setBackgroundResource(map.get(item)));
     }
 
-    public DataBinder<T> bindBackground(@IdRes int id, ToDrawable<T> map) {
+    @NonNull
+    public DataBinder<T> bindBackground(@IdRes int id, @NonNull ToDrawable<T> map) {
         return bind(p -> p.get(id), (item, view, position) -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 view.setBackground(map.get(item));
@@ -85,11 +95,13 @@ public class DataBinder<T> implements IBind<T, BindViewHolder> {
         });
     }
 
-    public DataBinder<T> bindVisibility(@IdRes int id, MapValue<T, Boolean> map) {
+    @NonNull
+    public DataBinder<T> bindVisibility(@IdRes int id, @NonNull MapValue<T, Boolean> map) {
         return bind(p -> p.get(id), (item, view, position) -> Ui.visible(view, map.get(item)));
     }
 
-    public DataBinder<T> bindOnClickListener(@IdRes int id, MapValue<T, View.OnClickListener> map) {
+    @NonNull
+    public DataBinder<T> bindOnClickListener(@IdRes int id, @NonNull MapValue<T, View.OnClickListener> map) {
         return bind(p -> p.get(id), (item, view, position) -> view.setOnClickListener(map.get(item)));
     }
 
@@ -100,6 +112,7 @@ public class DataBinder<T> implements IBind<T, BindViewHolder> {
         }
     }
 
+    @NonNull
     public DataBinder setLoadImage(ToView<String, ImageView> loadImage) {
         this.loadImage = loadImage;
         return this;

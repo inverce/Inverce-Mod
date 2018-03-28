@@ -1,5 +1,7 @@
 package com.inverce.mod.core.threadpool;
 
+import android.support.annotation.NonNull;
+
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -7,6 +9,7 @@ public class NamedThreadPool implements ThreadFactory {
     protected static final AtomicInteger poolNumber = new AtomicInteger(1);
     protected final ThreadGroup group;
     protected final AtomicInteger threadNumber = new AtomicInteger(1);
+    @NonNull
     protected final String namePrefix;
 
     public NamedThreadPool(String name) {
@@ -16,6 +19,7 @@ public class NamedThreadPool implements ThreadFactory {
         namePrefix = name + "-" + poolNumber.getAndIncrement() + "-thread-";
     }
 
+    @NonNull
     public Thread newThread(Runnable r) {
         Thread t = new Thread(group, r, namePrefix + threadNumber.getAndIncrement(), 0);
         if (t.isDaemon())

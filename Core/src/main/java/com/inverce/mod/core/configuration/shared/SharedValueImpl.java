@@ -2,6 +2,7 @@ package com.inverce.mod.core.configuration.shared;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 
 import com.inverce.mod.core.IM;
 
@@ -26,6 +27,7 @@ abstract class SharedValueImpl<T> {
         return defaultValue != null ? defaultValue : value;
     }
 
+    @Nullable
     public abstract T getValue();
     public abstract void setValue(T value);
 
@@ -80,6 +82,7 @@ abstract class SharedValueImpl<T> {
     }
 
     static class Text extends SharedValueImpl<String> {
+        @Nullable
         @Override
         public String getValue() {
             return store().getString(key, defaultOr(""));

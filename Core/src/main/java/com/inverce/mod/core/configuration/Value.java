@@ -63,6 +63,7 @@ public class Value<T> extends ReadOnlyValue<T> {
         this.setter = setter;
     }
 
+    @NonNull
     public ReadOnlyValue<T> asReadOnly() {
         return new ReadOnlyValue<>(this);
     }

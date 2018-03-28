@@ -1,5 +1,8 @@
 package com.inverce.mod.core;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +14,7 @@ import java.io.OutputStream;
 
 @SuppressWarnings("unused")
 public class IO {
-    public static void closeSilently(Closeable closeable) {
+    public static void closeSilently(@Nullable Closeable closeable) {
         if (closeable != null) {
             try {
                 closeable.close();
@@ -21,15 +24,15 @@ public class IO {
         }
     }
 
-    public static void copyFile(File in, File out) throws IOException, FileNotFoundException {
+    public static void copyFile(@NonNull File in, @NonNull File out) throws IOException, FileNotFoundException {
         copyStream(new FileInputStream(in), new FileOutputStream(out));
     }
 
-    public static long copyStream(InputStream is, OutputStream out) throws IOException {
+    public static long copyStream(@NonNull InputStream is, @NonNull OutputStream out) throws IOException {
         return copyStream(is, out, true);
     }
 
-    public static long copyStream(InputStream in, OutputStream out, boolean closeStreams) throws IOException {
+    public static long copyStream(@NonNull InputStream in, @NonNull OutputStream out, boolean closeStreams) throws IOException {
         long total = 0;
         try {
             byte[] buf = new byte[8096];

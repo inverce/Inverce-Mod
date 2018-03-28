@@ -1,5 +1,7 @@
 package com.inverce.mod.processing;
 
+import android.support.annotation.NonNull;
+
 import com.inverce.mod.core.IM;
 import com.inverce.mod.core.functional.IConsumer;
 
@@ -14,7 +16,7 @@ public class Job<ITEM, RESULT> implements IConsumer<ProcessingQueue> {
     }
 
     @Override
-    public void accept(ProcessingQueue queue) {
+    public void accept(@NonNull ProcessingQueue queue) {
         try {
             RESULT result = processor.processJob(item);
             IM.onBg().execute(() -> queue.finishJob(new JobResult<>(this, result)));

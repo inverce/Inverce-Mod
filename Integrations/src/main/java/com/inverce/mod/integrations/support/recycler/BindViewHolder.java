@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
@@ -21,7 +22,7 @@ public class BindViewHolder extends RecyclerView.ViewHolder {
     protected SparseArray<View> children;
     protected boolean childrenInflated;
 
-    public BindViewHolder(View itemView) {
+    public BindViewHolder(@NonNull View itemView) {
         super(itemView);
         children = new SparseArray<>();
     }
@@ -39,7 +40,8 @@ public class BindViewHolder extends RecyclerView.ViewHolder {
         return children;
     }
 
-    protected static SparseArray<View> searchForViews(View view, SparseArray<View> children) {
+    @NonNull
+    protected static SparseArray<View> searchForViews(View view, @NonNull SparseArray<View> children) {
         if (view instanceof ViewGroup) {
             ViewGroup vg = (ViewGroup) view;
             for (int i = 0; i<vg.getChildCount(); i++) {
@@ -52,6 +54,7 @@ public class BindViewHolder extends RecyclerView.ViewHolder {
         return  children;
     }
 
+    @NonNull
     @SuppressWarnings("unchecked")
     public <V extends View> V get(@IdRes int res) {
         V v = (V) children.get(res);
@@ -66,7 +69,7 @@ public class BindViewHolder extends RecyclerView.ViewHolder {
         return get(res) != null;
     }
 
-    public <V extends View> boolean ifHas(@IdRes int res, IConsumer<V> consumer) {
+    public <V extends View> boolean ifHas(@IdRes int res, @NonNull IConsumer<V> consumer) {
         V v = get(res);
         if (v  != null) {
             consumer.accept(v);
@@ -75,30 +78,35 @@ public class BindViewHolder extends RecyclerView.ViewHolder {
         return false;
     }
 
+    @NonNull
     public BindViewHolder bindText(@IdRes int id, String map) {
         TextView v = get(id);
         if (v  != null) v.setText(map);
         return this;
     }
 
+    @NonNull
     public BindViewHolder bindText(@IdRes int id, @StringRes int res) {
         TextView v = get(id);
         if (v  != null) v.setText(res);
         return this;
     }
 
+    @NonNull
     public BindViewHolder bindImage(@IdRes int id, @DrawableRes int res) {
         ImageView v = get(id);
         if (v  != null) v.setImageResource(res);
         return this;
     }
 
+    @NonNull
     public BindViewHolder bindBackground(@IdRes int id, @DrawableRes int res) {
         View v = get(id);
         if (v  != null) v.setBackgroundResource(res);
         return this;
     }
 
+    @NonNull
     public BindViewHolder bindBackground(@IdRes int id, Drawable res) {
         View v = get(id);
         if (v  != null) {
@@ -111,12 +119,14 @@ public class BindViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+    @NonNull
     public BindViewHolder bindVisibility(@IdRes int id, boolean visible) {
         View v = get(id);
         Ui.visible(v, visible);
         return this;
     }
 
+    @NonNull
     public BindViewHolder bindOnClickListener(@IdRes int id, View.OnClickListener onClickListener) {
         View v = get(id);
         if (v  != null) v.setOnClickListener(onClickListener);

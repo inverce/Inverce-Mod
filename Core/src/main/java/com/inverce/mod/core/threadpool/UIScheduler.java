@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 public class UIScheduler implements Executor {
     protected static ScheduledThreadPoolExecutor scheduler;
+    @NonNull
     protected final Handler uiHandler;
 
     public UIScheduler() {
@@ -44,7 +45,7 @@ public class UIScheduler implements Executor {
         return scheduler.scheduleWithFixedDelay(wrap(command), initialDelay, delay, unit);
     }
 
-    private Runnable wrap(Runnable runnable) {
+    private Runnable wrap(@NonNull Runnable runnable) {
         //noinspection Convert2Lambda
         return new Runnable() {
             @Override

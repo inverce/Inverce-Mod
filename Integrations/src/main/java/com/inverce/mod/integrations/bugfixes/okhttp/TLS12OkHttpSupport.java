@@ -1,6 +1,7 @@
 package com.inverce.mod.integrations.bugfixes.okhttp;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
 
 import com.google.android.gms.security.ProviderInstaller;
 import com.inverce.mod.core.IM;
@@ -25,7 +26,8 @@ import javax.net.ssl.X509TrustManager;
 import okhttp3.OkHttpClient;
 
 public class TLS12OkHttpSupport {
-    public static OkHttpClient.Builder enableTls12OnPreLollipop(OkHttpClient.Builder client) {
+    @NonNull
+    public static OkHttpClient.Builder enableTls12OnPreLollipop(@NonNull OkHttpClient.Builder client) {
         if (Build.VERSION.SDK_INT >= 16 && Build.VERSION.SDK_INT < 22) {
             try {
                 ProviderInstaller.installIfNeeded(IM.context());

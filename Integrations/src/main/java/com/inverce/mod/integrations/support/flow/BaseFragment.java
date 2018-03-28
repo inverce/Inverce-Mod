@@ -1,6 +1,7 @@
 package com.inverce.mod.integrations.support.flow;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
@@ -9,12 +10,15 @@ import com.inverce.mod.core.utilities.SubBundleBuilder;
 
 public class BaseFragment extends Fragment {
 
+    @Nullable
     public SubBundleBuilder<BaseFragment> setArguments() {
         return new SubBundleBuilder<>(this, getArguments(), this::setArguments);
     }
 
+    @NonNull
     LifecycleState lifecycleState = LifecycleState.NotCreated;
 
+    @NonNull
     public LifecycleState getLifecycleState() {
         return lifecycleState;
     }

@@ -1,5 +1,7 @@
 package com.inverce.mod.events;
 
+import android.support.annotation.NonNull;
+
 import com.inverce.mod.core.collections.CacheFunctionMap;
 import com.inverce.mod.core.reflection.Reflection;
 import com.inverce.mod.events.annotation.Listener;
@@ -16,6 +18,7 @@ public class Channel extends HashMap<Class<? extends Listener>, Event<? extends 
         listenersInClass = new CacheFunctionMap<>(Channel::getListenersInClassImpl);
     }
 
+    @NonNull
     public static Set<Class<?>> getListenersInClassImpl(Class<?> clazz) {
         Set<Class<?>> allInterfaces = Reflection.getImplementedInterfaces(clazz);
         Set<Class<?>> listeners = new HashSet<>();
@@ -42,7 +45,7 @@ public class Channel extends HashMap<Class<? extends Listener>, Event<? extends 
      *
      * @param listener - listener instance
      */
-    public <T extends Listener> void registerAll(T listener) {
+    public <T extends Listener> void registerAll(@NonNull T listener) {
         for (Class<?> clazz : listenersInClass.get(listener.getClass())) {
             eventInternal(clazz).addListenerInternal(listener);
         }
@@ -53,7 +56,7 @@ public class Channel extends HashMap<Class<? extends Listener>, Event<? extends 
      *
      * @param listener - listener instance
      */
-    public <T extends Listener> void unregisterAll(T listener) {
+    public <T extends Listener> void unregisterAll(@NonNull T listener) {
         for (Class<?> clazz : listenersInClass.get(listener.getClass())) {
             eventInternal(clazz).removeListenerInternal(listener);
         }
@@ -98,6 +101,7 @@ public class Channel extends HashMap<Class<? extends Listener>, Event<? extends 
      * @param clazz - event class that will be used as listener
      * @param <T>   event type (not used as type is implicitly specified while defining clazz
      */
+    @NonNull
     public <T extends Listener> T post(Class<T> clazz) {
         return event(clazz).post();
     }
@@ -109,6 +113,7 @@ public class Channel extends HashMap<Class<? extends Listener>, Event<? extends 
      * @param <T>   event type (not used as type is implicitly specified while defining clazz
      */
 
+    @NonNull
     public <T extends Listener> Event<T> event(Class<T> clazz) {
         Event<T> event = (Event<T>) super.get(clazz);
         if (event != null) {
@@ -118,6 +123,7 @@ public class Channel extends HashMap<Class<? extends Listener>, Event<? extends 
         return event;
     }
 
+    @NonNull
     private Event<?> eventInternal(Class<?> clazz) {
         Event<Listener> event = new Event<>((Class<Listener>) clazz, useWeekEvents);
         put((Class<? extends Listener>) clazz, event);

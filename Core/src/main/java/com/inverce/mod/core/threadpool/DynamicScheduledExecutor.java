@@ -53,7 +53,7 @@ public class DynamicScheduledExecutor extends ThreadPoolExecutor implements Sche
         return scheduler.scheduleWithFixedDelay(wrap(command), initialDelay, delay, unit);
     }
 
-    private Runnable wrap(Runnable runnable) {
+    private Runnable wrap(@NonNull Runnable runnable) {
         //noinspection Convert2Lambda
         return new Runnable() {
             @Override

@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -48,9 +49,11 @@ public class VisionScannerFragment extends Fragment {
     protected BarcodeDetector barcodeDetector;
     @Nullable
     protected CameraSource mCameraSource;
+    @Nullable
     protected CameraSourcePreview mCameraSourcePreview;
     protected int barcodeFormats = Barcode.ALL_FORMATS;
     protected NewDetectionListener detectionListener;
+    @Nullable
     protected ScheduledFuture<?> selfFocus;
 
     /**
@@ -76,6 +79,7 @@ public class VisionScannerFragment extends Fragment {
                 .build();
     }
 
+    @Nullable
     public CameraSource onCreateCameraSource(Activity activity, BarcodeDetector barcodeDetector) {
         return new CameraSource.Builder(activity, barcodeDetector)
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
@@ -84,11 +88,13 @@ public class VisionScannerFragment extends Fragment {
                 .build();
     }
 
+    @NonNull
     public VisionScannerFragment setBarcodeFormats(@BarcodeFormats int barcodeFormats) {
         this.barcodeFormats = barcodeFormats;
         return this;
     }
 
+    @NonNull
     public VisionScannerFragment setDetectionListener(NewDetectionListener detectionListener) {
         this.detectionListener = detectionListener;
         return this;
@@ -212,7 +218,7 @@ public class VisionScannerFragment extends Fragment {
         }
     }
 
-    public boolean checkPermissions(Context context, boolean requestIfNotPresent) {
+    public boolean checkPermissions(@Nullable Context context, boolean requestIfNotPresent) {
         if (context == null) return false; // allow passing null
 
         int mCameraPermission = ActivityCompat.checkSelfPermission(context, Manifest.permission.CAMERA);
@@ -227,7 +233,7 @@ public class VisionScannerFragment extends Fragment {
     }
 
 
-    public void requestCameraPermission(final Activity context, boolean showSnackBarRationale) {
+    public void requestCameraPermission(@NonNull final Activity context, boolean showSnackBarRationale) {
         final String[] mPermissions = new String[]{Manifest.permission.CAMERA};
         if (!ActivityCompat.shouldShowRequestPermissionRationale(context, Manifest.permission.CAMERA)) {
             ActivityCompat.requestPermissions(context, mPermissions, RC_HANDLE_CAMERA_PERM);

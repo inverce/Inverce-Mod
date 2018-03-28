@@ -1,5 +1,8 @@
 package com.inverce.mod.events;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.inverce.mod.core.Log;
 import com.inverce.mod.core.collections.WeakArrayList;
 import com.inverce.mod.events.annotation.EventInfo;
@@ -24,8 +27,10 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
     protected Class<T> service;
 
     // weak referenced used to clean_up listeners even if user forgets to, or didn't had time
+    @NonNull
     protected final List<T> list;
 
+    @NonNull
     protected final T proxyCaller;
     protected boolean needCleanUp;
     protected static Executor uiExecutor, bgExecutor;
@@ -55,7 +60,7 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
         proxyCaller = (T) newProxyInstance(service.getClassLoader(), new Class<?>[]{service}, this);
     }
 
-    private void cleanUp(T listener) {
+    private void cleanUp(@Nullable T listener) {
         int cleared = 0;
         if (listener != null) {
             cleared += list.remove(listener) ? 1 : 0;
@@ -90,7 +95,7 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
      *
      * @param listener listener
      */
-    public void setListener(T listener) {
+    public void setListener(@Nullable T listener) {
         synchronized (list) {
             list.clear();
             if (listener != null) {
@@ -99,7 +104,7 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
         }
     }
 
-    public void addListener(T listener) {
+    public void addListener(@Nullable T listener) {
         if (listener != null) {
             synchronized (list) {
                 if (!list.contains(listener)) {
@@ -121,6 +126,7 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
         }
     }
 
+    @NonNull
     public T post() {
         synchronized (list) {
             return proxyCaller;
@@ -133,7 +139,8 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
         }
     }
 
-    public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+    @Nullable
+    public Object invoke(final Object proxy, @NonNull final Method method, final Object[] args) throws Throwable {
         EventInfo onThread = method.getAnnotation(EventInfo.class);
 
 //        AsyncResult<T> result = null;
@@ -155,7 +162,7 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
         return invokeInternal(null, method, args);
     }
 
-    private Runnable createInvokerRunnable(final AsyncResult<T> proxy, final Method method, final Object[] args) {
+    private Runnable createInvokerRunnable(final AsyncResult<T> proxy, @NonNull final Method method, final Object[] args) {
         //noinspection Convert2Lambda
         return new Runnable() {
             public void run() {
@@ -168,7 +175,8 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
         };
     }
 
-    Object invokeInternal(AsyncResult<T> result, final Method method, final Object[] args) throws Throwable {
+    @Nullable
+    Object invokeInternal(AsyncResult<T> result, @NonNull final Method method, final Object[] args) throws Throwable {
         synchronized (list) {
             Object[] returns = new Object[list.size()];
             for (int i = 0; i < list.size(); i++) {
@@ -209,7 +217,7 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
         static long tsLastRegister = 0, tsLastNotify = 0, tsLastCount = 0;
         static long hashLastRegister = 0, tsTimeNotify = 2000;
 
-        private static void handleRegisterHint(Object listener) {
+        private static void handleRegisterHint(@Nullable Object listener) {
             if (Log.isLoggable(Log.INFO) && listener != null) {
                 int hash = listener.hashCode();
                 if (hashLastRegister != hash) {
@@ -290,6 +298,7 @@ public class Event<T extends Listener> implements SingleEvent<T>, MultiEvent<T>,
          * @param clazz - event class that will be used as listener
          * @param <T>   event type (not used as type is implicitly specified while defining clazz
          */
+        @NonNull
         public static <T extends Listener> T post(Class<T> clazz) {
             return channel().event(clazz).post();
         }

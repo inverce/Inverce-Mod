@@ -13,6 +13,7 @@ public class BarcodeTrackerFactory implements MultiProcessor.Factory<Barcode> {
         mDetectionListener = listener;
     }
 
+    @NonNull
     @Override
     public Tracker<Barcode> create(Barcode barcode) {
         NewDetectionTracker tracker = new NewDetectionTracker();

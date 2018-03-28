@@ -1,5 +1,6 @@
 package com.inverce.mod.core.collections;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
@@ -12,6 +13,7 @@ import java.util.Iterator;
  * @param <T>
  */
 public class WeakArrayList<T> extends AbstractList<T> {
+    @NonNull
     protected ArrayList<WeakReference<T>> impl = new ArrayList<>(1);
 
     @Override @Nullable
@@ -24,6 +26,7 @@ public class WeakArrayList<T> extends AbstractList<T> {
         return impl.size();
     }
 
+    @Nullable
     @Override
     public T set(int index, T element) {
         WeakReference<T> old = impl.set(index, new WeakReference<>(element));
@@ -35,6 +38,7 @@ public class WeakArrayList<T> extends AbstractList<T> {
         impl.add(index, new WeakReference<>(element));
     }
 
+    @Nullable
     @Override
     public T remove(int index) {
         WeakReference<T> old = impl.remove(index);

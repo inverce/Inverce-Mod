@@ -1,6 +1,7 @@
 package com.inverce.mod.core.collections;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.AbstractCollection;
 import java.util.AbstractList;
@@ -20,13 +21,14 @@ import static com.inverce.mod.core.collections.TraversalMethod.DFS;
 // todo make sure
 public class TraverseTreeCollection<T extends TreeNode<T>> extends AbstractCollection<T> {
     protected final boolean isDfs, isAsc;
+    @Nullable
     protected final T node;
 
     public TraverseTreeCollection(T node) {
         this(node, DFS | ASC);
     }
 
-    public TraverseTreeCollection(T node, @TraversalMethod int flags) {
+    public TraverseTreeCollection(@Nullable T node, @TraversalMethod int flags) {
         if ((flags & 1) != 1) {
             throw new IllegalStateException("Specify method. DFS or BFS");
         }
@@ -92,7 +94,7 @@ public class TraverseTreeCollection<T extends TreeNode<T>> extends AbstractColle
             return node;
         }
 
-        private void pushChildren(Collection<T> into, T node) {
+        private void pushChildren(@NonNull Collection<T> into, @NonNull T node) {
             if (isAsc) {
                 into.addAll(new ReverseOrderList<>(node.getChildren()));
             } else {
@@ -103,9 +105,10 @@ public class TraverseTreeCollection<T extends TreeNode<T>> extends AbstractColle
     }
 
     private static class ReverseOrderList<E> extends AbstractList<E> {
+        @Nullable
         private List<E> inner;
 
-        ReverseOrderList(List<E> inner) {
+        ReverseOrderList(@Nullable List<E> inner) {
             this.inner = inner != null ? inner : new ArrayList<>();
         }
 

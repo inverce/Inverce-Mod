@@ -17,6 +17,9 @@
  */
 package com.inverce.mod.core.reflection;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import java.io.Serializable;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -27,11 +30,12 @@ import static com.inverce.mod.core.verification.Preconditions.checkArgument;
 import static com.inverce.mod.core.verification.Preconditions.checkNotNull;
 
 final class ParameterizedTypeImpl implements ParameterizedType, Serializable {
+    @Nullable
     private final Type ownerType;
     private final Type rawType;
     private final Type[] typeArguments;
 
-    public ParameterizedTypeImpl(Type ownerType, Type rawType, Type... typeArguments) {
+    public ParameterizedTypeImpl(@Nullable Type ownerType, Type rawType, @NonNull Type... typeArguments) {
         // require an owner type if the raw type needs it
         if (rawType instanceof Class<?>) {
             Class<?> rawTypeAsClass = (Class<?>) rawType;
@@ -62,6 +66,7 @@ final class ParameterizedTypeImpl implements ParameterizedType, Serializable {
         return rawType;
     }
 
+    @Nullable
     public Type getOwnerType() {
         return ownerType;
     }
@@ -91,7 +96,7 @@ final class ParameterizedTypeImpl implements ParameterizedType, Serializable {
         return stringBuilder.append(">").toString();
     }
 
-    private void appendTypeArguments(StringBuilder stringBuilder, int length) {
+    private void appendTypeArguments(@NonNull StringBuilder stringBuilder, int length) {
         stringBuilder
                 .append(Types.typeToString(rawType))
                 .append("<")

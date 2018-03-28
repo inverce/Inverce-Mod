@@ -1,5 +1,8 @@
 package com.inverce.mod.core.collections;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +93,7 @@ public class FlatArrayList<E> extends AbstractList<E> implements List<E>, Random
 
     @SuppressWarnings("unused")
     public static class FlatArrayListStore<T> extends ArrayList<List<? extends T>> {
+        @NonNull
         private List<T> singleton(T element) {
             ArrayList<T> singleton = new ArrayList<>(1);
             singleton.add(element);
@@ -117,7 +121,7 @@ public class FlatArrayList<E> extends AbstractList<E> implements List<E>, Random
             super.add(index, singleton(element));
         }
 
-        public boolean removeSingle(T c) {
+        public boolean removeSingle(@Nullable T c) {
             if (c == null) {
                 return false;
             }

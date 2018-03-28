@@ -1,6 +1,7 @@
 package com.inverce.mod.core.actions;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.inverce.mod.core.IM;
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class DeBounce<T> {
+    @Nullable
     protected ScheduledFuture<?> feature;
     protected IConsumer<T> report;
     protected long delay = 500;
@@ -21,36 +23,41 @@ public class DeBounce<T> {
 
     public DeBounce() { }
 
+    @NonNull
     public DeBounce<T> setConsumer(IConsumer<T> report) {
         this.report = report;
         return this;
     }
 
+    @NonNull
     public DeBounce<T> setDelay(long delay) {
         this.delay = delay;
         return this;
     }
 
-    private boolean defaultEquals(T a, T b) {
+    private boolean defaultEquals(@Nullable T a, T b) {
         return (a == b) || (a != null && a.equals(b));
     }
 
+    @NonNull
     public static <T> Aggregator<T> aggregateUseNew() { return (A, B) -> B; }
+
+    @NonNull
     public static <T> Aggregator<T> aggregateUseOld() { return (A, B) -> B; }
 
     public synchronized void post(@NonNull T element) {
         post(element, this::defaultEquals, aggregateUseNew());
     }
 
-    public synchronized void post(@NonNull T element, IsEqual<T> equals) {
+    public synchronized void post(@NonNull T element, @NonNull IsEqual<T> equals) {
         post(element, equals, aggregateUseNew());
     }
 
-    public synchronized void post(@NonNull T element, Aggregator<T> aggregate) {
+    public synchronized void post(@NonNull T element, @NonNull Aggregator<T> aggregate) {
         post(element, this::defaultEquals, aggregate);
     }
 
-    public synchronized void post(@NonNull T element, IsEqual<T> equals, Aggregator<T> aggregate) {
+    public synchronized void post(@NonNull T element, @NonNull IsEqual<T> equals, @NonNull Aggregator<T> aggregate) {
         if (evt != null) {
             if (!equals.isEqual(evt, element)) {
                 // last is not the same as this one we should report it immediately
@@ -87,13 +94,14 @@ public class DeBounce<T> {
         feature = IM.onBg().schedule(this::internalReport, delay, TimeUnit.MILLISECONDS);
     }
 
-    public static View.OnClickListener deBounce(int ms, View.OnClickListener onClickListener) {
+    public static View.OnClickListener deBounce(int ms, @NonNull View.OnClickListener onClickListener) {
         return new View.OnClickListener() {
+            @NonNull
             DeBounce<View> deBounce = new DeBounce<View>()
                     .setDelay(ms)
                     .setConsumer(onClickListener::onClick);
             @Override
-            public void onClick(View v) {
+            public void onClick(@NonNull View v) {
                 deBounce.post(v);
             }
         };

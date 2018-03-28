@@ -1,6 +1,7 @@
 package com.inverce.mod.integrations.views;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.Layout.Alignment;
 import android.text.StaticLayout;
@@ -17,6 +18,7 @@ import android.widget.TextView;
  * @author Chase Colburn
  * @since Apr 4, 2011
  */
+@Deprecated
 public class AutoResizeTextView extends AppCompatTextView {
 
     // Minimum text size for this text view
@@ -50,17 +52,17 @@ public class AutoResizeTextView extends AppCompatTextView {
     private boolean mAddEllipsis = true;
 
     // Default constructor override
-    public AutoResizeTextView(Context context) {
+    public AutoResizeTextView(@NonNull Context context) {
         this(context, null);
     }
 
     // Default constructor when inflating find XML file
-    public AutoResizeTextView(Context context, AttributeSet attrs) {
+    public AutoResizeTextView(@NonNull Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
     // Default constructor override
-    public AutoResizeTextView(Context context, AttributeSet attrs, int defStyle) {
+    public AutoResizeTextView(@NonNull Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mTextSize = getTextSize();
     }
