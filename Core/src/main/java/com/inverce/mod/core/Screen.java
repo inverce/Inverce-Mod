@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,7 @@ public class Screen {
      *
      * @return the screen size
      */
+    @NonNull
     public static Point getScreenSize() {
         Point size = new Point();
         Display display;
@@ -47,6 +50,7 @@ public class Screen {
      *
      * @return the activity size
      */
+    @NonNull
     public static Point getActivitySize() {
         Point size = getScreenSize();
         size.y -= getStatusBarHeight();
@@ -71,7 +75,7 @@ public class Screen {
      * @param px the px
      * @return the int
      */
-    public static int pxToDp(int px) {
+    public static int pxToDp(float px) {
         return (int) (px / IM.resources().getDisplayMetrics().density);
     }
 
@@ -81,7 +85,7 @@ public class Screen {
      * @param dp the dp
      * @return the int
      */
-    public static int dpToPx(int dp) {
+    public static int dpToPx(float dp) {
         return (int) (dp * IM.resources().getDisplayMetrics().density);
     }
 
@@ -91,7 +95,8 @@ public class Screen {
      * @param measurementView the measurement view
      * @return the location on screen
      */
-    public static Point getLocationOnScreen(View measurementView) {
+    @NonNull
+    public static Point getLocationOnScreen(@Nullable View measurementView) {
         int[] areaBegin = new int[2];
         if (measurementView == null)
             return new Point(-1, -1);
@@ -105,7 +110,8 @@ public class Screen {
      * @param measurementView the measurement view
      * @return the view size
      */
-    public static Point getViewSize(View measurementView) {
+    @NonNull
+    public static Point getViewSize(@Nullable View measurementView) {
         if (measurementView == null)
             return new Point(-1, -1);
         return new Point(measurementView.getMeasuredWidth(), measurementView.getMeasuredHeight());

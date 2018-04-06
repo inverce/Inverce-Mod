@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 
 public class InteractionFragment<ACTIONS> extends BaseFragment {
+    @Nullable
     protected ACTIONS actions;
 
     @Nullable

@@ -17,6 +17,9 @@
  */
 package com.inverce.mod.core.reflection;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
@@ -31,9 +34,10 @@ import static com.inverce.mod.core.verification.Preconditions.checkNotNull;
  */
 final class WildcardTypeImpl implements WildcardType, Serializable {
     private final Type upperBound;
+    @Nullable
     private final Type lowerBound;
 
-    public WildcardTypeImpl(Type[] upperBounds, Type[] lowerBounds) {
+    public WildcardTypeImpl(@NonNull Type[] upperBounds, @NonNull Type[] lowerBounds) {
         checkArgument(lowerBounds.length <= 1);
         checkArgument(upperBounds.length == 1);
 
@@ -56,6 +60,7 @@ final class WildcardTypeImpl implements WildcardType, Serializable {
         return new Type[]{upperBound};
     }
 
+    @Nullable
     public Type[] getLowerBounds() {
         return lowerBound != null ? new Type[]{lowerBound} : Types.EMPTY_TYPE_ARRAY;
     }

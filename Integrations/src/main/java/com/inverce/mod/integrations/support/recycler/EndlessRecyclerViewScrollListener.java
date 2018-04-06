@@ -1,5 +1,6 @@
 package com.inverce.mod.integrations.support.recycler;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +19,7 @@ public class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollList
     // before loading more.
     public int visibleThreshold = 10;
 
-    public EndlessRecyclerViewScrollListener(RecyclerView.LayoutManager layoutManager, LoadMore onLoadMore, int visibleThreshold) {
+    public EndlessRecyclerViewScrollListener(@NonNull RecyclerView.LayoutManager layoutManager, @NonNull LoadMore onLoadMore, int visibleThreshold) {
         this.mLayoutManager = layoutManager;
         state = new State();
         this.visibleThreshold = visibleThreshold;
@@ -34,7 +35,7 @@ public class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollList
         this.onLoadMore = onLoadMore;
     }
 
-    public int getLastVisibleItem(int[] lastVisibleItemPositions) {
+    public int getLastVisibleItem(@NonNull int[] lastVisibleItemPositions) {
         int maxSize = 0;
         for (int i = 0; i < lastVisibleItemPositions.length; i++) {
             if (i == 0) {

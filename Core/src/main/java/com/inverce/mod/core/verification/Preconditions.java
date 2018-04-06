@@ -16,6 +16,7 @@
  */
 package com.inverce.mod.core.verification;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
@@ -221,7 +222,8 @@ public final class Preconditions {
      * @throws NullPointerException if {@code reference} is null
      */
 
-    public static <T> T checkNotNull(T reference) {
+    @Nullable
+    public static <T> T checkNotNull(@Nullable T reference) {
         if (reference == null) {
             throw new NullPointerException();
         }
@@ -238,7 +240,8 @@ public final class Preconditions {
      * @throws NullPointerException if {@code reference} is null
      */
 
-    public static <T> T checkNotNull(T reference, @Nullable Object errorMessage) {
+    @Nullable
+    public static <T> T checkNotNull(@Nullable T reference, @Nullable Object errorMessage) {
         if (reference == null) {
             throw new NullPointerException(String.valueOf(errorMessage));
         }
@@ -260,8 +263,9 @@ public final class Preconditions {
      * @throws NullPointerException if {@code reference} is null
      */
 
+    @Nullable
     public static <T> T checkNotNull(
-            T reference, @Nullable String errorMessageTemplate, @Nullable Object... errorMessageArgs) {
+            @Nullable T reference, @Nullable String errorMessageTemplate, @Nullable Object... errorMessageArgs) {
         if (reference == null) {
             // If either of these parameters is null, the right thing happens anyway
             throw new NullPointerException(format(errorMessageTemplate, errorMessageArgs));
@@ -378,6 +382,7 @@ public final class Preconditions {
         }
     }
 
+    @NonNull
     private static String badPositionIndexes(int start, int end, int size) {
         if (start < 0 || start > size) {
             return badPositionIndex(start, size, "start index");

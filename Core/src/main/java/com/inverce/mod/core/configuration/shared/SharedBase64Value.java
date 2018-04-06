@@ -1,5 +1,7 @@
 package com.inverce.mod.core.configuration.shared;
 
+import android.support.annotation.Nullable;
+
 import static com.inverce.mod.core.MathEx.fromBase64;
 import static com.inverce.mod.core.MathEx.toBase64;
 
@@ -18,6 +20,7 @@ public class SharedBase64Value extends SharedValue<String> {
         super(String.class, key, storeFile, defaultValue);
     }
 
+    @Nullable
     @Override
     public String get() {
         return fromBase64(super.get());

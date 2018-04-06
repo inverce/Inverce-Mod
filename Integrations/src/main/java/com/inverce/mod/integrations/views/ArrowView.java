@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
@@ -19,22 +21,22 @@ public class ArrowView extends AppCompatTextView {
     float arrowHeadAspect;
     Path path;
 
-    public ArrowView(Context context) {
+    public ArrowView(@NonNull Context context) {
         super(context);
         init(context, null, 0);
     }
 
-    public ArrowView(Context context, AttributeSet attrs) {
+    public ArrowView(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs, 0);
     }
 
-    public ArrowView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ArrowView(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr);
     }
 
-    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
+    private void init(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         if(attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ArrowView, defStyleAttr, 0);
             arrowColor = a.getColor(R.styleable.ArrowView_arrowColor, 0xFFF0F0F0);
@@ -49,7 +51,7 @@ public class ArrowView extends AppCompatTextView {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         if (arrowPaint == null || arrowPaint.getColor() != arrowColor) {
             arrowPaint = new Paint();
             arrowPaint.setColor(arrowColor);

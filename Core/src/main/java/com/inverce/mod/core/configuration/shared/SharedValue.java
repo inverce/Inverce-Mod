@@ -1,24 +1,26 @@
 package com.inverce.mod.core.configuration.shared;
 
+import android.support.annotation.NonNull;
+
 import com.inverce.mod.core.configuration.Value;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class SharedValue<T> extends Value<T> {
     protected SharedValueImpl<T> impl;
 
-    public SharedValue(Class<T> clazz, String key) {
+    public SharedValue(@NonNull Class<T> clazz, String key) {
         this(clazz, key, "im_shared", null);
     }
 
-    public SharedValue(Class<T> clazz, String key, T defaultValue) {
+    public SharedValue(@NonNull Class<T> clazz, String key, T defaultValue) {
         this(clazz, key, "im_shared", defaultValue);
     }
 
-    public SharedValue(Class<T> clazz, String key, String storeFile) {
+    public SharedValue(@NonNull Class<T> clazz, String key, String storeFile) {
         this(clazz, key, storeFile, null);
     }
 
-    public SharedValue(Class<T> clazz, String key, String storeFile, T defaultValue) {
+    public SharedValue(@NonNull Class<T> clazz, String key, String storeFile, T defaultValue) {
         this.impl = implementationForClass(clazz.getName());
         this.impl.with(key, storeFile, defaultValue);
         setSetter(this.impl::setValue);
@@ -26,7 +28,8 @@ public class SharedValue<T> extends Value<T> {
         setValidator(p -> p != null);
     }
 
-    private SharedValueImpl<T> implementationForClass(String clazz) {
+    @NonNull
+    private SharedValueImpl<T> implementationForClass(@NonNull String clazz) {
         SharedValueImpl<?> impl;
         switch (clazz) {
             case "java.lang.Boolean":

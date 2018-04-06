@@ -1,5 +1,7 @@
 package com.inverce.mod.core.configuration;
 
+import android.support.annotation.NonNull;
+
 import com.inverce.mod.core.functional.ISupplier;
 import com.inverce.mod.core.utilities.SubBuilder;
 
@@ -18,6 +20,7 @@ public class Preset {
         records = new ArrayList<>();
     }
 
+    @NonNull
     public Preset apply() {
         for (Record record: records) {
             record.apply();
@@ -44,10 +47,12 @@ public class Preset {
             super(Preset.this);
         }
 
+        @NonNull
         public <T, Y extends Value<T>> Builder add(Y preference, T value) {
             return addSupplier(preference, () -> value);
         }
 
+        @NonNull
         public <T, Y extends Value<T>> Builder addSupplier(Y preference, ISupplier<T> value) {
             Preset.this.records.add(new Record<>(preference, value));
             return this;

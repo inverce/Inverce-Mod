@@ -5,8 +5,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 
+import com.inverce.mod.core.Lifecycle;
 import com.inverce.mod.core.threadpool.DefaultHandlerThread;
 import com.inverce.mod.core.threadpool.DynamicScheduledExecutor;
 import com.inverce.mod.core.threadpool.UIScheduler;
@@ -22,10 +25,12 @@ public class IMInternal {
     private Handler uiHandler;
     private DynamicScheduledExecutor bgExecutorService;
     private UIScheduler uiExecutor;
+    @NonNull
     private WeakReference<Activity> activity = new WeakReference<>(null);
     private static boolean inEdit;
     private DefaultHandlerThread looperHandlerThread;
 
+    @NonNull
     public static IMInternal get() {
         return internal != null ? internal : (internal = new IMInternal());
     }
@@ -44,6 +49,7 @@ public class IMInternal {
         this.bgExecutorService = new DynamicScheduledExecutor();
         this.bgExecutorService.setKeepAliveTime(5, TimeUnit.SECONDS);
         this.uiExecutor = new UIScheduler();
+        Lifecycle.initialize();
     }
 
     public Context getContext() {

@@ -19,6 +19,9 @@
 
 package com.inverce.mod.core.reflection;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.GenericDeclaration;
@@ -150,7 +153,7 @@ public final class Types {
         }
     }
 
-    static boolean equal(Object a, Object b) {
+    static boolean equal(@Nullable Object a, Object b) {
         return a == b || (a != null && a.equals(b));
     }
 
@@ -212,7 +215,7 @@ public final class Types {
         }
     }
 
-    static int hashCodeOrZero(Object o) {
+    static int hashCodeOrZero(@Nullable Object o) {
         return o != null ? o.hashCode() : 0;
     }
 
@@ -225,7 +228,7 @@ public final class Types {
      * IntegerSet}, the result for when supertype is {@code Set.class} is {@code Set<Integer>} and the
      * result when the supertype is {@code Collection.class} is {@code Collection<Integer>}.
      */
-    static Type getGenericSupertype(Type context, Class<?> rawType, Class<?> toResolve) {
+    static Type getGenericSupertype(Type context, @NonNull Class<?> rawType, @NonNull Class<?> toResolve) {
         if (toResolve == rawType) {
             return context;
         }
@@ -266,7 +269,7 @@ public final class Types {
      *
      * @param supertype a superclass of, or interface implemented by, this.
      */
-    static Type getSupertype(Type context, Class<?> contextRawType, Class<?> supertype) {
+    static Type getSupertype(Type context, @NonNull Class<?> contextRawType, @NonNull Class<?> supertype) {
         checkArgument(supertype.isAssignableFrom(contextRawType));
         return resolve(context, contextRawType,
                 Types.getGenericSupertype(context, contextRawType, supertype));
@@ -288,7 +291,7 @@ public final class Types {
      *
      * @throws IllegalArgumentException if this type is not a collection.
      */
-    public static Type getCollectionElementType(Type context, Class<?> contextRawType) {
+    public static Type getCollectionElementType(Type context, @NonNull Class<?> contextRawType) {
         Type collectionType = getSupertype(context, contextRawType, Collection.class);
 
         if (collectionType instanceof WildcardType) {
@@ -304,7 +307,7 @@ public final class Types {
      * Returns a two element array containing this map's key and value types in
      * positions 0 and 1 respectively.
      */
-    public static Type[] getMapKeyAndValueTypes(Type context, Class<?> contextRawType) {
+    public static Type[] getMapKeyAndValueTypes(Type context, @NonNull Class<?> contextRawType) {
     /*
      * Work around a problem with the declaration of java.util.Properties. That
      * class should extend Hashtable<String, String>, but it's declared to
@@ -323,7 +326,7 @@ public final class Types {
         return new Type[]{Object.class, Object.class};
     }
 
-    public static Type resolve(Type context, Class<?> contextRawType, Type toResolve) {
+    public static Type resolve(Type context, @NonNull Class<?> contextRawType, Type toResolve) {
         // this implementation is made a little more complicated in an attempt to avoid object-creation
         while (true) {
             if (toResolve instanceof TypeVariable) {
@@ -395,7 +398,7 @@ public final class Types {
         }
     }
 
-    static Type resolveTypeVariable(Type context, Class<?> contextRawType, TypeVariable<?> unknown) {
+    static Type resolveTypeVariable(Type context, @NonNull Class<?> contextRawType, @NonNull TypeVariable<?> unknown) {
         Class<?> declaredByRaw = declaringClassOf(unknown);
 
         // we can't reduce this further
@@ -412,7 +415,7 @@ public final class Types {
         return unknown;
     }
 
-    private static int indexOf(Object[] array, Object toFind) {
+    private static int indexOf(@NonNull Object[] array, @NonNull Object toFind) {
         for (int i = 0, length = array.length; i < length; i++) {
             if (toFind.equals(array[i])) {
                 return i;
@@ -425,7 +428,7 @@ public final class Types {
      * Returns the declaring class of {@code typeVariable}, or {@code null} if it was not declared by
      * a class.
      */
-    private static Class<?> declaringClassOf(TypeVariable<?> typeVariable) {
+    private static Class<?> declaringClassOf(@NonNull TypeVariable<?> typeVariable) {
         GenericDeclaration genericDeclaration = typeVariable.getGenericDeclaration();
         return genericDeclaration instanceof Class
                 ? (Class<?>) genericDeclaration

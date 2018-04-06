@@ -14,7 +14,7 @@ public class EasyDiffUtilCallBack<T> extends DiffUtil.Callback {
     @NonNull
     private List<? extends T> newList;
 
-    public EasyDiffUtilCallBack(List<? extends T> newList, List<? extends T> oldList) {
+    public EasyDiffUtilCallBack(@Nullable List<? extends T> newList, @Nullable List<? extends T> oldList) {
         this.newList = newList != null ? newList : new ArrayList<T>();
         this.oldList = oldList != null ? oldList : new ArrayList<T>();
     }

@@ -1,12 +1,13 @@
 package com.inverce.mod.core.collections;
 
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CollectionsEx {
-    public <T> List<T> join(List<? extends T> A, List<? extends T> B) {
+    @Nullable
+    public static <T> List<T> join(@Nullable List<? extends T> A, @Nullable List<? extends T> B) {
         ArrayList<T> list = A != null ? new ArrayList<T>(A) : new ArrayList<T>();
         if (B != null) {
             list.addAll(B);
@@ -14,49 +15,15 @@ public class CollectionsEx {
         return list;
     }
 
-    public static class MapMaker<K, V, T extends Map<K, V>> {
-        T container;
+    public static <T> boolean equals(@Nullable List<? extends T> A, @Nullable List<? extends T> B) {
+        if (A == null || B == null) return A == B;
+        if (A.size() != B.size()) return false;
 
-        public MapMaker(T container) {
-            this.container = container;
-        }
-
-        public static <K, V> MapMaker<K, V, HashMap<K, V>> New(K key, V value) {
-            return new MapMaker<>(new HashMap<K, V>()).put(key, value);
-        }
-
-        @SafeVarargs
-        public static <K> WithKeys<K> keys(K... keys) {
-            return new WithKeys<>(keys);
-        }
-
-        public MapMaker<K, V, T> put(K key, V value) {
-            container.put(key, value);
-            return this;
-        }
-
-        public T build() {
-            return container;
-        }
-
-        public static class WithKeys<K> {
-            private final K[] keys;
-
-            WithKeys(K[] keys) {
-                this.keys = keys;
-            }
-
-            @SafeVarargs
-            public final <V> MapMaker<K, V, HashMap<K, V>> vals(V... vals) {
-                if (keys.length != vals.length) {
-                    throw new IllegalArgumentException("Expected: " + keys.length + " values, received: " + vals.length);
-                }
-                HashMap<K, V> map = new HashMap<>();
-                for (int i = 0; i < keys.length; i++) {
-                    map.put(keys[i], vals[i]);
-                }
-                return new MapMaker<>(map);
+        for (int i = 0; i < A.size(); i++) {
+            if (!A.get(i).equals(B.get(i))) {
+                return false;
             }
         }
+        return true;
     }
 }

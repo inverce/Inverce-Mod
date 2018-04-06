@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TreeNode<T extends TreeNode<T>>  {
+    @Nullable
     protected List<T> children;
 
     public TreeNode() {
-        this(new ArrayList<>());
+        this(null);
     }
 
     public TreeNode(@Nullable List<T> children) {

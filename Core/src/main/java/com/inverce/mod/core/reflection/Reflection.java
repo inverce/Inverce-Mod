@@ -1,5 +1,7 @@
 package com.inverce.mod.core.reflection;
 
+import android.support.annotation.NonNull;
+
 import com.inverce.mod.core.collections.CacheFunctionMap;
 
 import java.util.Collections;
@@ -17,7 +19,7 @@ public class Reflection {
         return superInterfaces.get(clazz);
     }
 
-    private static Set<Class<?>> getImplementedInterfacesInternal(Class<?> clazz) {
+    private static Set<Class<?>> getImplementedInterfacesInternal(@NonNull Class<?> clazz) {
         if (clazz == Object.class) {
             return new HashSet<>();
         }

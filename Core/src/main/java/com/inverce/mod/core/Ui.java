@@ -28,6 +28,7 @@ import java.text.Normalizer;
  */
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class Ui {
+    @NonNull
     private static String PADDING_NPE = "To set padding you must provide VIEW";
 
     /**
@@ -47,7 +48,8 @@ public class Ui {
      * @param disabledRes the disabled res
      * @return the state list drawable
      */
-    public static StateListDrawable makeSelector(Drawable drawable, @ColorRes int pressedRes, @ColorRes int disabledRes) {
+    @NonNull
+    public static StateListDrawable makeSelector(@NonNull Drawable drawable, @ColorRes int pressedRes, @ColorRes int disabledRes) {
         StateListDrawable state = new StateListDrawable();
         LayerDrawable pressed = new LayerDrawable(new Drawable[]{
                 drawable,
@@ -70,7 +72,7 @@ public class Ui {
      * @param visible the visibility
      * @return whatever view will be visible
      */
-    public static boolean visible(View view, boolean visible) {
+    public static boolean visible(@Nullable View view, boolean visible) {
         return visible(view, visible, true);
     }
 
@@ -82,7 +84,7 @@ public class Ui {
      * @param gone    whatever use GONE or INVISIBLE when visible is false
      * @return whatever view will be visible
      */
-    public static boolean visible(View view, boolean visible, boolean gone) {
+    public static boolean visible(@Nullable View view, boolean visible, boolean gone) {
         if (view != null) {
             if (visible) {
                 view.setVisibility(View.VISIBLE);
@@ -99,6 +101,7 @@ public class Ui {
         return false;
     }
 
+    @NonNull
     public static Point getRelativePosition(@NonNull View view, @Nullable View parent) {
         Point position = new Point(view.getLeft(), view.getTop());
         ViewParent actView = view.getParent();
@@ -117,6 +120,7 @@ public class Ui {
         return position;
     }
 
+    @NonNull
     public static Point getPositionOnScreen(@NonNull View view) {
         int[] pos = new int[2];
         view.getLocationOnScreen(pos);
@@ -124,12 +128,12 @@ public class Ui {
     }
 
     @Nullable
-    public static Bitmap createScreenShoot(Fragment view) {
+    public static Bitmap createScreenShoot(@Nullable Fragment view) {
         return view != null ? createScreenShoot(view.getView()) : null;
     }
 
     @Nullable
-    public static Bitmap createScreenShoot(View view) {
+    public static Bitmap createScreenShoot(@Nullable View view) {
         if (view == null) {
             return null;
         }
@@ -153,7 +157,7 @@ public class Ui {
      * @param rootView the root view
      * @param run      the run
      */
-    public static void runOnNextLayout(final View rootView, final Runnable run) {
+    public static void runOnNextLayout(@NonNull final View rootView, @NonNull final Runnable run) {
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -173,18 +177,18 @@ public class Ui {
      *
      * @param view the view
      */
-    public static void hideSoftInput(View view) {
+    public static void hideSoftInput(@NonNull View view) {
         try {
             InputMethodManager imm = (InputMethodManager) IM.context().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         } catch (Exception ignored) { /* safely ignore, as ex in here means we could not hide keyboard */ }
     }
 
-    public static void showSoftInput(View view) {
+    public static void showSoftInput(@NonNull View view) {
         showSoftInput(view, false);
     }
 
-    public static void showSoftInput(View view, boolean useImplicit) {
+    public static void showSoftInput(@NonNull View view, boolean useImplicit) {
         try {
             InputMethodManager imm = (InputMethodManager) IM.context().getSystemService(Context.INPUT_METHOD_SERVICE);
             if (useImplicit) {
@@ -195,7 +199,7 @@ public class Ui {
         } catch (Exception ignored) { /* safely ignore, as ex in here means we could not hide keyboard */ }
     }
 
-    public static String deAccent(String name) {
+    public static String deAccent(@NonNull String name) {
         return Normalizer.normalize(name, Normalizer.Form.NFD)
                 .replaceAll("ł", "l")
                 .replaceAll("Ł", "L")
@@ -217,11 +221,13 @@ public class Ui {
             this.params = params;
         }
 
-        public static Layout on(View view) {
+        @NonNull
+        public static Layout on(@NonNull View view) {
             return new Layout(view);
         }
 
-        public static Layout on(ViewGroup.LayoutParams params) {
+        @NonNull
+        public static Layout on(@NonNull ViewGroup.LayoutParams params) {
             return new Layout(params);
         }
 
@@ -231,12 +237,14 @@ public class Ui {
             }
         }
 
+        @NonNull
         public Layout width(int newValue, boolean usePixels) {
             if (params != null)
                 params.width = usePixels ? newValue : Screen.dpToPx(newValue);
             return this;
         }
 
+        @NonNull
         public Layout height(int newValue, boolean usePixels) {
             if (params != null)
                 params.height = usePixels ? newValue : Screen.dpToPx(newValue);
@@ -244,6 +252,7 @@ public class Ui {
         }
 
 
+        @NonNull
         public Layout topPadding(int padding, boolean usePixels) {
             checkView(PADDING_NPE);
             assert view != null;
@@ -251,6 +260,7 @@ public class Ui {
             return this;
         }
 
+        @NonNull
         public Layout leftPadding(int padding, boolean usePixels) {
             checkView(PADDING_NPE);
             assert view != null;
@@ -258,6 +268,7 @@ public class Ui {
             return this;
         }
 
+        @NonNull
         public Layout rightPadding(int padding, boolean usePixels) {
             checkView(PADDING_NPE);
             assert view != null;
@@ -265,6 +276,7 @@ public class Ui {
             return this;
         }
 
+        @NonNull
         public Layout bottomPadding(int padding, boolean usePixels) {
             checkView(PADDING_NPE);
             assert view != null;
@@ -283,39 +295,45 @@ public class Ui {
     public static class Margin extends Layout {
         ViewGroup.MarginLayoutParams params;
 
-        Margin(View view) {
+        Margin(@NonNull View view) {
             super(view);
             this.params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
         }
 
-        Margin(ViewGroup.MarginLayoutParams params) {
+        Margin(@NonNull ViewGroup.MarginLayoutParams params) {
             super(params);
             this.params = params;
         }
 
-        public static Margin on(View view) {
+        @NonNull
+        public static Margin on(@NonNull View view) {
             return new Margin(view);
         }
 
-        public static Margin on(ViewGroup.MarginLayoutParams params) {
+        @NonNull
+        public static Margin on(@NonNull ViewGroup.MarginLayoutParams params) {
             return new Margin(params);
         }
 
+        @NonNull
         public Margin top(int margin, boolean usePixels) {
             params.topMargin = usePixels ? margin : Screen.dpToPx(margin);
             return this;
         }
 
+        @NonNull
         public Margin left(int margin, boolean usePixels) {
             params.leftMargin = usePixels ? margin : Screen.dpToPx(margin);
             return this;
         }
 
+        @NonNull
         public Margin right(int margin, boolean usePixels) {
             params.rightMargin = usePixels ? margin : Screen.dpToPx(margin);
             return this;
         }
 
+        @NonNull
         public Margin bottom(int margin, boolean usePixels) {
             params.bottomMargin = usePixels ? margin : Screen.dpToPx(margin);
             return this;
