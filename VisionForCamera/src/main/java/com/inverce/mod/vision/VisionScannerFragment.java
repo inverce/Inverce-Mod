@@ -119,7 +119,7 @@ public class VisionScannerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (Permissions.hasPermissions(Permissions.CAMERA_PERMISSIONS, getActivity())) {
+        if (Permissions.INSTANCE.hasPermissions(Permissions.INSTANCE.getCAMERA_PERMISSIONS(), getActivity())) {
             startCameraSource();
         }
 

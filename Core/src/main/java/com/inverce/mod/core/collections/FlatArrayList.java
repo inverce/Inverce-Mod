@@ -12,9 +12,9 @@ import java.util.RandomAccess;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class FlatArrayList<E> extends AbstractList<E> implements List<E>, RandomAccess, Cloneable, java.io.Serializable {
-    protected FlatArrayListStore<E> container;
+    protected @NonNull FlatArrayListStore<E> container;
     protected boolean optimize = false;
-    protected List<E> cache;
+    protected @NonNull List<E> cache;
 
     public FlatArrayList() {
         this(false);
@@ -31,7 +31,7 @@ public class FlatArrayList<E> extends AbstractList<E> implements List<E>, Random
         this.optimize = optimizeAccess;
     }
 
-    @Override
+    @Override @Nullable
     public E get(int index) {
         return optimize ? cache.get(index) : getFlatElement(index);
     }

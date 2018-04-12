@@ -9,8 +9,8 @@ import com.inverce.mod.core.reflection.TypeToken;
 import java.util.HashMap;
 
 public class CacheFunctionMap<Key, Value> extends HashMap<Key, Value> {
-    protected IFunction<Key, Value> generator;
-    protected Class<Key> keyClass;
+    protected @NonNull IFunction<Key, Value> generator;
+    protected @NonNull Class<Key> keyClass;
 
     public CacheFunctionMap(@NonNull IFunction<Key, Value> generator) {
         //noinspection unchecked

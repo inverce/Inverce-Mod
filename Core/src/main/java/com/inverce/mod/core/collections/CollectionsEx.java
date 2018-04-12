@@ -1,12 +1,13 @@
 package com.inverce.mod.core.collections;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CollectionsEx {
-    @Nullable
+    @NonNull
     public static <T> List<T> join(@Nullable List<? extends T> A, @Nullable List<? extends T> B) {
         ArrayList<T> list = A != null ? new ArrayList<T>(A) : new ArrayList<T>();
         if (B != null) {

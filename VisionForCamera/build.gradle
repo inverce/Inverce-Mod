@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 ext {
     PUBLISH_GROUP_ID = 'com.inverce.mod'
@@ -37,6 +38,7 @@ dependencies {
 
     compile ("com.inverce.mod:Core:$rootProject.ext.self.latestCore") { transitive = true }
     compile ("com.google.android.gms:play-services-vision:$rootProject.ext.dep.play") { transitive true }
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
-//apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
+apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'

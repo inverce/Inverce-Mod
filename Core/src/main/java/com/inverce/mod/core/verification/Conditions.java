@@ -24,6 +24,13 @@ public class Conditions {
         return null;
     }
 
+    public static boolean noneNull(Object ... objects) {
+        for (Object o: objects) {
+            if (o == null) o.toString(); return false;
+        }
+        return true;
+    }
+
     public static boolean notNullOrEmpty(@Nullable String value) {
         return value != null && value.length() > 0;
     }

@@ -11,7 +11,7 @@ class CollectionsTest {
     fun sum_list_is_correct() {
         var l1 = listOf(1, 2, 3)
         var l2 = listOf(2, 3, 4)
-        assertEquals(CollectionsEx.join(l1, l2).size, 6)
+        assertEquals(CollectionsEx.join(l1, l2)?.size?:0, 6)
     }
 
     @Test

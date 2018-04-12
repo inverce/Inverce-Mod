@@ -16,12 +16,12 @@ public class MapMaker<K, V, T extends Map<K, V>> {
     }
 
     @NonNull
-    public static <K, V, T extends Map<K, V>> MapMaker<K, V, T> New(@NonNull T container, K key, V value) {
+    public static <K, V, T extends Map<K, V>> MapMaker<K, V, T> make(@NonNull T container, K key, V value) {
         return new MapMaker<>(container).put(key, value);
     }
 
     @NonNull
-    public static <K, V> MapMaker<K, V, HashMap<K, V>> New(K key, V value) {
+    public static <K, V> MapMaker<K, V, HashMap<K, V>> make(K key, V value) {
         return New(new HashMap<K, V>(), key, value);
     }
 
