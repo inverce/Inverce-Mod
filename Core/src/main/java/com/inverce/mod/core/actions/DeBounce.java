@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.inverce.mod.core.IM;
-import com.inverce.mod.core.Log;
-import com.inverce.mod.core.functional.Aggregator;
+import com.inverce.mod.v2.core.Log;
+import com.inverce.mod.v2.core.functional.Aggregator;
 import com.inverce.mod.core.functional.IConsumer;
 import com.inverce.mod.core.functional.IsEqual;
 

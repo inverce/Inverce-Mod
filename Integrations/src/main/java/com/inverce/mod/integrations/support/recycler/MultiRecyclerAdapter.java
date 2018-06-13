@@ -13,13 +13,12 @@ import com.inverce.mod.core.functional.IPredicate;
 import com.inverce.mod.integrations.support.annotations.IBind;
 import com.inverce.mod.integrations.support.annotations.IBinder;
 import com.inverce.mod.integrations.support.annotations.ICreateVH;
+import com.inverce.mod.v2.integrations.recycler.RecyclerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultiRecyclerAdapter<ITEM> extends RecyclerAdapter<ITEM, RecyclerView.ViewHolder>  {
-    @NonNull
-    public IPredicate<?> ANY = p -> true;
+public class MultiRecyclerAdapter<ITEM> extends RecyclerAdapter<ITEM, RecyclerView.ViewHolder> {
     protected List<MultiInfo<?, ?>> types;
     protected SparseArray<MultiInfo<?, ?>> typesSparse;
 

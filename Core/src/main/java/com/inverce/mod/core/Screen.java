@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.inverce.mod.v2.core.Log;
+
 import static com.inverce.mod.core.IM.context;
 
 /**

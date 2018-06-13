@@ -1,15 +1,10 @@
 package com.inverce.mod.core
 
-import com.inverce.mod.core.configuration.ReadOnlyValue
-import com.inverce.mod.core.configuration.shared.SharedIntValue
+import com.inverce.mod.v2.core.onUi
+
+fun ds () {
+    onUi {
 
 
-
-var kanda:  Int by SharedIntValue("dsds")
-
-
-
-fun ds() {
-    kanda = 33
-
+    }
 }

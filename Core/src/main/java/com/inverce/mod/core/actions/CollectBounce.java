@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.inverce.mod.core.IM;
-import com.inverce.mod.core.Log;
-import com.inverce.mod.core.functional.Aggregator;
+import com.inverce.mod.v2.core.Log;
+import com.inverce.mod.v2.core.functional.Aggregator;
 import com.inverce.mod.core.functional.IConsumer;
 
 import java.util.ArrayList;
