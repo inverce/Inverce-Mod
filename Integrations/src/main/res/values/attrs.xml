@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="ArrowView">
-        <attr name="arrowColor" format="color" />
-        <attr name="arrowHeadAspect" format="float" />
-        <attr name="direction" format="enum">
-            <enum name="onLeft" value="0" />
-            <enum name="onRight" value="1" />
-        </attr>
-    </declare-styleable>
 
     <declare-styleable name="SquareImageView">
         <attr name="majorDim" format="enum">

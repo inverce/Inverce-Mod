@@ -2,7 +2,7 @@ package com.inverce.mod.v2.core.configuration
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.inverce.mod.core.IM
+import com.inverce.mod.v2.core.context
 
 inline fun <reified T> SharedValue(initial: T, name: String = "Auto"): SharedValue<T> {
     return SharedValue(T::class.java, initial, name)
@@ -21,7 +21,7 @@ open class SharedValue<T>(clazz: Class<T>, protected val initial: T, name: Strin
     }
 
     val store: SharedPreferences
-        get() = IM.context().getSharedPreferences("ds", Context.MODE_PRIVATE)
+        get() = context.getSharedPreferences("ds", Context.MODE_PRIVATE)
 
 
     init {

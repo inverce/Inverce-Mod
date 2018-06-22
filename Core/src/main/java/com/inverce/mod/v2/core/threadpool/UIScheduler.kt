@@ -23,6 +23,10 @@ open class UIScheduler : Executor {
         return scheduler.schedule(wrap(command), delay, unit)
     }
 
+    fun schedule(command: () -> Unit, delay: Long, unit: TimeUnit): ScheduledFuture<*> {
+        return scheduler.schedule({ uiHandler.post(command) }, delay, unit)
+    }
+
     fun <V> schedule(callable: Callable<V>, delay: Long, unit: TimeUnit): ScheduledFuture<V> {
         return scheduler.schedule(callable, delay, unit)
     }

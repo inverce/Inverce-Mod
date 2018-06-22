@@ -3,7 +3,6 @@
 package com.inverce.mod.v2.core.verification
 
 import android.database.Cursor
-import android.view.View
 import java.lang.ref.WeakReference
 
 @SafeVarargs
@@ -14,24 +13,20 @@ fun <T> firstNonNull(value: T?, vararg values: T) = when (value) {
 
 fun noneNull(vararg objects: Any?) = objects.none { it == null }
 
-fun notNullOrEmpty(value: String?) = value?.isNotEmpty()
-fun notNullOrEmpty(value: WeakReference<*>?) = value?.get() != null
-fun <T> notNullOrEmpty(value: Array<T>?) = value?.isNotEmpty()
-fun notNullOrEmpty(value: Collection<*>?) = value?.isNotEmpty()
-fun notNullOrEmpty(value: Cursor?) = value?.count ?: 0 > 0
+fun String?.isNotNullOrEmpty() = this?.isNotEmpty() ?: false
+fun WeakReference<*>?.isNotNullOrEmpty() = this?.get() != null
+fun <T> Array<T>?.isNotNullOrEmpty() = this?.isNotEmpty() ?: false
+fun Collection<*>?.isNotNullOrEmpty() = this?.isNotEmpty() ?: false
+fun Cursor?.isNotNullOrEmpty() = this?.count ?: 0 > 0
 
-fun nullOrEmpty(value: String?) = value?.isEmpty() ?: true
-fun nullOrEmpty(value: WeakReference<*>?) = value?.get() == null ?: true
-fun <T> nullOrEmpty(value: Array<T>?) = value?.isEmpty() ?: true
-fun nullOrEmpty(value: Collection<*>?) = value?.isEmpty() ?: true
-fun nullOrEmpty(value: Map<*, *>?) = value?.isEmpty() ?: true
-fun nullOrEmpty(value: Cursor?) = value?.count
+fun String?.isNullOrEmpty() = this?.isEmpty() ?: true
+fun WeakReference<*>?.isNullOrEmpty() = this?.get() == null ?: true
+fun <T> Array<T>?.isNullOrEmpty() = this?.isEmpty() ?: true
+fun Collection<*>?.isNullOrEmpty() = this?.isEmpty() ?: true
+fun Map<*, *>?.isNullOrEmpty() = this?.isEmpty() ?: true
+fun Cursor?.isNullOrEmpty() = this?.count
 
-fun View?.isVisible(): Boolean {
-    return this?.visibility == View.VISIBLE
-}
-
-inline fun <T, Y> nullPass(value: T?, pass: (T) -> Y?): Y? = when (value) {
+internal inline fun <T, Y> nullPass(value: T?, pass: (T) -> Y?): Y? = when (value) {
     null -> null
     else -> pass(value)
 }

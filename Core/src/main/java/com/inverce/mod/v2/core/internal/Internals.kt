@@ -1,10 +1,15 @@
 package com.inverce.mod.v2.core.internal
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ContentProvider
 import android.content.ContentValues
+import android.content.Context
 import android.database.Cursor
 import android.net.Uri
-import com.inverce.mod.core.IMInitializer
+import android.support.annotation.RestrictTo
+import com.inverce.mod.v2.core.IMInitializer
+import java.lang.ref.WeakReference
 
 /**
  * Base initialization provider all init providers should use it as base (it will make sure to initialize core first)
@@ -28,4 +33,14 @@ abstract class InitializationProvider: ContentProvider() {
  */
 class InitializationContentProvider : InitializationProvider() {
     override fun initialize(): Boolean = true
+}
+
+@SuppressLint("StaticFieldLeak")
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+internal object IMInternal {
+    var context: Context? = null
+        internal set
+    var activity = WeakReference<Activity>(null)
+    var isInEdit: Boolean = false
+        internal set
 }

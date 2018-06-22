@@ -8,9 +8,9 @@ open class AutoToggleValue<T>(initial: T, protected val toggled: T) : Value<T>(i
     init {
         val oldGetter = getter
         getter = {
-            val value = oldGetter()
-            setValue(toggled)
-            value
+            val oldValue = oldGetter()
+            value = toggled
+            oldValue
         }
     }
 }
@@ -24,7 +24,7 @@ open class LazyValue<T>(initValue: () -> T) : ReadOnlyValue<T>() {
 }
 
 open class LazyWeakValue<T>(initValue: () -> T, validator: (T) -> Boolean = { true }) : Value<T>() {
-    protected var weakValue = WeakReference<T>(null)
+    var weakValue = WeakReference<T>(null)
 
     init {
         this.validator = validator
@@ -40,5 +40,4 @@ open class LazyWeakValue<T>(initValue: () -> T, validator: (T) -> Boolean = { tr
             }
         }
     }
-
 }
