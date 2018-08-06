@@ -35,6 +35,12 @@ task clean(type: Delete) {
 
 ext {
 
+    bintray = [
+            repository: "Inverce-Mod-Kt",
+            libraryVersion: "2.0.0",
+            groupId: "com.inverce.mod",
+            vcsUrl: "https://github.com/inverce/Inverce-Mod"
+    ]
     lib = [
         versionCode : 1,
         versionName : "2.0.0",

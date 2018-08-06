@@ -15,7 +15,7 @@ import android.widget.TextView
 import com.inverce.mod.v2.core.functional.IConsumer
 import com.inverce.mod.v2.core.utils.visible
 
-@Suppress("unused")
+@Suppress("unused", "UNCHECKED_CAST")
 open class BindViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     protected var childrenInflated: Boolean = false
     val children: SparseArray<View> by lazy {

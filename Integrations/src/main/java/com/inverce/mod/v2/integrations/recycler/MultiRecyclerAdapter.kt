@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import java.util.*
 
+@Suppress("UNCHECKED_CAST")
 open class MultiRecyclerAdapter<ITEM : Any> : RecyclerAdapter<ITEM, RecyclerView.ViewHolder>() {
     protected var types: MutableList<MultiInfo<*, *>> = ArrayList()
     protected var typesSparse: SparseArray<MultiInfo<*, *>> = SparseArray()

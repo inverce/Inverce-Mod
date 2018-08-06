@@ -9,6 +9,7 @@ import java.lang.reflect.Method
 import java.lang.reflect.Proxy
 import java.util.*
 
+@Suppress("UNCHECKED_CAST")
 open class Event<T : Listener>(protected var service: Class<T>, useWeakReferences: Boolean) : SingleEvent<T>, MultiEvent<T>, EventCaller<T>, InvocationHandler {
     protected val Log = Logger("IM.Event")
 

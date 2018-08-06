@@ -53,6 +53,7 @@ open class DataBinder<T> : MultiBind<T, BindViewHolder> {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             view.background = map(item)
         } else {
+            @Suppress("DEPRECATION")
             view.setBackgroundDrawable(map(item))
         }
     }

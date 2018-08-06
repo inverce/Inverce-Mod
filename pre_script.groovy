@@ -1,5 +1,3 @@
-
-
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
@@ -11,7 +9,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 27
         versionCode 1
-        versionName "2.0.0"
+        versionName rootProject.ext.bintray.libraryVersion
     }
     buildTypes {
         release {

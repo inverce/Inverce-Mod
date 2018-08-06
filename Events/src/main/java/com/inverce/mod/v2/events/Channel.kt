@@ -2,6 +2,7 @@ package com.inverce.mod.v2.events
 
 import java.util.*
 
+@Suppress("UNCHECKED_CAST")
 open class Channel(private val useWeekEvents: Boolean = true) {
     protected val events = HashMap<Class<out Listener>, Event<out Listener>>()
 
