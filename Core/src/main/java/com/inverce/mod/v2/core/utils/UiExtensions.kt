@@ -44,10 +44,12 @@ val isOnUiThread
  *
  * @param view the view
  */
-fun View.hideSoftInput() {
+fun View?.hideSoftInput() {
     try {
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(this.windowToken, 0)
+        this?.let {
+            val imm = this.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(this.windowToken, 0)
+        }
     } catch (ignored: Exception) {
         /* safely ignore, as ex in here means we could not hide keyboard */
     }

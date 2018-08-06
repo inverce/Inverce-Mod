@@ -2,8 +2,8 @@ package com.inverce.mod.v2.integrations.okhttp
 
 import android.os.Build
 import com.google.android.gms.security.ProviderInstaller
-import com.inverce.mod.core.IM
-import com.inverce.mod.core.Log
+import com.inverce.mod.v2.core.Log
+import com.inverce.mod.v2.core.context
 import okhttp3.OkHttpClient
 import java.io.IOException
 import java.net.InetAddress
@@ -18,7 +18,7 @@ import javax.net.ssl.*
 fun OkHttpClient.Builder.enableTlsSupportForPreLollipop() = apply {
     if (Build.VERSION.SDK_INT in 16..21) {
         try {
-            ProviderInstaller.installIfNeeded(IM.context())
+            ProviderInstaller.installIfNeeded(context)
             val sc = SSLContext.getInstance("TLSv1.2")
             sc.init(null, null, null)
             val protocols = sc.supportedSSLParameters.protocols
@@ -32,7 +32,7 @@ fun OkHttpClient.Builder.enableTlsSupportForPreLollipop() = apply {
                 this.sslSocketFactory(Tls12SocketFactory(sc.socketFactory), it)
             }
         } catch (exc: Exception) {
-            Log.e("OkHttpTLSCompat", "Error while setting TLS 1.2", exc)
+            Log.ex(exc, "Error while setting TLS 1.2", tag = "OkHttpTLSCompat")
         }
     }
 }
@@ -45,16 +45,16 @@ open class TLS12OkHttpSupport {
 
             val trustManagers = trustManagerFactory.trustManagers
             if (trustManagers.size != 1 || trustManagers[0] !is X509TrustManager) {
-                Log.e("tls", "Unexpected default trust managers:" + Arrays.toString(trustManagers))
+                Log.e(tag = "tls", message = "Unexpected default trust managers:" + Arrays.toString(trustManagers))
                 return@lazy null
             }
             return@lazy trustManagers[0] as X509TrustManager
         } catch (e: NoSuchAlgorithmException) {
-            Log.e("tls", e.toString())
+            Log.e(tag = "tls", message = e.toString())
             e.printStackTrace()
             return@lazy null
         } catch (e: KeyStoreException) {
-            Log.e("tls", e.toString())
+            Log.e(tag = "tls", message = e.toString())
             e.printStackTrace()
             return@lazy null
         }

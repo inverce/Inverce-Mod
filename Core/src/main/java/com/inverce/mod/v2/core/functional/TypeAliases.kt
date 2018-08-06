@@ -4,6 +4,7 @@ typealias ISupplier<T> = () -> T
 typealias IsEqual<T> = (T, T) -> Boolean
 typealias IPredicate<T> = (T) -> Boolean
 typealias IFunction<T, R> = (T) -> R
+typealias IMapper<T, R> = (T) -> R
 typealias IConsumer<T> = (T) -> Unit
 typealias IBiFunction<T, U, R> = (T, U) -> R
 typealias IBiConsumer<T, U> = (T, U) -> Unit

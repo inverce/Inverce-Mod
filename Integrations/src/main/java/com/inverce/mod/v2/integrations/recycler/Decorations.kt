@@ -6,13 +6,13 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.View
-import com.inverce.mod.core.IM
-import com.inverce.mod.core.Ui
+import com.inverce.mod.v2.core.context
+import com.inverce.mod.v2.core.utils.hideSoftInput
 import java.lang.ref.WeakReference
 
-open class DividerDecorator @JvmOverloads constructor(@DrawableRes resource: Int, orientation: Int = VERTICAL) : DividerItemDecoration(IM.context(), orientation) {
+class DividerDecorator @JvmOverloads constructor(@DrawableRes resource: Int, orientation: Int = VERTICAL) : DividerItemDecoration(context, orientation) {
     init {
-        setDrawable(ActivityCompat.getDrawable(IM.context(), resource)!!)
+        setDrawable(ActivityCompat.getDrawable(context, resource)!!)
     }
 }
 
@@ -39,9 +39,7 @@ open class HideSoftKeyboardOnScrollListener(rootView: View) : RecyclerView.OnScr
     override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
         if (isScrolling) {
-            rootView.get()?.let {
-                Ui.hideSoftInput(it.findFocus())
-            }
+            rootView.get()?.findFocus()?.hideSoftInput()
         }
     }
 }

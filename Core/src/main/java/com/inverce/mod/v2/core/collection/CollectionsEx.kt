@@ -13,3 +13,5 @@ fun <T> (List<T>?).sameAs(B: List<T>?): Boolean {
     }
     return true
 }
+
+fun <T : Y, Y> List<T>.migrateType() : List<T> = this.map { it }

@@ -1,5 +1,8 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+plugins { id "com.jfrog.bintray" version "1.8.4" }
+
+apply from: '../pre_script.gradle'
+
+
 
 ext {
     PUBLISH_GROUP_ID = 'com.inverce.mod'
@@ -7,28 +10,6 @@ ext {
     PUBLISH_VERSION = rootProject.ext.lib.versionName
 }
 
-android {
-    compileSdkVersion rootProject.ext.lib.compileSdkVersion
-    buildToolsVersion rootProject.ext.lib.buildToolsVersion
-
-    defaultConfig {
-        minSdkVersion rootProject.ext.lib.minSdkVersion
-        targetSdkVersion rootProject.ext.lib.targetSdkVersion
-        versionCode rootProject.ext.lib.versionCode
-        versionName rootProject.ext.lib.versionName
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
-    }
-}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -38,4 +19,4 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
-apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
+//apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'

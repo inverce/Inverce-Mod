@@ -4,7 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
+typealias MultiBind<I, V> = (view: V, item: I, position: Int) -> Unit
+typealias MultiCreateVH<V> = (parent: ViewGroup, inflater: LayoutInflater) -> V
+typealias MultiViewToVH<VH> = (View) -> VH
 typealias MultiPredicate<T> = (T) -> Boolean
-typealias MultiBind<I, VH> = (VH, I, position: Int) -> Boolean
-typealias MultiCreateVH<VH> = (parent: ViewGroup, inflater: LayoutInflater) -> VH
-typealias MultiCreateVH2<VH> = (View) -> VH
+
+interface MultiBinder<I> { // used in vh for bindings
+    fun onBindViewHolder(item: I, position: Int): Boolean
+}

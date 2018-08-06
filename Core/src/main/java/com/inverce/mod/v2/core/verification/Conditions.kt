@@ -30,3 +30,10 @@ internal inline fun <T, Y> nullPass(value: T?, pass: (T) -> Y?): Y? = when (valu
     null -> null
     else -> pass(value)
 }
+
+fun <T> T?.nullWhen(filter: T) = nullWhen { this == filter }
+inline fun <T> T?.nullWhen(filter: T.() -> Boolean) = when {
+    this == null -> null
+    filter(this) -> null
+    else -> this
+}

@@ -85,5 +85,6 @@ object IMInitializer {
     @JvmStatic
     fun initialize(context: Context) {
         IMInternal.context = context
+        Log.w("ds", "ds")
     }
 }

@@ -39,19 +39,12 @@ object Log {
         set(value) { logger.listener = value }
 
 
-    @JvmStatic fun v(tag: String? = null, message: String?, vararg o: Any = emptyArray())  = logger.v(tag, message, *o)
-    @JvmStatic fun d(tag: String? = null, message: String?, vararg o: Any = emptyArray())  = logger.d(tag, message, *o)
-    @JvmStatic fun i(tag: String? = null, message: String?, vararg o: Any = emptyArray())  = logger.i(tag, message, *o)
-    @JvmStatic fun w(tag: String? = null, message: String?, vararg o: Any = emptyArray())  = logger.w(tag, message, *o)
-    @JvmStatic fun e(tag: String? = null, message: String?, vararg o: Any = emptyArray())  = logger.e(tag, message, *o)
-    @JvmStatic fun a(tag: String? = null, message: String?, vararg o: Any = emptyArray())  = logger.a(tag, message, *o)
-
-    @JvmOverloads @JvmStatic fun v(message: String?, vararg o: Any = emptyArray())  = logger.v(null, message, *o)
-    @JvmOverloads @JvmStatic fun d(message: String?, vararg o: Any = emptyArray())  = logger.d(null, message, *o)
-    @JvmOverloads @JvmStatic fun i(message: String?, vararg o: Any = emptyArray())  = logger.i(null, message, *o)
-    @JvmOverloads @JvmStatic fun w(message: String?, vararg o: Any = emptyArray())  = logger.w(null, message, *o)
-    @JvmOverloads @JvmStatic fun e(message: String?, vararg o: Any = emptyArray())  = logger.e(null, message, *o)
-    @JvmOverloads @JvmStatic fun a(message: String?, vararg o: Any = emptyArray())  = logger.a(null, message, *o)
+    @JvmOverloads @JvmStatic fun v(message: String?, vararg o: Any = emptyArray(), tag: String? = null)  = logger.v(message, *o, tag = tag)
+    @JvmOverloads @JvmStatic fun d(message: String?, vararg o: Any = emptyArray(), tag: String? = null)  = logger.d(message, *o, tag = tag)
+    @JvmOverloads @JvmStatic fun i(message: String?, vararg o: Any = emptyArray(), tag: String? = null)  = logger.i(message, *o, tag = tag)
+    @JvmOverloads @JvmStatic fun w(message: String?, vararg o: Any = emptyArray(), tag: String? = null)  = logger.w(message, *o, tag = tag)
+    @JvmOverloads @JvmStatic fun e(message: String?, vararg o: Any = emptyArray(), tag: String? = null)  = logger.e(message, *o, tag = tag)
+    @JvmOverloads @JvmStatic fun a(message: String?, vararg o: Any = emptyArray(), tag: String? = null)  = logger.a(message, *o, tag = tag)
 
     @JvmOverloads @JvmStatic fun v(@StringRes message: Int, vararg o: Any = emptyArray())  = logger.v(message, *o)
     @JvmOverloads @JvmStatic fun d(@StringRes message: Int, vararg o: Any = emptyArray())  = logger.d(message, *o)
@@ -60,12 +53,12 @@ object Log {
     @JvmOverloads @JvmStatic fun e(@StringRes message: Int, vararg o: Any = emptyArray())  = logger.e(message, *o)
     @JvmOverloads @JvmStatic fun a(@StringRes message: Int, vararg o: Any = emptyArray())  = logger.a(message, *o)
 
-    @JvmOverloads @JvmStatic fun ex (t: Throwable, tag: String? = null, message: String? = null, vararg o: Any = emptyArray()) = logger.ex (t, tag, message?:"", *o)
-    @JvmOverloads @JvmStatic fun exs(t: Throwable, tag: String? = null, message: String? = null, vararg o: Any = emptyArray()) = logger.exs(t, tag, message ?: "", *o)
-    @JvmOverloads @JvmStatic fun exm(t: Throwable, tag: String? = null, message: String? = null, vararg o: Any = emptyArray()) = logger.exm(t, tag, message ?: "", *o)
-    @JvmOverloads @JvmStatic fun ex (t: Throwable, @StringRes tag: Int = 0, @StringRes message: Int, vararg o: Any = emptyArray()) = logger.ex (t, tag, message, *o)
-    @JvmOverloads @JvmStatic fun exs(t: Throwable, @StringRes tag: Int = 0, @StringRes message: Int, vararg o: Any = emptyArray()) = logger.exs(t, tag, message, *o)
-    @JvmOverloads @JvmStatic fun exm(t: Throwable, @StringRes tag: Int = 0, @StringRes message: Int, vararg o: Any = emptyArray()) = logger.exm(t, tag, message, *o)
+    @JvmOverloads @JvmStatic fun ex (t: Throwable, message: String? = null, vararg o: Any = emptyArray(), tag: String? = null) = logger.ex (t, message?:"", *o, tag = tag)
+    @JvmOverloads @JvmStatic fun exs(t: Throwable, message: String? = null, vararg o: Any = emptyArray(), tag: String? = null) = logger.exs(t, message ?: "", *o, tag = tag)
+    @JvmOverloads @JvmStatic fun exm(t: Throwable, message: String? = null, vararg o: Any = emptyArray(), tag: String? = null) = logger.exm(t, message ?: "", *o, tag = tag)
+    @JvmOverloads @JvmStatic fun ex (t: Throwable, @StringRes message: Int, vararg o: Any = emptyArray(), @StringRes tag: Int = 0) = logger.ex (t, message, *o, tag = tag)
+    @JvmOverloads @JvmStatic fun exs(t: Throwable, @StringRes message: Int, vararg o: Any = emptyArray(), @StringRes tag: Int = 0) = logger.exs(t, message, *o, tag = tag)
+    @JvmOverloads @JvmStatic fun exm(t: Throwable, @StringRes message: Int, vararg o: Any = emptyArray(), @StringRes tag: Int = 0) = logger.exm(t, message, *o, tag = tag)
 }
 
 open class Logger(protected val baseTag: String = "|>") {
@@ -144,30 +137,24 @@ open class Logger(protected val baseTag: String = "|>") {
         }
     }
 
-    fun v(tag: String? = null, message: String?, vararg o: Any = emptyArray())  = handleMsg(VERBOSE, tag, message, *o)
-    fun d(tag: String? = null, message: String?, vararg o: Any = emptyArray())  = handleMsg(DEBUG, tag, message, *o)
-    fun i(tag: String? = null, message: String?, vararg o: Any = emptyArray())  = handleMsg(INFO, tag, message, *o)
-    fun w(tag: String? = null, message: String?, vararg o: Any = emptyArray())  = handleMsg(WARN, tag, message, *o)
-    fun e(tag: String? = null, message: String?, vararg o: Any = emptyArray())  = handleMsg(ERROR, tag, message, *o)
-    fun a(tag: String? = null, message: String?, vararg o: Any = emptyArray())  = handleMsg(ASSERT, tag, message, *o)
-    @JvmOverloads fun v(message: String?, vararg o: Any = emptyArray())  = handleMsg(VERBOSE, null, message, *o)
-    @JvmOverloads fun d(message: String?, vararg o: Any = emptyArray())  = handleMsg(DEBUG, null, message, *o)
-    @JvmOverloads fun i(message: String?, vararg o: Any = emptyArray())  = handleMsg(INFO, null, message, *o)
-    @JvmOverloads fun w(message: String?, vararg o: Any = emptyArray())  = handleMsg(WARN, null, message, *o)
-    @JvmOverloads fun e(message: String?, vararg o: Any = emptyArray())  = handleMsg(ERROR, null, message, *o)
-    @JvmOverloads fun a(message: String?, vararg o: Any = emptyArray())  = handleMsg(ASSERT, null, message, *o)
+    @JvmOverloads fun v(message: String?, vararg o: Any = emptyArray(), tag: String? = null)  = handleMsg(VERBOSE, tag, message, *o)
+    @JvmOverloads fun d(message: String?, vararg o: Any = emptyArray(), tag: String? = null)  = handleMsg(DEBUG, tag, message, *o)
+    @JvmOverloads fun i(message: String?, vararg o: Any = emptyArray(), tag: String? = null)  = handleMsg(INFO, tag, message, *o)
+    @JvmOverloads fun w(message: String?, vararg o: Any = emptyArray(), tag: String? = null)  = handleMsg(WARN, tag, message, *o)
+    @JvmOverloads fun e(message: String?, vararg o: Any = emptyArray(), tag: String? = null)  = handleMsg(ERROR, tag, message, *o)
+    @JvmOverloads fun a(message: String?, vararg o: Any = emptyArray(), tag: String? = null)  = handleMsg(ASSERT, tag, message, *o)
     @JvmOverloads fun v(@StringRes message: Int, vararg o: Any = emptyArray()) = handleMsg(VERBOSE,  null, str(message), *o)
     @JvmOverloads fun d(@StringRes message: Int, vararg o: Any = emptyArray()) = handleMsg(DEBUG,    null, str(message), *o)
     @JvmOverloads fun i(@StringRes message: Int, vararg o: Any = emptyArray()) = handleMsg(INFO,     null, str(message), *o)
     @JvmOverloads fun w(@StringRes message: Int, vararg o: Any = emptyArray()) = handleMsg(WARN,     null, str(message), *o)
     @JvmOverloads fun e(@StringRes message: Int, vararg o: Any = emptyArray()) = handleMsg(ERROR,    null, str(message), *o)
     @JvmOverloads fun a(@StringRes message: Int, vararg o: Any = emptyArray()) = handleMsg(ASSERT,   null, str(message), *o)
-    @JvmOverloads fun ex (t: Throwable, tag: String? = null, message: String, vararg o: Any = emptyArray()) = handleExc(EX_FULL, t, tag, message, *o)
-    @JvmOverloads fun exs(t: Throwable, tag: String? = null, message: String, vararg o: Any = emptyArray()) = handleExc(EX_SIMPLER, t, tag, message, *o)
-    @JvmOverloads fun exm(t: Throwable, tag: String? = null, message: String, vararg o: Any = emptyArray()) = handleExc(EX_SIMPLEST, t, tag, message, *o)
-    @JvmOverloads fun ex (t: Throwable, @StringRes tag: Int = 0, @StringRes message: Int, vararg o: Any = emptyArray()) = handleExc(EX_FULL, t, str(tag), str(message), *o)
-    @JvmOverloads fun exs(t: Throwable, @StringRes tag: Int = 0, @StringRes message: Int, vararg o: Any = emptyArray()) = handleExc(EX_SIMPLER, t, str(tag), str(message), *o)
-    @JvmOverloads fun exm(t: Throwable, @StringRes tag: Int = 0, @StringRes message: Int, vararg o: Any = emptyArray()) = handleExc(EX_SIMPLEST, t, str(tag), str(message), *o)
+    @JvmOverloads fun ex (t: Throwable, message: String, vararg o: Any = emptyArray(), tag: String? = null) = handleExc(EX_FULL, t, tag, message, *o)
+    @JvmOverloads fun exs(t: Throwable, message: String, vararg o: Any = emptyArray(), tag: String? = null) = handleExc(EX_SIMPLER, t, tag, message, *o)
+    @JvmOverloads fun exm(t: Throwable, message: String, vararg o: Any = emptyArray(), tag: String? = null) = handleExc(EX_SIMPLEST, t, tag, message, *o)
+    @JvmOverloads fun ex (t: Throwable, @StringRes message: Int, vararg o: Any = emptyArray(), @StringRes tag: Int = 0) = handleExc(EX_FULL, t, str(tag), str(message), *o)
+    @JvmOverloads fun exs(t: Throwable, @StringRes message: Int, vararg o: Any = emptyArray(), @StringRes tag: Int = 0) = handleExc(EX_SIMPLER, t, str(tag), str(message), *o)
+    @JvmOverloads fun exm(t: Throwable, @StringRes message: Int, vararg o: Any = emptyArray(), @StringRes tag: Int = 0) = handleExc(EX_SIMPLEST, t, str(tag), str(message), *o)
 }
 
 interface LogListener {
