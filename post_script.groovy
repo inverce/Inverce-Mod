@@ -11,45 +11,55 @@
  * Under your home gradle.properties (~/.gradle/gradle.properties)
  * <code>
  *      # Bintray user and apiKey.
- *      bintrayUser={user}
- *      bintrayApiKey={apiKey}
- * </code>
+ *      bintrayUser={user}*      bintrayApiKey={apiKey}* </code>
  *
  * Under project build.gradle
  *
  * <code>
- *      ext {
- *          bintray = [
+ *      ext {*          bintray = [
  *              repository : "{your_repository_name}",
  *              libraryVersion : "{version_for_all_libraries}",
  *              groupId: "{group_id}",
  *              vcsUrl: "{url_to_vcs}"
  *          ]
- *      }
- *
+ *}*
  *      apply from: '{link_to_this_file}'
  * </code>
  *
  * Lastly under your module build.gradle
  * <code>
  *
- *      plugins { id "com.jfrog.bintray" version "1.8.4" }
- *      plugins { id 'maven-publish' }
- *
+ *      plugins { id "com.jfrog.bintray" version "1.8.4" }*      plugins { id 'maven-publish' }*
  *      ...
- *       ext {
- *          artifactId = "{artifactId}"
- *       }
- * </code>
+ *       ext {*          artifactId = "{artifactId}"
+ *}* </code>
  */
 
+
+def global(String propertyName) {
+    if (hasProperty(propertyName)) {
+        return "${propertyName}"
+    }
+    return null
+}
+
+
+def bUser = ""
+if (hasProperty("bintrayUser")) {
+    bUser = "${bintrayUser}"
+}
+def bApi = ""
+if (hasProperty("bintrayApiKey")) {
+    bApi = "${bintrayApiKey}"
+}
+
 bintray {
-    user = "${bintrayUser}"
-    key = "${bintrayApiKey}"
+    user = bUser
+    key = bApi
     pkg {
         repo = rootProject.ext.bintray.repository
         name = project.getName()
-        userOrg = "${bintrayUser}"
+        userOrg = bUser
         licenses = ['Apache-2.0']
         vcsUrl = rootProject.ext.bintray.vcsUrl
         issueTrackerUrl = rootProject.ext.bintray.vcsUrl
@@ -58,7 +68,7 @@ bintray {
         version {
             name = rootProject.ext.bintray.libraryVersion
             desc = ''
-            released  = new Date()
+            released = new Date()
             vcsTag = rootProject.ext.bintray.libraryVersion
         }
 
