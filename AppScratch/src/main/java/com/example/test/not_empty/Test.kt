@@ -1,11 +1,4 @@
 package com.example.test.not_empty
-import android.support.v7.widget.RecyclerView
-import android.view.View
-import android.widget.TextView
-import com.example.test.Product
-import com.example.test.R
-import com.inverce.mod.integrations.support.annotations.IBinder
-import com.inverce.mod.integrations.support.recycler.MultiRecyclerAdapter
 
 //package com.example.test
 //
@@ -20,29 +13,29 @@ import com.inverce.mod.integrations.support.recycler.MultiRecyclerAdapter
 //import com.inverce.mod.core.Log
 //import com.inverce.mod.core.R
 
-class MyAdapter : MultiRecyclerAdapter<Any>() {
-    init {
-        register({ it is Product },{ Holder(it) }, R.layout.support_simple_spinner_dropdown_item)
-        register({ it is Category }, { Holder2(it) }, R.layout.support_simple_spinner_dropdown_item)
-
-        register( { true }, MyAdapter::Holder, -1)
-        register( { true }, ::onBindSample, MyAdapter::Holder, R.layout.support_simple_spinner_dropdown_item)
-    }
-
-    fun onBindSample(holder: Holder, item: Any, position: Int) {
-
-    }
-
-    class Holder(itemView: View) : RecyclerView.ViewHolder(itemView), IBinder<Product> {
-        lateinit var tw: TextView
-        override fun onBindViewHolder(item: Product, position: Int) {
-            tw.text = item.name;
-        }
-    }
-
-    private class Holder2(itemView: View) : RecyclerView.ViewHolder(itemView), IBinder<Category> {
-        override fun onBindViewHolder(item: Category, position: Int) {
-
-        }
-    }
-}
+//class MyAdapter : MultiRecyclerAdapter<Any>() {
+//    init {
+//        register({ it is Product },{ Holder(it) }, R.layout.support_simple_spinner_dropdown_item)
+//        register({ it is Category }, { Holder2(it) }, R.layout.support_simple_spinner_dropdown_item)
+//
+//        register( { true }, MyAdapter::Holder, -1)
+//        register( { true }, ::onBindSample, MyAdapter::Holder, R.layout.support_simple_spinner_dropdown_item)
+//    }
+//
+//    fun onBindSample(holder: Holder, item: Any, position: Int) {
+//
+//    }
+//
+//    class Holder(itemView: View) : RecyclerView.ViewHolder(itemView), IBinder<Product> {
+//        lateinit var tw: TextView
+//        override fun onBindViewHolder(item: Product, position: Int) {
+//            tw.text = item.name;
+//        }
+//    }
+//
+//    private class Holder2(itemView: View) : RecyclerView.ViewHolder(itemView), IBinder<Category> {
+//        override fun onBindViewHolder(item: Category, position: Int) {
+//
+//        }
+//    }
+//}

@@ -15,6 +15,16 @@ class ConfigurationTest {
         assertEquals(4, (2 + 2).toLong())
     }
 
+    @Test // seriously if this ever fails we are f!!#$
+    fun value_delegate_changes_value() {
+        assertEquals(4, (2 + 2).toLong())
+        val vad = Value(2)
+        var d by vad
+        d = 2
+        vad.setValue(32)
+        assertEquals(d, 32)
+    }
+
     @Test
     fun weakvalue_returns_value() {
         val d = LazyWeakValue<Long> { 31L }
