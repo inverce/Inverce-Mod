@@ -3,5 +3,5 @@
 include ':Core'
 include ':Events'
 include ':Processing'
-include ':VisionForCamera'
-include ':Integrations'
+include ':Vision'
+include ':Integration'
