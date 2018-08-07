@@ -94,13 +94,14 @@ fun View?.visible(visible: Boolean, gone: Boolean = true): Boolean {
  * @param run      the run
  */
 fun View.runOnNextLayout(run: Runnable) {
-    this.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+    val treeObserver = this.viewTreeObserver
+    treeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
         override fun onGlobalLayout() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                this@runOnNextLayout.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                treeObserver.removeOnGlobalLayoutListener(this)
             } else {
                 @Suppress("DEPRECATION")
-                this@runOnNextLayout.viewTreeObserver.removeGlobalOnLayoutListener(this)
+                treeObserver.removeGlobalOnLayoutListener(this)
             }
             run.run()
         }
@@ -131,7 +132,7 @@ fun View.getRelativePosition(parent: View?): Point {
             position.x += (actView as View).left
             position.y += (actView as View).top
         }
-        actView = actView!!.parent
+        actView = actView?.parent
     } while (actView is View && actView !== parent)
     return position
 }

@@ -56,7 +56,7 @@ class LruCache<K, V>(val maxSize: Int = 100) : MutableMap<K, V> {
                 it.value = value
                 removeNode(it)
                 addAtTop(it)
-                return@let oldValue
+                oldValue
             }
         } else {
             val node = Entry(key, value)
@@ -83,7 +83,7 @@ class LruCache<K, V>(val maxSize: Int = 100) : MutableMap<K, V> {
             hashmap[key]?.let {
                 removeNode(it)
                 hashmap.remove(key)
-                return@let it.value
+                it.value
             }
         } else {
             null
@@ -95,7 +95,7 @@ class LruCache<K, V>(val maxSize: Int = 100) : MutableMap<K, V> {
         node.right = start
         node.left = null
         if (start != null)
-            start!!.left = node
+            start?.left = node
         start = node
         if (end == null)
             end = start
@@ -103,13 +103,13 @@ class LruCache<K, V>(val maxSize: Int = 100) : MutableMap<K, V> {
 
     protected fun removeNode(node: Entry<K, V>) {
         if (node.left != null) {
-            node.left!!.right = node.right
+            node.left?.right = node.right
         } else {
             start = node.right
         }
 
         if (node.right != null) {
-            node.right!!.left = node.left
+            node.right?.left = node.left
         } else {
             end = node.left
         }

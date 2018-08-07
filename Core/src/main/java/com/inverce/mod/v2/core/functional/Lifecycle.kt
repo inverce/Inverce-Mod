@@ -53,9 +53,8 @@ object Lifecycle {
             IMInternal.activity = WeakReference(activity)
         }
 
-        if (listener != null) {
-            listener!!.activityStateChanged(state, activity, extra)
-        }
+
+        listener?.activityStateChanged(state, activity, extra)
     }
 
 

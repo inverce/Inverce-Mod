@@ -21,8 +21,6 @@ class NewDetectionTracker : Tracker<Barcode>() {
     }
 
     override fun onNewItem(id: Int, item: Barcode?) {
-        if (mListener != null) {
-            mListener!!.onNewDetection(item)
-        }
+        mListener?.onNewDetection(item)
     }
 }

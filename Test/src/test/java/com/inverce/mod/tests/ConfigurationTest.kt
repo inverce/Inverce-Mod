@@ -41,22 +41,22 @@ class ConfigurationTest {
     @Test
     fun primitivevalue_returns_correctValue() {
         val bValue = BoolValue(true)
-        assertEquals(bValue.get()!!, true)
+        assertEquals(bValue.get(), true)
 
         val dValue = DoubleValue(23.3)
-        assertEquals(dValue.get()!!, 23.3, 0.1)
+        assertEquals(dValue.get(), 23.3, 0.1)
 
         val fValue = FloatValue(23.3f)
-        assertEquals(fValue.get()!!, 23.3f)
+        assertEquals(fValue.get(), 23.3f)
 
         val iValue = IntValue(23)
-        assertEquals(iValue.get()!!, 23)
+        assertEquals(iValue.get(), 23)
 
         val lValue = LongValue(23L)
-        assertEquals(lValue.get()!!, 23L)
+        assertEquals(lValue.get(), 23L)
 
         val sValue = StringValue("true")
-        assertEquals(sValue.get()!!, "true")
+        assertEquals(sValue.get(), "true")
     }
 
     @Test

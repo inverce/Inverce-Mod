@@ -12,7 +12,8 @@ import java.lang.ref.WeakReference
 
 class DividerDecorator @JvmOverloads constructor(@DrawableRes resource: Int, orientation: Int = VERTICAL) : DividerItemDecoration(context, orientation) {
     init {
-        setDrawable(ActivityCompat.getDrawable(context, resource)!!)
+        val drawable = ActivityCompat.getDrawable(context, resource) ?: throw IllegalStateException("Drawable not found")
+        setDrawable(drawable)
     }
 }
 

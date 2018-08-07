@@ -38,6 +38,11 @@ open class DFTIterator<T : TreeNode<T>>(node: T) : TreeIterator<T>(node) {
 abstract class TreeIterator<T : TreeNode<T>>(node: T) : kotlin.collections.Iterator<T> {
     val queue = java.util.LinkedList<T>(listOf(node))
     override fun hasNext() = !queue.isNotEmpty()
-    override fun next(): T = pass(queue.removeFirst())
+    override fun next(): T {
+        if (!hasNext()) {
+            throw NoSuchElementException()
+        }
+        return pass(queue.removeFirst())
+    }
     abstract fun pass(node: T): T
 }
