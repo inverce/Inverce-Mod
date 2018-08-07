@@ -52,7 +52,9 @@ bintray {
         userOrg = "${bintrayUser}"
         licenses = ['Apache-2.0']
         vcsUrl = rootProject.ext.bintray.vcsUrl
+        issueTrackerUrl = rootProject.ext.bintray.vcsUrl
         publish = true
+        override = true
         version {
             name = rootProject.ext.bintray.libraryVersion
             desc = ''
@@ -65,14 +67,34 @@ bintray {
     }
 }
 
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "sources"
+}
+
+task androidJavadocs(type: Javadoc) {
+    failOnError = false
+    source = android.sourceSets.main.java.srcDirs
+    ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+    classpath += files(ext.androidJar)
+}
+
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    classifier = 'javadoc'
+    from androidJavadocs.destinationDir
+}
+
 publishing {
     publications {
+
         MyPublication(MavenPublication) {
             groupId rootProject.ext.bintray.groupId
             artifactId project.artifactId
             version rootProject.ext.bintray.libraryVersion
 
             artifact "$buildDir/outputs/aar/${project.getName()}-release.aar"
+            artifact sourceJar
+            artifact androidJavadocsJar
 
             pom.withXml {
                 def dependenciesNode = asNode().appendNode('dependencies')
@@ -95,4 +117,6 @@ publishing {
 afterEvaluate {
     // make sure to generate pom before publishing to bintray
     bintrayUpload.dependsOn 'generatePomFileForMyPublicationPublication'
+    bintrayUpload.dependsOn 'androidJavadocsJar'
+    bintrayUpload.dependsOn 'sourceJar'
 }
