@@ -72,16 +72,9 @@ task sourceJar(type: Jar) {
     classifier "sources"
 }
 
-task androidJavadocs(type: Javadoc) {
-    failOnError = false
-    source = android.sourceSets.main.java.srcDirs
-    ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
-    classpath += files(ext.androidJar)
-}
-
-task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+task androidJavadocsJar(type: Jar, dependsOn: dokka) {
     classifier = 'javadoc'
-    from androidJavadocs.destinationDir
+    from "$buildDir/javadoc"
 }
 
 publishing {
@@ -103,10 +96,17 @@ publishing {
                 configurations.implementation.allDependencies.each {
                     // Ensure dependencies such as fileTree are not included.
                     if (it.name != 'unspecified') {
-                        def dependencyNode = dependenciesNode.appendNode('dependency')
-                        dependencyNode.appendNode('groupId', it.group)
-                        dependencyNode.appendNode('artifactId', it.name)
-                        dependencyNode.appendNode('version', it.version)
+                        if (it.group == rootProject.getName()) {
+                            def dependencyNode = dependenciesNode.appendNode('dependency')
+                            dependencyNode.appendNode('groupId', rootProject.ext.bintray.groupId)
+                            dependencyNode.appendNode('artifactId', it.name)
+                            dependencyNode.appendNode('version', rootProject.ext.bintray.libraryVersion)
+                        } else {
+                            def dependencyNode = dependenciesNode.appendNode('dependency')
+                            dependencyNode.appendNode('groupId', it.group)
+                            dependencyNode.appendNode('artifactId', it.name)
+                            dependencyNode.appendNode('version', it.version)
+                        }
                     }
                 }
             }
@@ -118,5 +118,6 @@ afterEvaluate {
     // make sure to generate pom before publishing to bintray
     bintrayUpload.dependsOn 'generatePomFileForMyPublicationPublication'
     bintrayUpload.dependsOn 'androidJavadocsJar'
+    bintrayUpload.dependsOn 'assembleRelease'
     bintrayUpload.dependsOn 'sourceJar'
 }

@@ -36,14 +36,3 @@ class SharedBoolAutoToggle(initial: Boolean, protected val toggled: Boolean = fa
             super.value = value
         }
 }
-
-
-object cds {
-    var userPassword by SharedStringValue("", "yolo")
-
-
-    init {
-        userPassword = "dsdsdsds"
-    }
-
-}

@@ -54,14 +54,12 @@ open class Event<T : Listener>(protected var service: Class<T>, useWeakReference
 
     internal fun addListenerInternal(listener: Any) {
         if (service.isInstance(listener)) {
-
             addListener(listener as T)
         }
     }
 
     internal fun removeListenerInternal(listener: Any) {
         if (service.isInstance(listener)) {
-
             removeListener(listener as T)
         }
     }
