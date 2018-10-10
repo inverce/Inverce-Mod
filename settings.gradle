@@ -1,0 +1,7 @@
+//include ':AppScratch'
+//include ':Test'
+include ':Core'
+include ':Events'
+//include ':Processing'
+//include ':Vision'
+include ':Integration'

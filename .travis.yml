@@ -1,0 +1,26 @@
+language: android
+jdk:
+  - oraclejdk8
+android:
+  components:
+    - extra-android-support
+    - extra-google-google_play_services
+    - extra-android-m2repository
+    - extra-google-m2repository
+
+  licenses:
+    - 'android-sdk-preview-license-.+'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
+
+before_install:
+ - chmod +x gradlew
+
+install:
+ - echo yes | sdkmanager "tools" &>/dev/null
+ - echo yes | sdkmanager "platform-tools" &>/dev/null
+ - echo yes | sdkmanager "build-tools;27.0.3" &>/dev/null
+ - echo yes | sdkmanager "platforms;android-27" &>/dev/null
+
+script: ./gradlew assembleRelease
+#script: ./gradlew testRelease assembleRelease

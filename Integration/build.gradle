@@ -1,0 +1,25 @@
+plugins { id "com.jfrog.bintray" version "1.8.4" }
+plugins { id 'maven-publish' }
+apply from: '../pre_script.groovy'
+
+ext {
+    artifactId = "Integrations"
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:support-v4:$rootProject.ext.dep.support"
+    implementation "com.android.support:appcompat-v7:$rootProject.ext.dep.support"
+    implementation "com.android.support:support-media-compat:$rootProject.ext.dep.support"
+    implementation "com.android.support:recyclerview-v7:$rootProject.ext.dep.support"
+    implementation "com.android.support:support-annotations:$rootProject.ext.dep.support"
+
+    implementation project(":Core")
+
+    implementation ("com.google.android.gms:play-services-basement:$rootProject.ext.dep.play") { transitive true }
+    implementation ("com.squareup.retrofit2:retrofit:$rootProject.ext.dep.retrofit") { transitive = true }
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+
+apply from: '../post_script.groovy'

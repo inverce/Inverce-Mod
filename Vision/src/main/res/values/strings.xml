@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Barcode - library</string>
+    <string name="im_permission_camera_rationale">Access to the camera is needed for barcode detection.</string>
+    <string name="im_no_camera_permission">Cannot start the barcode reader because the camera permission was not granted.</string>
+</resources>

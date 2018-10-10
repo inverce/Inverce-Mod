@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.inverce.mod.core">
+
+    <application android:label="@string/app_name" >
+        <provider
+            android:authorities="${applicationId}.iminitializationprovider"
+            android:name="com.inverce.mod.v2.core.internal.InitializationContentProvider"
+            android:exported="false"/>
+    </application>
+
+</manifest>
