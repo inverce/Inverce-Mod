@@ -3,8 +3,7 @@ package com.inverce.mod.v2.core.utils
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Point
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import com.inverce.mod.v2.core.Log
 import com.inverce.mod.v2.core.activity
 import com.inverce.mod.v2.core.context
@@ -52,7 +51,6 @@ object Screen {
                 } catch (ex: Exception) {
                     Log.ex(ex,"Tools", "getActivitySize")
                 }
-
             }
             return size
         }
@@ -71,5 +69,20 @@ object Screen {
                 result = resources.getDimensionPixelSize(resourceId)
             }
             return result
+        }
+
+    val navigationBarHeight: Int
+        get() {
+            val resourceId = context.resources.getIdentifier("navigation_bar_height", "dimen", "android")
+            return if (resourceId > 0) {
+                context.resources.getDimensionPixelSize(resourceId)
+            } else 0
+        }
+
+    val navigationBarVisible: Boolean
+        get() {
+            val hasMenuKey = ViewConfiguration.get(context).hasPermanentMenuKey()
+            val hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK)
+            return !hasMenuKey && !hasBackKey
         }
 }

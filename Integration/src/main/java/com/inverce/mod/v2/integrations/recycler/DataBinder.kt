@@ -3,11 +3,15 @@ package com.inverce.mod.v2.integrations.recycler
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.support.annotation.IdRes
+import android.text.TextWatcher
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import com.inverce.mod.integrations.R
 import com.inverce.mod.v2.core.functional.IMapper
 import com.inverce.mod.v2.core.utils.visible
+import com.inverce.mod.v2.integrations.view.TextWatcherAdapter
 import java.util.*
 
 @Suppress("unused")
@@ -64,6 +68,22 @@ open class DataBinder<T> : MultiBind<T, BindViewHolder> {
 
     fun bindOnClickListener(@IdRes id: Int, map: IMapper<T, View.OnClickListener>) = bind<View>(id) { view, item, _ ->
         view.setOnClickListener(map(item))
+    }
+
+    fun bindTextChange(id: Int, onChanged: (item: T, text: String) -> Unit) {
+        bind<EditText>(id) { txt, it, _ ->
+            val inTag = txt.getTag(R.id.im_data_binder_tag_1)
+            (inTag as? TextWatcher)?.apply {
+                txt.removeTextChangedListener(this)
+            }
+            val newWatcher = object : TextWatcherAdapter() {
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    onChanged(it, s.toString())
+                }
+            }
+            txt.setTag(R.id.im_data_binder_tag_1, newWatcher)
+            txt.addTextChangedListener(newWatcher)
+        }
     }
 
     @Synchronized

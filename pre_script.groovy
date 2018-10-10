@@ -3,14 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'org.jetbrains.dokka-android'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    compileSdkVersion rootProject.ext.lib.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 27
-        versionCode 1
-        versionName rootProject.ext.bintray.libraryVersion
+        targetSdkVersion rootProject.ext.lib.targetSdkVersion
+        minSdkVersion rootProject.ext.lib.minSdkVersion
+        versionCode rootProject.ext.lib.versionCode
+        versionName rootProject.ext.lib.libraryVersion
     }
     buildTypes {
         release {

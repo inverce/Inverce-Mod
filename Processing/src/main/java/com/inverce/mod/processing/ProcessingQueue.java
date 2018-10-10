@@ -18,6 +18,8 @@ import java.util.concurrent.TimeUnit;
 import static com.inverce.mod.core.verification.Preconditions.checkArgument;
 import static com.inverce.mod.core.verification.Preconditions.checkNotNull;
 import static com.inverce.mod.core.verification.Preconditions.checkState;
+import static com.inverce.mod.v2.core.verification.Preconditions.checkArgument;
+import static com.inverce.mod.v2.core.verification.Preconditions.checkState;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class ProcessingQueue {

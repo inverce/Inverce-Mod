@@ -8,13 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import com.inverce.mod.v2.core.onUi
 import com.inverce.mod.v2.core.utils.isOnUiThread
+import com.inverce.mod.v2.integrations.recycler.SelectionMode.Multi
+import com.inverce.mod.v2.integrations.recycler.SelectionMode.Single
 import java.util.*
+import kotlin.collections.HashSet
 
 abstract class RecyclerAdapter<ITEM, VH : RecyclerView.ViewHolder> : RecyclerView.Adapter<VH>() {
     var useDiffUtil: Boolean = false
 
+    var selection = HashSet<ITEM>()
+    var selectionMode = Multi
+    var selectionAllowForeign = false
+
     var data: List<ITEM> = ArrayList()
-        protected set(items) = when {
+        set(items) = when {
             !isOnUiThread -> onUi { data = items }
             useDiffUtil -> {
                 val oldItems = ArrayList(data)
@@ -41,5 +48,34 @@ abstract class RecyclerAdapter<ITEM, VH : RecyclerView.ViewHolder> : RecyclerVie
         return LayoutInflater.from(parent.context)
                 .inflate(res, parent, false)
     }
+
+    fun select(item: ITEM) {
+        if (selectionMode == Single) {
+            selection.clear()
+        }
+
+        if (selectionAllowForeign || data.contains(item)) {
+            selection.add(item)
+        } else {
+            throw IllegalStateException("Cannot select item not in data set with selectionAllowForeign = false")
+        }
+    }
+
+    fun select(list: List<ITEM>) {
+        if (selectionMode == Single) {
+            throw IllegalStateException("Cannot select multiple items with selectionMode = Single ")
+        }
+
+        if (data.containsAll(list)) {
+            selection.addAll(list)
+        } else {
+            throw IllegalStateException("Cannot select item not in data set with selectionAllowForeign = false")
+        }
+    }
+
+    fun clearSelection() = selection.clear()
 }
 
+enum class SelectionMode {
+    Single, Multi
+}

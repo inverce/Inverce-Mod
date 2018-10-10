@@ -101,13 +101,14 @@ open class Event<T : Listener>(protected var service: Class<T>, useWeakReference
     }
 
     @Throws(Throwable::class)
-    override fun invoke(proxy: Any, method: Method, args: Array<Any>): Any? {
+    override fun invoke(proxy: Any, method: Method, args: Array<Any>?): Any? {
         val info = method.getAnnotation(EventInfo::class.java)
         val thread = info?.thread ?: ThreadPolicy.CallingThread
+        val argOut = args ?: emptyArray()
         return when (thread) {
-            ThreadPolicy.BgThread -> onBg(createInvokerRunnable(method, args))
-            ThreadPolicy.UiThread -> onUi(createInvokerRunnable(method, args))
-            ThreadPolicy.CallingThread -> invokeInternal(method, args)
+            ThreadPolicy.BgThread -> onBg(createInvokerRunnable(method, argOut))
+            ThreadPolicy.UiThread -> onUi(createInvokerRunnable(method, argOut))
+            ThreadPolicy.CallingThread -> invokeInternal(method, argOut)
         }
     }
 

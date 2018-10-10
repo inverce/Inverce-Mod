@@ -2,8 +2,7 @@ package com.inverce.mod.processing;
 
 import android.support.annotation.NonNull;
 
-import com.inverce.mod.core.IM;
-import com.inverce.mod.core.functional.IConsumer;
+import com.inverce.mod.v2.core.IM;
 
 public class Job<ITEM, RESULT> implements IConsumer<ProcessingQueue> {
     protected ITEM item;

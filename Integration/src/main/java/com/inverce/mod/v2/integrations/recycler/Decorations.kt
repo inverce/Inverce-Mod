@@ -32,12 +32,12 @@ open class HideSoftKeyboardOnScrollListener(rootView: View) : RecyclerView.OnScr
     internal val rootView: WeakReference<View> = WeakReference(rootView)
     internal var isScrolling: Boolean = false
 
-    override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
         super.onScrollStateChanged(recyclerView, newState)
         isScrolling = newState == RecyclerView.SCROLL_STATE_DRAGGING
     }
 
-    override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
         if (isScrolling) {
             rootView.get()?.findFocus()?.hideSoftInput()

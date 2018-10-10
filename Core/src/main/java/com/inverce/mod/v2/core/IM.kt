@@ -25,6 +25,14 @@ object IMEx {
 
     @get:JvmName("sessionUUID")
     val sessionUUID by lazy { UUID.randomUUID().toString() }
+
+    @get:JvmName("context")
+    val context: Context
+        get() = IMInternal.activity.get() ?: IMInternal.context ?: throw IllegalStateException("Inverce's mod not initialized")
+
+    @get:JvmName("activity")
+    val activity: Activity?
+        get() = IMInternal.activity.get()
 }
 
 @get:JvmName("onUi")
