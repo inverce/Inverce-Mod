@@ -146,5 +146,12 @@ open class Event<T : Listener>(protected var service: Class<T>, useWeakReference
      * Bus has small overhead over managing events globally and MANUALLY, its not recommended to use Bus as way to replace standard listeners
      * Overhead is around 20-30% in function call per listener (not function total execution time, but time it takes to start method), thus is strongly advised not to use Bus in events that are repeated multiple times per second (onDraw | mouseMove.)
      */
-    object Bus : Channel(), IChannelGroup by ChannelGroup()
+    object Bus : com.inverce.mod.v2.events.Bus()
+
+    companion object {
+        @JvmStatic
+        fun getBus() = Bus
+    }
 }
+
+open class Bus : Channel(), IChannelGroup by ChannelGroup()

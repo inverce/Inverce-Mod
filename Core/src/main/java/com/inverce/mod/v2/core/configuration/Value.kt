@@ -40,7 +40,7 @@ open class Value<T> protected constructor(protected var setter: (T) -> Unit = { 
             }
         }
 
-    val onChanged = listOf<ValueChanged<T>>()
+    val onChanged = mutableListOf<ValueChanged<T>>()
 
 
     operator fun setValue(t: Any?, property: KProperty<*>, value: T) {

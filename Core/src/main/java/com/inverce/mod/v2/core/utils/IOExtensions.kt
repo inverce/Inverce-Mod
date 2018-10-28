@@ -1,8 +1,19 @@
-@file:JvmName("IO")
-
 package com.inverce.mod.v2.core.utils
 
 import java.io.*
+
+object IO {
+    @JvmStatic
+    fun closeSilently(it: Closeable?) = it.closeSilently()
+
+    @JvmStatic
+    @Throws(IOException::class, FileNotFoundException::class)
+    fun copyFile(input: File, out: File) = input.copyFile(out)
+
+    @JvmStatic
+    @Throws(IOException::class)
+    fun copyInto(input: InputStream, out: OutputStream, closeStreams: Boolean = false): Long = input.copyInto(out, closeStreams)
+}
 
 fun Closeable?.closeSilently() {
     if (this != null) try {

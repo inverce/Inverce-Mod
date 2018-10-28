@@ -12,7 +12,7 @@ import android.view.View.NO_ID
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.inverce.mod.v2.core.functional.IConsumer
+import com.inverce.mod.v2.core.functional.KConsumer
 import com.inverce.mod.v2.core.utils.visible
 
 @Suppress("unused", "UNCHECKED_CAST")
@@ -31,7 +31,7 @@ open class BindViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         return get<View>(res) != null
     }
 
-    fun <V : View> ifHas(@IdRes res: Int, consumer: IConsumer<V>): Boolean {
+    fun <V : View> ifHas(@IdRes res: Int, consumer: KConsumer<V>): Boolean {
         val v = get<V>(res)
         if (v != null) {
             consumer(v)

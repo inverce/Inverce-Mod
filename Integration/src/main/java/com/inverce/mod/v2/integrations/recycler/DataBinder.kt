@@ -9,7 +9,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.inverce.mod.integrations.R
-import com.inverce.mod.v2.core.functional.IMapper
+import com.inverce.mod.v2.core.functional.KMapper
 import com.inverce.mod.v2.core.utils.visible
 import com.inverce.mod.v2.integrations.view.TextWatcherAdapter
 import java.util.*
@@ -20,40 +20,45 @@ open class DataBinder<T> : MultiBind<T, BindViewHolder> {
 
     protected var tasks: MutableList<MultiBind<T, BindViewHolder>> = ArrayList()
 
+
     fun bind(bind: MultiBind<T, BindViewHolder>) = apply {
         tasks.add(bind)
     }
 
-    inline fun <V : View> bind(crossinline view: IMapper<BindViewHolder, V>, crossinline binder: MultiBind<T, V>) = bind { holder, item, position ->
+    open fun bindBinder(bind: MultiBind<T, BindViewHolder>) = apply {
+        tasks.add(bind)
+    }
+
+    inline fun <V : View> bind(crossinline view: KMapper<BindViewHolder, V>, crossinline binder: MultiBind<T, V>) = bind { holder, item, position ->
         binder(view(holder), item, position)
     }
 
-    inline fun <V : View> bind(@IdRes res: Int, crossinline binder: MultiBind<T, V>) = bind { holder, item, position ->
-        val v: V = holder[res] ?: throw IllegalStateException("Resource $res not found")
+    inline fun <V : View> bind(@IdRes res: Int, crossinline binder: MultiBind<T, V>) = bindBinder { holder, item, position ->
+        val v: V = holder[res] ?: return@bindBinder
         binder(v, item, position)
     }
 
-    fun bindText(@IdRes id: Int, map: IMapper<T, String>) = bind<TextView>(id) { view, item, _ ->
+    fun bindText(@IdRes id: Int, map: KMapper<T, String>) = bind<TextView>(id) { view, item, _ ->
         view.text = map(item)
     }
 
-    fun bindTextRes(@IdRes id: Int, map: IMapper<T, Int>) = bind<TextView>(id) { view, item, _ ->
+    fun bindTextRes(@IdRes id: Int, map: KMapper<T, Int>) = bind<TextView>(id) { view, item, _ ->
         view.setText(map(item))
     }
 
-    fun bindImageRes(@IdRes id: Int, map: IMapper<T, Int>) = bind<ImageView>(id) { view, item, _ ->
+    fun bindImageRes(@IdRes id: Int, map: KMapper<T, Int>) = bind<ImageView>(id) { view, item, _ ->
         view.setImageResource(map(item))
     }
 
-    fun bindImage(@IdRes id: Int, map: IMapper<T, String>) = bind<ImageView>(id) { view, item, _ ->
+    fun bindImage(@IdRes id: Int, map: KMapper<T, String>) = bind<ImageView>(id) { view, item, _ ->
         loadImage(map(item), view)
     }
 
-    fun bindBackgroundRes(@IdRes id: Int, map: IMapper<T, Int>) = bind<View>(id) { view, item, _ ->
+    fun bindBackgroundRes(@IdRes id: Int, map: KMapper<T, Int>) = bind<View>(id) { view, item, _ ->
         view.setBackgroundResource(map(item))
     }
 
-    fun bindBackground(@IdRes id: Int, map: IMapper<T, Drawable>) = bind<View>(id) { view, item, _ ->
+    fun bindBackground(@IdRes id: Int, map: KMapper<T, Drawable>) = bind<View>(id) { view, item, _ ->
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             view.background = map(item)
         } else {
@@ -62,11 +67,11 @@ open class DataBinder<T> : MultiBind<T, BindViewHolder> {
         }
     }
 
-    fun bindVisibility(@IdRes id: Int, map: IMapper<T, Boolean>, gone: Boolean = true) = bind<View>(id) { view, item, _ ->
+    fun bindVisibility(@IdRes id: Int, map: KMapper<T, Boolean>, gone: Boolean = true) = bind<View>(id) { view, item, _ ->
         view.visible(map(item), gone)
     }
 
-    fun bindOnClickListener(@IdRes id: Int, map: IMapper<T, View.OnClickListener>) = bind<View>(id) { view, item, _ ->
+    fun bindOnClickListener(@IdRes id: Int, map: KMapper<T, View.OnClickListener>) = bind<View>(id) { view, item, _ ->
         view.setOnClickListener(map(item))
     }
 

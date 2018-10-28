@@ -14,6 +14,8 @@ import com.inverce.mod.v2.core.resources
  */
 object Screen {
 
+    @JvmStatic
+    @get:JvmName("isXLargeTablet")
     val isXLargeTablet: Boolean
         get() =
             resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_XLARGE
@@ -23,6 +25,8 @@ object Screen {
      *
      * @return the screen size
      */
+    @JvmStatic
+    @get:JvmName("screenSize")
     val screenSize: Point
         get() {
             val size = Point()
@@ -36,6 +40,8 @@ object Screen {
      *
      * @return the activity size
      */
+    @JvmStatic
+    @get:JvmName("activitySize")
     val activitySize: Point
         get() {
             val size = screenSize
@@ -61,6 +67,8 @@ object Screen {
      *
      * @return the status bar height
      */
+    @JvmStatic
+    @get:JvmName("statusBarHeight")
     val statusBarHeight: Int
         get() {
             var result = 0
@@ -71,6 +79,8 @@ object Screen {
             return result
         }
 
+    @JvmStatic
+    @get:JvmName("navigationBarHeight")
     val navigationBarHeight: Int
         get() {
             val resourceId = context.resources.getIdentifier("navigation_bar_height", "dimen", "android")
@@ -79,6 +89,8 @@ object Screen {
             } else 0
         }
 
+    @JvmStatic
+    @get:JvmName("navigationBarVisible")
     val navigationBarVisible: Boolean
         get() {
             val hasMenuKey = ViewConfiguration.get(context).hasPermanentMenuKey()

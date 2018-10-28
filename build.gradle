@@ -38,13 +38,13 @@ ext {
 
     bintray = [
             repository: "Inverce-Mod",
-            libraryVersion: "2.0.1",
+            libraryVersion: "2.0.6",
             groupId: "com.inverce.mod",
             vcsUrl: "https://github.com/inverce/Inverce-Mod"
     ]
     lib = [
         versionCode : 1,
-        versionName : "2.0.3",
+        versionName : "2.0.6",
         compileSdkVersion: 28,
         minSdkVersion: 15,
         targetSdkVersion: 28

@@ -1,5 +1,5 @@
 //include ':AppScratch'
-//include ':Test'
+include ':Test'
 include ':Core'
 include ':Events'
 //include ':Processing'

@@ -1,4 +1,4 @@
-@file:JvmName("Ui")
+@file:JvmName("UiKotlinExtensions")
 
 package com.inverce.mod.v2.core.utils
 
@@ -17,6 +17,60 @@ import com.inverce.mod.v2.core.Log
 import com.inverce.mod.v2.core.internal.IMInternal
 import com.inverce.mod.v2.core.resources
 import java.text.Normalizer
+
+object Ui {
+    @JvmStatic
+    fun enableInEditModeForView(it: View) = it.enableInEditModeForView()
+
+    @JvmStatic
+    @get:JvmName("isOnUiThread")
+    val isOnUiThread
+        get() = Looper.myLooper() == Looper.getMainLooper()
+
+    @JvmStatic
+    fun hideSoftInput(it: View?) = it.hideSoftInput()
+
+    @JvmStatic
+    @JvmOverloads
+    fun showSoftInput(it: View, useImplicit: Boolean = false) =  it.showSoftInput(useImplicit)
+
+    @JvmStatic
+    @JvmOverloads
+    fun visible(it: View?, visible: Boolean, gone: Boolean = true): Boolean = it.visible(visible, gone)
+
+    @JvmStatic
+    fun runOnNextLayout(it: View, run: Runnable) = it.runOnNextLayout(run)
+
+    @JvmStatic
+    fun createScreenShoot(it: Fragment): Bitmap? = it.createScreenShoot()
+
+    @JvmStatic
+    fun createScreenShoot(it: View?): Bitmap? = it.createScreenShoot()
+
+    @JvmStatic
+    fun getRelativePosition(it: View, parent: View?): Point = it.getRelativePosition(parent)
+
+    @JvmStatic
+    fun getPositionOnScreen(it: View): Point = it.getPositionOnScreen()
+
+    @JvmStatic
+    fun deAccent(it: String): String = it.deAccent()
+
+    @JvmStatic
+    fun isVisible(it: View?): Boolean = it.isVisible()
+
+    @JvmStatic
+    fun pxToDp(px: Int): Float = px.toDp()
+
+    @JvmStatic
+    fun dpToPx(dp: Float): Int = dp.toPx()
+
+    @JvmStatic
+    fun getLocationOnScreen(it: View?): Point = it.getLocationOnScreen()
+
+    @JvmStatic
+    fun getViewSize(it: View?): Point = it.getViewSize()
+}
 
 /**
  * Enables usage of IM utilities in debug mode for Specified view,

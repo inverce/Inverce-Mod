@@ -20,7 +20,7 @@ abstract class RecyclerAdapter<ITEM, VH : RecyclerView.ViewHolder> : RecyclerVie
     var selectionMode = Multi
     var selectionAllowForeign = false
 
-    var data: List<ITEM> = ArrayList()
+    open var data: List<ITEM> = ArrayList()
         set(items) = when {
             !isOnUiThread -> onUi { data = items }
             useDiffUtil -> {
@@ -34,6 +34,17 @@ abstract class RecyclerAdapter<ITEM, VH : RecyclerView.ViewHolder> : RecyclerVie
                 notifyDataSetChanged()
             }
         }
+
+    fun setData(data: List<ITEM>, useDiffUtil: Boolean) {
+        if (!isOnUiThread) {
+            onUi { setData(data, useDiffUtil) }
+            return
+        }
+        val oldUseDiff = this.useDiffUtil
+        this.useDiffUtil = useDiffUtil
+        this.data = data
+        this.useDiffUtil = oldUseDiff
+    }
 
     fun getItem(position: Int): ITEM = data[position]
 

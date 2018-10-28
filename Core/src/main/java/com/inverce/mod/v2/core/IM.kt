@@ -9,11 +9,13 @@ import android.content.Context
 import android.content.res.Resources
 import android.support.v4.app.FragmentActivity
 import android.view.LayoutInflater
+import android.view.View
 import com.inverce.mod.v2.core.configuration.SharedBoolAutoToggle
 import com.inverce.mod.v2.core.internal.IMInternal
 import com.inverce.mod.v2.core.threadpool.DefaultHandlerThread
 import com.inverce.mod.v2.core.threadpool.DynamicScheduledExecutor
 import com.inverce.mod.v2.core.threadpool.UIScheduler
+import com.inverce.mod.v2.core.utils.enableInEditModeForView
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -33,6 +35,11 @@ object IMEx {
     @get:JvmName("activity")
     val activity: Activity?
         get() = IMInternal.activity.get()
+}
+
+@JvmSynthetic
+fun enableInEditModeForView(view: View) {
+    view.enableInEditModeForView()
 }
 
 @get:JvmName("onUi")
@@ -65,7 +72,7 @@ val application: Application
     get() = context.applicationContext as Application
 
 @get:JvmName("activity")
-val activity: Activity?
+val activity: Activity? // CHECK IF WORKS FINE
     get() = IMInternal.activity.get()
 
 @get:JvmName("activitySupport")
@@ -76,7 +83,7 @@ val activitySupport: FragmentActivity?
 val resources: Resources
     get() = context.resources
 
-@get:JvmName("inflater")
+@get:JvmName("inflater") // FIXME (AKA CHECK IF WORKS FINE
 val inflater: LayoutInflater
     get() = LayoutInflater.from(context)
 

@@ -1,8 +1,7 @@
 package com.inverce.mod.tests
 
-import com.inverce.mod.core.configuration.Value
-import com.inverce.mod.core.configuration.ValueChanged
-import com.inverce.mod.core.configuration.extended.LazyWeakValue
+import com.inverce.mod.v2.core.configuration.LazyWeakValue
+import com.inverce.mod.v2.core.configuration.Value
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -11,26 +10,28 @@ import org.junit.Test
 class EventsTest {
 
     @Test
-    fun weakvalue_returns_value() {
-        val d = LazyWeakValue<Long> { 31L }
-        val v = d.get()
-        assertEquals(v as Long, 31L)
+    fun weak_value_returns_value() {
+        val d = LazyWeakValue({ 31L })
+        val v = d.value
+        assertEquals(v, 31L)
     }
 
     @Test
     fun value_returns_correctValue() {
         val value = Value("test")
-        assertEquals(value.get()!!, "test")
+        assertEquals(value.value, "test")
     }
 
     @Test
     fun valueChanged_called_once() {
         val value = Value("test")
         var changedCalled = 0
-        value.changeValueEvent().addListener(ValueChanged<String> { p, v ->
-            changedCalled ++
-        })
-        value.set("value 2")
+        value.onChanged += { p, v ->
+            changedCalled++
+        }
+        value.value = "value 2"
         assertTrue(changedCalled == 1)
     }
+
+
 }

@@ -1,6 +1,6 @@
 package com.inverce.mod.tests
 
-import com.inverce.mod.core.threadpool.DynamicScheduledExecutor
+import com.inverce.mod.v2.core.threadpool.DynamicScheduledExecutor
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.util.concurrent.Callable
@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 class ThreadsTest {
 
     @Test
-    fun bgthread_executes_in_thread() {
+    fun bg_thread_executes_in_thread() {
         val v = Array<Boolean>(1, { false });
         val t = DynamicScheduledExecutor()
         t.schedule({
@@ -21,7 +21,7 @@ class ThreadsTest {
     }
 
     @Test
-    fun callable_retrurns_value() {
+    fun callable_returns_value() {
         val t = DynamicScheduledExecutor()
         t.setKeepAliveTime(1, TimeUnit.SECONDS);
         val r = t.schedule(Callable<Boolean> { true }, 1, TimeUnit.SECONDS).get()
@@ -30,7 +30,7 @@ class ThreadsTest {
     }
 
     @Test
-    fun fixed_rate_sheduler_ticks_properly() {
+    fun fixed_rate_scheduler_ticks_properly() {
         val v = Array<Int>(1, { 0 });
         val t = DynamicScheduledExecutor()
         val f = t.scheduleAtFixedRate({
@@ -42,8 +42,8 @@ class ThreadsTest {
     }
 
     @Test
-    fun fixed_rate_delay_sheduler_ticks_properly() {
-        val v = Array<Int>(1, { 0 });
+    fun fixed_rate_delay_scheduler_ticks_properly() {
+        val v = Array(1) { 0 }
         val t = DynamicScheduledExecutor()
         val f = t.scheduleWithFixedDelay({
             v[0]++

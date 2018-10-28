@@ -18,6 +18,15 @@ open class Channel(private val useWeekEvents: Boolean = true) {
     }
 
     /**
+     * Allows user to register new listener for specified event
+     *
+     * @param clazz    - event class that will be used as listener
+     * @param listener - listener instance
+     * @param <T>      event type (not used as type is implicitly specified while defining clazz
+    </T> */
+    inline fun <reified T : Listener> register(listener: T) = register(T::class.java, listener)
+
+    /**
      * Allows user to register new listener for specified event, removing old ones
      *
      * @param clazz    - event class that will be used as listener
@@ -40,13 +49,30 @@ open class Channel(private val useWeekEvents: Boolean = true) {
     }
 
     /**
+     * Allows user to unregister listener for specified event
+     *
+     * @param clazz    - event class that will be used as listener
+     * @param listener - listener instance to remove
+     * @param <T>      event type (not used as type is implicitly specified while defining clazz
+    </T> */
+    inline fun <reified T : Listener> unregister(listener: T) = unregister(T::class.java, listener)
+
+    /**
      * Allows user to call functions on all underlying listeners for specified event, if function returns value only value received from first listener will be returned
      *
      * @param clazz - event class that will be used as listener
      * @param <T>   event type (not used as type is implicitly specified while defining clazz
     </T> */
-    fun <T : Listener> post(clazz: Class<T>): T {
-        return event(clazz).post()
+    fun <T : Listener> post(clazz: Class<T>): T  = event(clazz).post()
+
+    /**
+     * Allows user to call functions on all underlying listeners for specified event, if function returns value only value received from first listener will be returned
+     *
+     * @param clazz - event class that will be used as listener
+     * @param <T>   event type (not used as type is implicitly specified while defining clazz
+    </T> */
+    inline fun <reified T: Listener> post() : T {
+        return post(T::class.java)
     }
 
     /**

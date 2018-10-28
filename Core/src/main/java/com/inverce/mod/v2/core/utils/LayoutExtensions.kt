@@ -1,4 +1,5 @@
 @file:Suppress("unused")
+@file:JvmName("Layout")
 
 package com.inverce.mod.v2.core.utils
 
@@ -7,6 +8,7 @@ import android.graphics.Point
 import android.view.View
 import android.view.ViewGroup
 
+@get:JvmName("toSimpleParams")
 val View.layoutParamsIM
     get() = SimpleLayoutParams(this.layoutParams)
 
